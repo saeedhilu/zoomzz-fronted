@@ -1,86 +1,78 @@
-// SearchBar.js
-
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { SearchIcon, CalendarIcon, UsersIcon, LocationMarkerIcon } from '@heroicons/react/outline'; // Import icons from Heroicons
 
 const SearchBar = ({ locations }) => {
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [location, setLocation] = useState('');
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [guestCount, setGuestCount] = useState('');
-  const history = useHistory();
 
   const handleSearch = () => {
-    // Construct query parameters
-    const searchParams = new URLSearchParams();
-    if (selectedLocation) searchParams.append('location', selectedLocation);
-    if (checkInDate) searchParams.append('check_in', checkInDate);
-    if (checkOutDate) searchParams.append('check_out', checkOutDate);
-    if (guestCount) searchParams.append('guest_count', guestCount);
+    // Construct query parameters as a string
+    const queryParams = `location=${location.trim()},check_in=${checkInDate.trim()},check_out=${checkOutDate.trim()},guest_count=${guestCount.trim()}`;
 
     // Navigate to search results page with query parameters
-    history.push(`/search?${searchParams.toString()}`);
+    // history.push(`/search?${queryParams}`);
   };
 
   return (
-    <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
-      {/* Location Dropdown */}
-      <div>
-        <label htmlFor="location" className="block text-gray-700">Location:</label>
-        <select
+    <div className="bg-white rounded-lg shadow-md p-4 flex items-center space-x-4">
+      {/* Location Input */}
+      <div className="flex items-center border border-gray-300 rounded-md shadow-sm px-2 py-1">
+        <LocationMarkerIcon className="h-5 w-5 text-gray-500 mr-2" />
+        <input
+          type="text"
           id="location"
-          value={selectedLocation}
-          onChange={(e) => setSelectedLocation(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
-        >
-          <option value="">Select a location</option>
-          {locations.map(location => (
-            <option key={location.id} value={location.name}>{location.name}</option>
-          ))}
-        </select>
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          placeholder="Location"
+          className="w-32 focus:outline-none text-sm"
+        />
       </div>
 
-      {/* Check-in Date */}
-      <div>
-        <label htmlFor="checkInDate" className="block text-gray-700">Check-in:</label>
+      {/* Check-in Date Input */}
+      <div className="flex items-center border border-gray-300 rounded-md shadow-sm px-2 py-1">
+        <CalendarIcon className="h-5 w-5 text-gray-500 mr-2" />
         <input
           type="date"
           id="checkInDate"
           value={checkInDate}
           onChange={(e) => setCheckInDate(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
+          className="w-24 focus:outline-none text-sm"
         />
       </div>
 
-      {/* Check-out Date */}
-      <div>
-        <label htmlFor="checkOutDate" className="block text-gray-700">Check-out:</label>
+      {/* Check-out Date Input */}
+      <div className="flex items-center border border-gray-300 rounded-md shadow-sm px-2 py-1">
+        <CalendarIcon className="h-5 w-5 text-gray-500 mr-2" />
         <input
           type="date"
           id="checkOutDate"
           value={checkOutDate}
           onChange={(e) => setCheckOutDate(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
+          className="w-24 focus:outline-none text-sm"
         />
       </div>
 
-      {/* Guest Count */}
-      <div>
-        <label htmlFor="guestCount" className="block text-gray-700">Guests:</label>
+      {/* Guest Count Input */}
+      <div className="flex items-center border border-gray-300 rounded-md shadow-sm px-2 py-1">
+        <UsersIcon className="h-5 w-5 text-gray-500 mr-2" />
         <input
           type="number"
           id="guestCount"
           value={guestCount}
           onChange={(e) => setGuestCount(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
+          placeholder="Guests"
+          className="w-20 focus:outline-none text-sm"
         />
       </div>
 
       {/* Search Button */}
       <button
         onClick={handleSearch}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="bg-blue-500 text-white px-3 py-1 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
       >
+        <SearchIcon className="h-5 w-5 mr-2" />
         Search
       </button>
     </div>
