@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import instance from "../../Axiox";
-import { CircularProgress } from "@mui/material"; // For loading spinner
-import { FaGoogle } from "react-icons/fa"; // For Google icon
+import { CircularProgress } from "@mui/material";
+import { FaGoogle } from "react-icons/fa";
+import GoogleSignIn from "./GoogleSignIn";
+
+// Services files
+import sendOtp from "../../../services/sendOtpService";
+import resendOtp from "../../../services/resendOtpService";
+import verifyOtp from "../../../services/verifyOtpService";
+
+
+
 
 const PhoneNumberSignIn = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -37,21 +45,11 @@ const PhoneNumberSignIn = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await instance.post("accounts/generate-ph-otp/", {
-        phone_number: phoneNumber,
-      });
-      console.log("OTP sent successfully:", response.data);
+      await sendOtp(phoneNumber);
       setOtp(Array(6).fill(""));
       setOtpSent(true);
     } catch (error) {
-      if (error.response && error.response.data) {
-        setError(
-          error.response.data.Error || "Failed to send OTP. Please try again."
-        );
-      } else {
-        setError("Failed to send OTP. Please try again.");
-      }
-      console.error("Error sending OTP:", error);
+      setError("Failed to send OTP. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -61,19 +59,9 @@ const PhoneNumberSignIn = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await instance.post("accounts/resend-otp/", {
-        phone_number: phoneNumber,
-      });
-      console.log("OTP resent successfully:", response.data);
+      await resendOtp(phoneNumber);
     } catch (error) {
-      if (error.response && error.response.data) {
-        setError(
-          error.response.data.Error || "Failed to resend OTP. Please try again."
-        );
-      } else {
-        setError("Failed to resend OTP. Please try again.");
-      }
-      console.error("Error resending OTP:", error);
+      setError("Failed to resend OTP. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -83,22 +71,10 @@ const PhoneNumberSignIn = () => {
     setLoading(true);
     setError("");
     try {
-      const otpString = otp.join("");
-      const response = await instance.post("accounts/verify-ph-otp/", {
-        otp: otpString,
-        phone_number: phoneNumber,
-      });
-      console.log("OTP verification successful:", response.data);
-      alert('succes')
+      await verifyOtp(phoneNumber, otp.join(""));
+      alert('success');
     } catch (error) {
-      if (error.response && error.response.data) {
-        setError(
-          error.response.data.Error 
-        );
-      } else {
-        setError("Failed to verify OTP. Please try again.");
-      }
-      console.error("Error verifying OTP:", error);
+      setError("Failed to verify OTP. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -182,12 +158,12 @@ const PhoneNumberSignIn = () => {
         )}
         <div className="my-4">
           <div className="flex items-center justify-center">
-            <span className="h-px w-full bg-gray-300"></span>
+            <span className="h-px w-12 bg-gray-300"></span>
             <span className="px-3 text-gray-500">Or Continue With</span>
-            <span className="h-px w-full bg-gray-300"></span>
+            <span className="h-px w-12 bg-gray-300"></span>
           </div>
-          <button className="w-full bg-gray-200 text-black py-2 px-4 rounded-md flex justify-center items-center mt-2">
-            <FaGoogle className="mr-2" /> Google
+          <button className="w-full text-black py-2 px-4 rounded-md flex justify-center items-center mt-2">
+            <FaGoogle className="mr-2" /> <GoogleSignIn/>
           </button>
         </div>
       </div>

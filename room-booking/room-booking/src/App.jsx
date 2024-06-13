@@ -1,17 +1,21 @@
-import { useState } from 'react';
-import GoogleSignIn from './components/auth/user/GoogleSignIn';
-import { GoogleOAuthProvider } from '@react-oauth/google'; // Import the GoogleOAuthProvider
-import { MainSignin } from './components/auth/user/MainSignin';
+import React from 'react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import Signin from './pages/Signin';
+import TopRatedRooms from './components/rooms/TopRatedRooms';
 
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-const GID =  import.meta.env.VITE_GOOGLE_CLIENT_ID;
 function App() {
-
-console.log(GID);
   return (
-    <GoogleOAuthProvider clientId={GID}> 
-      <MainSignin />
+    <div>
+      <GoogleOAuthProvider clientId={clientId}>
+      <Signin />
     </GoogleOAuthProvider>
+
+    <TopRatedRooms/>
+
+    </div>
+    
   );
 }
 
