@@ -12,7 +12,7 @@ function App() {
       <Signin />
     </GoogleOAuthProvider>
 
-    <Home />
+    <Home/>
 
     </div>
     
