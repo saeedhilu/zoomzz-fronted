@@ -3,12 +3,14 @@ import { VscAccount } from "react-icons/vsc";
 import SearchBar from '../layout/SearchBar';
 
 const Header = ({ websiteName, userLogoUrl }) => {
-  const bgImage = 'https://images.pexels.com/photos/354939/pexels-photo-354939.jpeg?auto=compress&cs=tinysrgb&w=600'; // Replace with your actual background image URL
+  const bgImage = 'https://images.pexels.com/photos/963486/pexels-photo-963486.jpeg?auto=compress&cs=tinysrgb&w=600';
 
   return (
     <header className="relative bg-cover bg-center h-screen" style={{ backgroundImage: `url(${bgImage})` }}>
-      <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between py-6 px-4 sm:px-8">
-        <h1 className="text-3xl font-bold text-black">{websiteName}</h1>
+      <div className="container mx-auto flex  sm:flex-row items-center justify-between py-6 px-4 sm:px-8">
+        <div className="flex items-center space-x-4">
+          <h1 className="text-3xl font-bold text-white">{websiteName}</h1>
+        </div>
         <div className="flex items-center space-x-4 mt-4 sm:mt-0">
           <div>
             {userLogoUrl ? (

@@ -8,9 +8,9 @@ const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 function App() {
   return (
     <div>
-      <GoogleOAuthProvider clientId={clientId}>
+      {/* <GoogleOAuthProvider clientId={clientId}>
       <Signin />
-    </GoogleOAuthProvider>
+    </GoogleOAuthProvider> */}
 
     <Home/>
 
