@@ -1,33 +1,22 @@
 import React, { useState } from 'react';
-import searchRooms from '../../services/searchServices';
-import { SearchIcon, CalendarIcon, UsersIcon, LocationMarkerIcon } from '@heroicons/react/outline';
+import { useNavigate } from 'react-router-dom';
+import { SearchIcon, CalendarIcon, UsersIcon } from '@heroicons/react/outline';
 
 const RoomSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guestCount, setGuestCount] = useState('');
-  const [rooms, setRooms] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSearch = async () => {
-    setLoading(true);
-    setError(null);
-    const searchParams = {
+  const handleSearch = () => {
+    const searchParams = new URLSearchParams({
       search: searchQuery,
       check_in: checkIn,
       check_out: checkOut,
       guest_count: guestCount,
-    };
-    try {
-      const data = await searchRooms(searchParams);
-      setRooms(data);
-    } catch (error) {
-      setError('No rooms found.');
-    } finally {
-      setLoading(false);
-    }
+    }).toString();
+    navigate(`/search-results?${searchParams}`);
   };
 
   return (
@@ -103,21 +92,7 @@ const RoomSearch = () => {
         >
           Search
         </button>
-        {loading && <p className="mt-2 text-sm text-gray-500">Loading...</p>}
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       </div>
-      {rooms.length > 0 && (
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold mb-2">Search Results:</h2>
-          {rooms.map((room) => (
-            <div key={room.id} className="border border-gray-200 rounded p-4 mb-4">
-              <h3 className="text-xl font-semibold">{room.name}</h3>
-              <p className="text-gray-600">{room.description}</p>
-              <p className="text-gray-600">Price: ${room.price_per_night} per night</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
