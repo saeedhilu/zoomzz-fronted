@@ -1,28 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchIcon, CalendarIcon, UsersIcon } from '@heroicons/react/outline';
+import searchRooms from '../../services/searchServices';
 
 const RoomSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guestCount, setGuestCount] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleSearch = () => {
-    const searchParams = new URLSearchParams({
+  const handleSearch = async () => {
+    setLoading(true);
+    setError(null);
+    const searchParams = {
       search: searchQuery,
       check_in: checkIn,
       check_out: checkOut,
       guest_count: guestCount,
-    }).toString();
-    navigate(`/search-results?${searchParams}`);
+    };
+    try {
+      const data = await searchRooms(searchParams);
+      navigate('/search-results', { state: { rooms: data } });
+    } catch (error) {
+      setError('No rooms found.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="mb-4">
-        <label htmlFor="searchQuery" className="block text-sm font-medium text-gray-700">Search for rooms</label>
+        <label htmlFor="searchQuery" className="block text-sm font-medium text-gray-700">
+          Search for rooms
+        </label>
         <div className="relative mt-1 rounded-md shadow-sm">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -39,7 +53,9 @@ const RoomSearch = () => {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         <div>
-          <label htmlFor="checkIn" className="block text-sm font-medium text-gray-700">Check-in date</label>
+          <label htmlFor="checkIn" className="block text-sm font-medium text-gray-700">
+            Check-in date
+          </label>
           <div className="relative mt-1 rounded-md shadow-sm">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <CalendarIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -54,7 +70,9 @@ const RoomSearch = () => {
           </div>
         </div>
         <div>
-          <label htmlFor="checkOut" className="block text-sm font-medium text-gray-700">Check-out date</label>
+          <label htmlFor="checkOut" className="block text-sm font-medium text-gray-700">
+            Check-out date
+          </label>
           <div className="relative mt-1 rounded-md shadow-sm">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <CalendarIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -69,7 +87,9 @@ const RoomSearch = () => {
           </div>
         </div>
         <div>
-          <label htmlFor="guestCount" className="block text-sm font-medium text-gray-700">Guests</label>
+          <label htmlFor="guestCount" className="block text-sm font-medium text-gray-700">
+            Guests
+          </label>
           <div className="relative mt-1 rounded-md shadow-sm">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <UsersIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -92,6 +112,8 @@ const RoomSearch = () => {
         >
           Search
         </button>
+        {loading && <p className="mt-2 text-sm text-gray-500">Loading...</p>}
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       </div>
     </div>
   );

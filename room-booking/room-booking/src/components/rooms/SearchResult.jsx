@@ -1,55 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
-import searchRooms from '../../services/searchServices';
-
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
 
 const SearchResults = () => {
-  const query = useQuery();
-  const [rooms, setRooms] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchRooms = async () => {
-      setLoading(true);
-      setError(null);
-      const searchParams = {
-        search: query.get('search'),
-        check_in: query.get('check_in'),
-        check_out: query.get('check_out'),
-        guest_count: query.get('guest_count'),
-      };
-      try {
-        const data = await searchRooms(searchParams);
-        setRooms(data);
-      } catch (error) {
-        setError('No rooms found.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRooms();
-  }, [query]);
+  const location = useLocation();
+  const { rooms } = location.state || { rooms: [] };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h2 className="text-lg font-semibold mb-2">Search Results:</h2>
-      {loading && <p className="text-sm text-gray-500">Loading...</p>}
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      {rooms.length > 0 ? (
-        rooms.map((room) => (
-          <div key={room.id} className="border border-gray-200 rounded p-4 mb-4">
-            <h3 className="text-xl font-semibold">{room.name}</h3>
-            <p className="text-gray-600">{room.description}</p>
-            <p className="text-gray-600">Price: ${room.price_per_night} per night</p>
-          </div>
-        ))
-      ) : (
-        <p className="text-sm text-gray-500">No rooms found.</p>
-      )}
+    <div className="max-w-6xl mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-4">Search Results</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {rooms.length > 0 ? (
+          rooms.map((room) => (
+            <div key={room.id} className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+              <img
+                src={room.image}
+                alt={room.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold mb-2">{room.name}</h3>
+                <p className="text-gray-600 mb-2">{room.description}</p>
+                <p className="text-gray-800 font-bold">Price: ${room.price_per_night} per night</p>
+                <div className="mt-2 flex items-center space-x-2">
+                  <span className="text-gray-600">⭐ {room.rating}</span>
+                  <span className="text-gray-600">{room.reviews} reviews</span>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No rooms found.</p>
+        )}
+      </div>
     </div>
   );
 };
