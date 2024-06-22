@@ -14,6 +14,8 @@ export const searchRooms = async (serachParams) =>{
     } catch (error) {
         console.log('error fetching from bg',error);
         throw error;
+    }finally{
+        console.log('finally block executed');
     }
 };
 export default searchRooms;
