@@ -6,7 +6,7 @@ const topRatedRoomsService = async ()=>{
         return response.data
     } catch (error) {
         console.log('====================================');
-        console.log('error is ',error);
+        console.log('error are ............',error);
         console.log('====================================');
     }
 }
