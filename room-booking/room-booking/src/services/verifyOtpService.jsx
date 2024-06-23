@@ -8,7 +8,7 @@ export const verifyOtp = async (phoneNumber, otp) => {
     console.log("OTP verification successful:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Failed to verify OTP:", error);
+    console.error("Failed to verify OTP: Error is :", error);
     throw error;
   }
 };
