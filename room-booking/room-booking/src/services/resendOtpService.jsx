@@ -1,5 +1,7 @@
 import instance from "../utils/Axiox";
 export const resendOtp = async (phoneNumber) => {
+    //This service file for re-sent otp
+
   try {
     const response = await instance.post("accounts/resend-otp/", {
       phone_number: phoneNumber,
