@@ -1,6 +1,7 @@
 import instance from "../utils/Axiox";
 
 export const sendOtp = async (phoneNumber) => {
+  //This service file for sent otp
     {console.log('====================================');
     console.log('phone number form ',phoneNumber);
     console.log('====================================');}

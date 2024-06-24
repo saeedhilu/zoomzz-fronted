@@ -3,6 +3,8 @@ import instance from "../utils/Axiox";
 
 
 export const searchRooms = async (serachParams) =>{
+      //This service file for search rooms
+
     try {
         const params = new URLSearchParams(serachParams).toString();
         {console.log('param are   :',params);}

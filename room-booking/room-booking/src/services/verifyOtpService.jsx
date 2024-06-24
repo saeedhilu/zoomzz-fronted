@@ -1,5 +1,7 @@
 import instance from "../utils/Axiox";
 export const verifyOtp = async (phoneNumber, otp) => {
+  // This service file for verifying otp
+
   try {
     const response = await instance.post("accounts/verify-ph-otp/", {
       otp: otp,
