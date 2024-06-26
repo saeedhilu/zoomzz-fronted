@@ -23,6 +23,9 @@ const RoomSearch = () => {
     };
     try {
       const data = await searchRooms(searchParams);
+      {console.log('====================================');
+      console.log('data is ...............',data);
+      console.log('====================================');}
       navigate('/search-results', { state: { rooms: data } });
     } catch (error) {
       setError('No rooms found.');

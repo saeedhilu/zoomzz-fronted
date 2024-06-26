@@ -26,10 +26,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'
 import Signin from './pages/Signin'
-import SearchResults from './components/rooms/SearchResult';
-import RoomSearch from './components/layout/SearchBar';
+import SearchResults from './pages/SearchResult';
+import ReservationStatusListPage from './pages/ReservationsStatusPage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
+import RoomDetail from './pages/RoomDetails';
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 function App() {
@@ -39,8 +39,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/search" element={<RoomSearch />} />
           <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/reservations-status" element={<ReservationStatusListPage />} />
+          <Route path="/room-details/:roomId" element={<RoomDetail />} />
         </Routes>
       </Router>
     </GoogleOAuthProvider>

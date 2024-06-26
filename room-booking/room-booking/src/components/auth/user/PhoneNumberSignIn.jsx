@@ -133,7 +133,7 @@ const PhoneNumberSignIn = () => {
         {!otpSent ? (
           <button
             onClick={handleOtpSending}
-            className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2"
+            className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2  hover:bg-slate-600"
             disabled={loading}
           >
             {loading ? <CircularProgress size={24} /> : "Continue"}
@@ -142,14 +142,14 @@ const PhoneNumberSignIn = () => {
           <div>
             <button
               onClick={handleOtpVerification}
-              className="w-full bg-green-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2"
+              className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2  hover:bg-slate-600"
               disabled={loading}
             >
               {loading ? <CircularProgress size={24} /> : "Verify OTP"}
             </button>
             <button
               onClick={handleResendOtp}
-              className="w-full bg-yellow-500 text-white py-2 px-4 rounded-md mt-2 flex justify-center items-center"
+              className="w-full bg-gray-500 text-white py-2 px-4 rounded-md mt-2 flex justify-center items-center  hover:bg-slate-600"
               disabled={loading}
             >
               {loading ? <CircularProgress size={24} /> : "Resend OTP"}
@@ -162,7 +162,7 @@ const PhoneNumberSignIn = () => {
             <span className="px-3 text-gray-500">Or Continue With</span>
             <span className="h-px w-12 bg-gray-300"></span>
           </div>
-          <button className="w-full text-black py-2 px-4 rounded-md flex justify-center items-center mt-2">
+          <button className="w-full text-black py-2 px-4 flex justify-center items-center mt-2">
             <FaGoogle className="mr-2" /> <GoogleSignIn/>
           </button>
         </div>
