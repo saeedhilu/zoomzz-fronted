@@ -2,9 +2,8 @@
 
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { renderStars } from "../utils/ratingStar"; // Assuming your utility function is correctly imported
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
-
+import { renderStars } from "../utils/ratingStar"; 
+import { Link } from "react-router-dom"; 
 const SearchResults = () => {
   const location = useLocation();
   const { rooms } = location.state || { rooms: [] };
