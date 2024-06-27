@@ -22,7 +22,7 @@ const ImageGallery = ({ mainImage, otherImages }) => {
             ))}
             {otherImages.length > 2 && (
               <div
-                className="w-full h-32 bg-gray-200 flex items-center justify-center text-gray-500 text-lg cursor-pointer"
+                className="w-full h-32 bg-gray-200 flex items-center justify-center text-gray-400 text-lg cursor-pointer"
                 onClick={handleShowAllClick}
               >
                 +{otherImages.length - 2} More Photos
