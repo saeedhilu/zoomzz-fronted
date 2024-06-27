@@ -31,7 +31,7 @@ const ImageGallery = ({ mainImage, otherImages }) => {
           </div>
         </>
       ) : (
-        <div className="w-full mt-4">
+        <div className="w-full mt-5">
           <Carousel showThumbs={false} dynamicHeight={true} infiniteLoop={true} useKeyboardArrows={true}>
             {[mainImage, ...otherImages].map((image, index) => (
               <div key={index}>
