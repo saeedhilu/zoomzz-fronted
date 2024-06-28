@@ -57,10 +57,10 @@ const RoomDetail = () => {
             />
           </div>
         </div>
-        <div className="w-1/3 pl-8">
+        <div className="w-1/3  mt-4">
           <BookingInfo room={room} />
         </div>
-        p-6
+        
       </div>
     </div>
   );
