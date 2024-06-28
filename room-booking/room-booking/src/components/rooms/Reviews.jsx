@@ -33,8 +33,8 @@ const Reviews = ({ reviews, averageRating }) => {
                 {renderStars(review.rating)}
                 <span className="ml-2">{review.rating}</span>
               </div>
-              <p className="text-gray-600">{review.feedback}</p>
-              <p className="text-gray-500 text-sm">Reviewed on {formatDate(review.created_at)}</p>
+              <p className="text-gray-600 font-medium">{review.feedback}</p>
+              <p className="text-gray-500 text-sm font-medium">Reviewed on {formatDate(review.created_at)}</p>
             </div>
           </div>
         ))}

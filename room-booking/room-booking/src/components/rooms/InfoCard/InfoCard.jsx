@@ -1,17 +1,15 @@
-import React  from "react";
-import { faPaw,faUser, faMapMarkerAlt,faBuilding } from '@fortawesome/free-solid-svg-icons'; // Import the pet and location icons
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
-const infoCard=({icon,description})=>{
-    <div>
-        <div className="info-card">
-            <div className="info-card-icon">
-            <FontAwesomeIcon icon={icon}  className="text-2xl text-gray-600"  />
-
-                
-            </div>
-            <p>{description}</p>
-        </div>
+const InfoCard = ({ icon, description }) => {
+  return (
+    <div className="bg-slate-100 p-4 shadow-lg rounded-sm ">
+      <div className="info-card-icon flex justify-center mb-4">
+        <FontAwesomeIcon icon={icon} className="text-2xl text-gray-600" />
+      </div>
+      <p className="font-semibold">{description}</p>
     </div>
-}
-export default infoCard
+  );
+};
+
+export default InfoCard;

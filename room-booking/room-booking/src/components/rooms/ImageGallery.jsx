@@ -4,6 +4,8 @@ import React, { useState } from "react";
 const ImageGallery = ({ mainImage, otherImages }) => {
   const [currentMainImage, setCurrentMainImage] = useState(mainImage);
   const [showAll, setShowAll] = useState(false);
+  const ExtraimageCount = otherImages.length-2
+  
   const handleImageClick = (image) => {
     setCurrentMainImage(image);
   };
@@ -13,7 +15,7 @@ const ImageGallery = ({ mainImage, otherImages }) => {
   const imageShowingCount = showAll ? otherImages.lenght : 2;
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 ">
       <div className="w-full">
         <img
           src={currentMainImage}
@@ -38,7 +40,7 @@ const ImageGallery = ({ mainImage, otherImages }) => {
             ""
           ) : (
             <div className="flex">
-              <button onClick={moreImageHandler} className="p-2 bg-gray-200 rounded-md " >MoreImage+</button>
+              <button onClick={moreImageHandler} className="p-2 bg-gray-100 rounded-md shadow-md w-24 font-bold " >+{ExtraimageCount} <p className="font-thin">More Photos</p> </button>
             </div>
           )}
         </div>
