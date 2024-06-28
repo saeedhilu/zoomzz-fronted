@@ -1,46 +1,48 @@
-import React, { useState } from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import React, { useState } from "react";
+
 
 const ImageGallery = ({ mainImage, otherImages }) => {
+  const [currentMainImage, setCurrentMainImage] = useState(mainImage);
   const [showAll, setShowAll] = useState(false);
-
-  const handleShowAllClick = () => {
+  const handleImageClick = (image) => {
+    setCurrentMainImage(image);
+  };
+  const moreImageHandler = () => {
     setShowAll(true);
   };
+  const imageShowingCount = showAll ? otherImages.lenght : 2;
 
   return (
     <div className="flex flex-wrap gap-4">
-      {!showAll ? (
-        <>
-          <div className="w-1/2">
-            <img src={mainImage} alt="Main" className="w-full h-64 object-cover" />
-          </div>
-          <div className="w-1/2 flex flex-col gap-4">
-            {otherImages.slice(0, 2).map((image, index) => (
-              <img key={index} src={image} alt={`Other ${index + 1}`} className="w-full h-32 object-cover" />
-            ))}
-            {otherImages.length > 2 && (
-              <div
-                className="w-full h-32 bg-gray-200 flex items-center justify-center text-gray-400 text-lg cursor-pointer"
-                onClick={handleShowAllClick}
-              >
-                +{otherImages.length - 2} More Photos
-              </div>
-            )}
-          </div>
-        </>
-      ) : (
-        <div className="w-full mt-3">
-          <Carousel showThumbs={false} dynamicHeight={true} infiniteLoop={true} useKeyboardArrows={true}>
-            {[mainImage, ...otherImages].map((image, index) => (
-              <div key={index}>
-                <img src={image} alt={`Carousel ${index + 1}`} className="w-full h-64 object-cover" />
-              </div>
-            ))}
-          </Carousel>
+      <div className="w-full">
+        <img
+          src={currentMainImage}
+          alt="Main"
+          className="w-full h-64 object-cover cursor-pointer"
+          onClick={() => handleImageClick(mainImage)}
+        />
+      </div>
+      <div className="flex gap-4">
+        <div className="flex  gap-4">
+          {otherImages.slice(0, imageShowingCount).map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt={`Other ${index + 1}`}
+              className={`w-1/5 h-24 object-cover cursor-pointer transition-opacity duration-100 ${showAll ? 'opacity-100' : 'opacity-90'}`}
+              onClick={() => handleImageClick(image)}
+            />
+          ))}
+
+          {showAll ? (
+            ""
+          ) : (
+            <div className="flex">
+              <button onClick={moreImageHandler} className="p-2 bg-gray-200 rounded-md " >MoreImage+</button>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import ImageGallery from "./ImageGallery";
 import RoomInfo from "./RoomInfo";
 import Amenities from "./Amenities";
 import Reviews from "./Reviews";
-import BookingInfo from "./BookingInfo";
+import BookingInfo from "./BookingInfo/BookingInfo";
 
 const RoomDetail = () => {
   const { roomId } = useParams();

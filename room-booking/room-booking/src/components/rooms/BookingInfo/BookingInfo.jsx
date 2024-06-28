@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderStars } from "../../utils/ratingStar"; // Adjust import according to your project structure
+import { renderStars } from "../../../utils/ratingStar"; // Adjust import according to your project structure
 
 const BookingInfo = ({ room }) => (
   <div className="border border-gray-200 p-4 rounded-lg shadow-sm">
