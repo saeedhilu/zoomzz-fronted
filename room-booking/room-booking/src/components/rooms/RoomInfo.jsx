@@ -1,7 +1,10 @@
 import React from 'react';
 import RoomCategory from './RoomCategory';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaw,faUser, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'; // Import the pet and location icons
+import { faPaw,faUser, faMapMarkerAlt, faBuilding } from '@fortawesome/free-solid-svg-icons'; // Import the pet and location icons
+import infoCard from './InfoCard/InfoCard';
+
+
 
 const RoomInfo = ({ room }) => (
   <div className="p-6 ">
@@ -10,18 +13,13 @@ const RoomInfo = ({ room }) => (
       <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2 "  />
       {room.location.country}, {room.location.city}, {room.location.name}
     </p>
-    <div className="flex items-center space-x-4 mt-4">
-      <RoomCategory category={room.category} />
-      <p className="bg-gray-100 h-24 rounded-md w-32 shadow-lg text-center flex flex-col font-medium items-center justify-center text-gray-800 ">
-      <FontAwesomeIcon icon={faUser} className="mr-2" size='2x text-gray-600' />
-        <h2 className="mt-3 text-xl font-semibold text-center">{room.max_occupancy} Guests</h2>
-      </p>
-      <p className="bg-gray-100 h-24 shadow-lg  rounded-md w-32 h text-center flex flex-col font-medium items-center justify-center text-gray-800">
-        <FontAwesomeIcon icon={faPaw}  className="text-2xl text-gray-600"  />
-        <h2 className="mt-3 text-xl font-semibold text-center">{room.pet_allowed ? 'Pet Allowed' : 'No Pets Allowed'}</h2>
-        
-      </p>
-    </div>
+  
+    <infoCard icon={faUser}  description={`${room.max_occupancy} Guests`}/>
+    <infoCard icon={faBuilding}  description={room.category.name} />
+    <infoCard icon={faPaw}  description={room.pet_allowed ? 'Pets Allowed' : 'No Pets Allowed'}/>
+
+
+    
     <p className="mt-4 text-gray-700 leading-relaxed">{room.description}</p>
   </div>
 );
