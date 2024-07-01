@@ -1,0 +1,19 @@
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.inRange {
+    background-color: #4a90e2 !important;
+    border-color: #000000 !important;
+    color: white !important;
+}
+
+.flatpickr-day.selected {
+    background-color: #9e9e9e !important;
+}
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background-color: #3c3737 !important;
+}
+.flatpickr-day.inRange {
+  background-color: #a7a7a7 !important;
+}

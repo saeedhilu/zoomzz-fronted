@@ -1,19 +1,31 @@
-// src/components/booking/BookingForm.js
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import InputField from '../common/InputField';
+import InputField from '../common/inputField';
 import useGuestCount from '../../hooks/useGuestCount';
+import BookingInfo from '../rooms/BookingInfo/BookingInfo';
 
 const BookingForm = () => {
   const location = useLocation();
   const bookingDetails = location.state;
-  const { guests: initialGuests, checkInDate, checkOutDate, max_occupancy } = bookingDetails;
+  const {room, guests: initialGuests, checkInDate, checkOutDate, maxOccupancy } = bookingDetails;
+  console.log('====================================');
+  console.log('room ifrom ihetslaln:',room);
+  console.log('====================================');
 
-  const { guests, error, handleGuestCount } = useGuestCount(initialGuests, max_occupancy);
+ 
+  const { guests, error, handleGuestCount } = useGuestCount(initialGuests, maxOccupancy);
 
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [checkinDate, setCheckInDate] = useState(checkInDate || '');
+
+
+ 
+
+  const [checkoutDate, setCheckoutDate] = useState(checkOutDate || '');
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,14 +34,13 @@ const BookingForm = () => {
       email,
       phoneNumber,
       guests,
-      checkInDate,
-      checkOutDate,
+      checkinDate,
+      checkoutDate,
     });
-    // Add further logic here, e.g., API call or state update
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md flex">
       <h2 className="text-2xl font-semibold mb-4">Personal Details</h2>
       <form onSubmit={handleSubmit}>
         <InputField
@@ -68,15 +79,15 @@ const BookingForm = () => {
           label="Check-in Date"
           id="checkInDate"
           type="date"
-          value={checkInDate || ''}
-          readOnly
+          value={checkinDate}
+          onChange={(e) => setCheckInDate(e.target.value)}
         />
         <InputField
           label="Check-out Date"
           id="checkOutDate"
           type="date"
-          value={checkOutDate || ''}
-          readOnly
+          value={checkoutDate}
+          onChange={(e) => setCheckoutDate(e.target.value)}
         />
         {error && <p className="text-red-500">{error}</p>}
         <button
@@ -86,6 +97,10 @@ const BookingForm = () => {
           Continue
         </button>
       </form>
+
+      <div>
+        <BookingInfo room={room}/>
+      </div>
     </div>
   );
 };

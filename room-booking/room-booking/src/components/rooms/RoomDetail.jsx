@@ -39,6 +39,9 @@ const RoomDetail = () => {
   if (!room) {
     return <div>No room details available.</div>;
   }
+  {console.log('====================================');
+  console.log('liyaskygdfgklasdbgioklsdbgkdbdkbn',room);
+  console.log('====================================');}
 
   return (
     <div className="max-w-7xl mx-auto ">

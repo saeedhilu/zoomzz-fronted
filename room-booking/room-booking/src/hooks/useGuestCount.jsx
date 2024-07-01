@@ -7,7 +7,7 @@ const useGuestCount = (initialGuests, maxOccupancy) => {
 
   const handleGuestCount = (e) => {
     const count = parseInt(e.target.value, 10);
-
+   
     if (count > maxOccupancy) {
       setError(`Maximum occupancy is ${maxOccupancy}`);
     } else {
@@ -16,7 +16,9 @@ const useGuestCount = (initialGuests, maxOccupancy) => {
     }
   };
 
+    {console.log(guests);}
   return {
+
     guests,
     error,
     handleGuestCount,
