@@ -57,7 +57,7 @@ const RoomDetail = () => {
             />
           </div>
         </div>
-        <div className="w-1/3  mt-4">
+        <div className="w-1/3  mt-4 fixed top-0 right-4">
           <BookingInfo room={room} />
         </div>
         

@@ -7,9 +7,7 @@ import { Link } from "react-router-dom";
 const SearchResults = () => {
   const location = useLocation();
   const { rooms } = location.state || { rooms: [] };
-  {
-    console.log(";oasdhgosdghu sdgb", rooms);
-  }
+  
 
   
   return (
