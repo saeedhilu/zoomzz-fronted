@@ -4,7 +4,7 @@ import {
   faPaw,
   faUser,
   faMapMarkerAlt,
-} from "@fortawesome/free-solid-svg-icons"; // Import the pet and location icons
+} from "@fortawesome/free-solid-svg-icons"; 
 import InfoCard from "./InfoCard/InfoCard";
 import RoomCategory from './RoomCategory'
 

@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 import instance from "../../../utils/Axiox";
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const GoogleSignIn = () => {
+  const navigate = useNavigate();
+
   const handleSuccess = async (credentialResponse) => {
     const accessToken = credentialResponse.credential;
     try {
@@ -13,7 +16,7 @@ const GoogleSignIn = () => {
         access_token: accessToken,
       });
       console.log("Backend response:", response.data);
-      // Handle the response from the backend as needed
+      navigate("/");
     } catch (error) {
       console.error("Error sending access token to backend:", error);
     }

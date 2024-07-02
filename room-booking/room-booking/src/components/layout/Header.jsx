@@ -3,10 +3,10 @@ import { VscAccount } from "react-icons/vsc";
 import SearchBar from '../layout/SearchBar';
 
 const Header = ({ websiteName, userLogoUrl }) => {
-  const bgImage = 'https://images.pexels.com/photos/963486/pexels-photo-963486.jpeg?auto=compress&cs=tinysrgb&w=600';
+  const bgImage = 'https://www.wakefit.co/guides/wp-content/uploads/2021/10/Modern-room-Banner.jpg';
 
   return (
-    <header className="relative bg-cover bg-center h-screen" style={{ backgroundImage: `url(${bgImage})` }}>
+    <header className="relative bg-cover bg-center h-96  " style={{ backgroundImage: `url(${bgImage})` }}>
       <div className="container mx-auto flex  sm:flex-row items-center justify-between py-6 px-4 sm:px-8">
         <div className="flex items-center space-x-4">
           <h1 className="text-3xl font-bold text-white">{websiteName}</h1>
@@ -21,9 +21,9 @@ const Header = ({ websiteName, userLogoUrl }) => {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-10 w-full px-4">
+      <div className="absolute  w-full px-4 bottom-14 ">
         <div className="max-w-4xl mx-auto">
-          <SearchBar locations={[{ id: 1, name: 'New York' }, { id: 2, name: 'Los Angeles' }]} />
+          <SearchBar />
         </div>
       </div>
     </header>

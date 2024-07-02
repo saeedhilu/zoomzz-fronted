@@ -1,10 +1,8 @@
-// components/TopRatedRooms.js
-
 import React, { useState, useEffect } from "react";
 import topRatedRoomsService from "../../services/topRatedRoomsService";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faStarHalfAlt, faStar as faStarEmpty } from '@fortawesome/free-solid-svg-icons';
-import { renderStars } from "../../utils/ratingStar"; 
+import { renderStars } from "../../utils/ratingStar";
 
 const TopRatedRooms = () => {
   const [topRatedRooms, setTopRatedRooms] = useState([]);
@@ -14,9 +12,9 @@ const TopRatedRooms = () => {
     const fetchTopRatedRooms = async () => {
       try {
         const data = await topRatedRoomsService();
-        {console.log('====================================');
+        console.log('====================================');
         console.log(data);
-        console.log('====================================');}
+        console.log('====================================');
         setTopRatedRooms(data);
         setLoading(false);
       } catch (error) {
@@ -30,8 +28,12 @@ const TopRatedRooms = () => {
   console.log("Top Rated Rooms:", topRatedRooms);
 
   return (
-    <div className="container mx-auto py-8">
-      <h2 className="text-3xl font-semibold mb-4 ml-6">Top Rated Rooms</h2>
+    <div className="container mx-auto">
+      <h2 className="text-3xl font-semibold mb-4 ml-6 relative inline-block">
+        Top Rated Rooms
+        <span className="absolute bottom-0 top-11 left-0 w-full h-1  bg-gray-500"></span>
+      </h2>
+      
       {loading ? (
         <p>Loading...</p>
       ) : (

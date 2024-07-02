@@ -32,7 +32,7 @@ const ReservationStatusList = ({ currentTab }) => {
       }
 
       const data = await response.json();
-      setReservationStatus(data);
+      setReservationStatus('data');
     } catch (error) {
       setError(`Error fetching reservations: ${error.message}`);
       console.error("Fetch Error:", error);
@@ -49,9 +49,7 @@ const ReservationStatusList = ({ currentTab }) => {
     return <div className="text-center text-gray-500">Loading...</div>;
   }
 
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
-  }
+  
 
   if (reservationStatus.length === 0) {
     return <div className="text-center text-gray-500">No reservations available.</div>;

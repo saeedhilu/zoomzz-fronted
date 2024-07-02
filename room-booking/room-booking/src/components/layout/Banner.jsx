@@ -1,20 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import getBanner from "../../services/Banner";
 
-const Banner = ({ bannerImage, title, buttontext, onclickButton }) => {
+const Banner = () => {
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const bannerData = await getBanner();
+        setBanners(bannerData);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center my-4">Loading banners...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500 my-4">Error: {error}</p>;
+  }
+
   return (
-    <div
-      className="banner bg-cover w-full h-[90vw] md:h-screen bg-center flex items-center p-10"
-      style={{ backgroundImage: `url(${bannerImage})` }}
-    >
-      <div>
-        <h1 className="text-white text-5xl">{title}</h1>
-        <button
-          className="bg-gray-700 rounded-full p-4 mt-20 hover:bg-gray-900 text-white text-xl"
-          onClick={onclickButton}
-        >
-          {buttontext}
-        </button>
-      </div>
+    <div className="container mx-auto mt-20 ">
+      {banners.map((banner) => (
+        <div key={banner.id} className="relative flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-xl my-6">
+          <div className="md:w-1/2 p-8 relative z-10">
+            <h3 className="text-3xl md:text-4xl font-bold text-gray-600 mb-4">{banner.title}</h3>
+            <p className="text-gray-700 mb-6">{banner.banner_content}</p>
+            <button className="bg-gray-500 text-white px-6 py-2 rounded-full">{banner.button_text}</button>
+          </div>
+          <div className="md:w-1/2 relative">
+            <img className="w-full h-64 md:h-full object-cover" src={banner.image_url} alt={banner.title} />
+            <div className="absolute inset-0 flex justify-center items-center">
+              <div className="h-full w-full bg-gradient-to-r from-white to-transparent"></div>
+            </div>
+          </div>
+          <div className="absolute inset-0 flex justify-center items-center">
+            <div className="h-full w-1/2 bg-red md:hidden sm:hidden"></div>
+          </div>
+          <div className="absolute inset-0 flex justify-center items-center">
+            <div className="h-full w-1/2 hidden md:block" style={{ backgroundImage: 'url("/path-to-your-decorative-elements.png")', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundSize: 'contain' }}></div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

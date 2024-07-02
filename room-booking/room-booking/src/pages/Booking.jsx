@@ -3,7 +3,7 @@ import BookingForm from "../components/booking/BookingForm";
 
 const Booking = () => {
   return (
-    <div className="booking w-1/4">
+    <div className="booking  ">
       <BookingForm/>
     </div>
   );

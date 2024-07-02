@@ -9,12 +9,10 @@ import useGuestCount from "../../../hooks/useGuestCount";
 import "../../../style/flatpickr-custom.css";
 
 const BookingInfo = ({ room }) => {
-
-
   const {
     name,
     image,
-    location: { city, name: locationName },
+    location: { city, name: locationCity },
     price_per_night: pricePerNight,
     user_feedbacks: userFeedbacks,
     max_occupancy: maxOccupancy,
@@ -23,15 +21,15 @@ const BookingInfo = ({ room }) => {
 
   const [dateRange, setDateRange] = useState([null, null]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const { guests, error, handleGuestCount } = useGuestCount(1, maxOccupancy);
+  const { guests, error: guestError, handleGuestCount } = useGuestCount(1, maxOccupancy);
   const navigate = useNavigate();
 
   const formatDate = (date) => {
-    if (!date) return '';
+    if (!date) return "";
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
@@ -71,21 +69,19 @@ const BookingInfo = ({ room }) => {
       : 0;
 
   return (
-    <div className="border border-gray-200 p-4 rounded-lg shadow-md ">
+    <div className="border border-gray-200 p-4 rounded-lg shadow-md">
       <div className="flex">
         <img src={image} alt={name} className="w-1/3 rounded-md" />
         <div className="p-2">
           <h2 className="text-lg font-semibold">{name}</h2>
           <p className="text-gray-600 flex items-center font-normal">
-            <FontAwesomeIcon
-              icon={faMapMarkerAlt}
-              className="text-gray-500 mr-2"
-            />
-            {city}, {locationName}
+            <FontAwesomeIcon icon={faMapMarkerAlt} className="text-gray-500 mr-2" />
+            {city}, {locationCity}
           </p>
-          <div className="flex items-center space-x-2 mb-4">
+          <div className="flex items-center mb-4">
             {renderStars(averageRating)}
-            <span>({userFeedbacks.length} Reviews)</span>
+            <span className="hidden sm:block">({userFeedbacks.length} Reviews)</span>
+            <p className="block sm:hidden">({userFeedbacks.length} Reviews)</p>
           </div>
         </div>
       </div>
@@ -99,6 +95,7 @@ const BookingInfo = ({ room }) => {
               value={dateRange}
               onChange={(dates) => setDateRange(dates)}
               options={{ mode: "range", dateFormat: "Y-m-d" }}
+              aria-label="Select Dates"
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-500" />
@@ -114,29 +111,30 @@ const BookingInfo = ({ room }) => {
             onChange={handleGuestCount}
             min="1"
             max={maxOccupancy}
+            aria-label="Number of Guests"
           />
           <div className="h-5">
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {guestError && <p className="text-red-500 text-sm">{guestError}</p>}
           </div>
         </div>
       </div>
       <hr />
-      <div className="booking ">
-        <div className="flex items-center p-4  justify-between ">
-          <h4>Price Per Night </h4>
-          <p className="  text-red-500">: ₹ {pricePerNight}</p>
+      <div className="booking">
+        <div className="flex items-center p-4 justify-between">
+          <h4>Price Per Night</h4>
+          <p className="text-red-500">: ₹ {pricePerNight}</p>
         </div>
 
-        <div className="items-center p-4  ">
+        <div className="items-center p-4">
           {dateRange[0] && dateRange[1] ? (
             <div className="flex justify-between">
-              Total : {days} Night{days !== 1 && "s"} X {pricePerNight}
+              Total: {days} Night{days !== 1 && "s"} X {pricePerNight}
               {guests !== 1 && "s"}
-              <p className=" text-red-500">: ₹ {totalPrice}</p>
+              <p className="text-red-500">: ₹ {totalPrice}</p>
             </div>
           ) : (
             <div className="flex justify-between">
-              <p className="">Select dates</p>
+              <p>Select dates</p>
               <p>----</p>
             </div>
           )}
@@ -144,11 +142,13 @@ const BookingInfo = ({ room }) => {
       </div>
 
       <button
-        className="bg-black text-white w-full mt-5 py-2 rounded"
-        onClick={handleBooking}
-      >
-        Book Now
-      </button>
+  className={`bg-gray-500 text-white w-full mt-5 py-2 hover:bg-gray-700 rounded ${(!dateRange[0] || !dateRange[1] || guests < 1 || guests > maxOccupancy) ? 'opacity-50 cursor-not-allowed' : ''}`}
+  onClick={handleBooking}
+  disabled={!dateRange[0] || !dateRange[1] || guests < 1 || guests > maxOccupancy}
+>
+  Book Now
+</button>
+
     </div>
   );
 };
