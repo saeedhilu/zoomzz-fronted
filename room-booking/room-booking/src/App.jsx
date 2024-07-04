@@ -40,7 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/room-list" element={<SearchResults />} />
           <Route path="/reservations-status" element={<ReservationStatusListPage />} />
           <Route path="/room-details/:roomId" element={<RoomDetail />} />
           <Route path="/booking" element={<Booking/>} />

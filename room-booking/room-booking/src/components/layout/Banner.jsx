@@ -41,14 +41,13 @@ const Banner = () => {
           <div className="md:w-1/2 relative">
             <img className="w-full h-64 md:h-full object-cover" src={banner.image_url} alt={banner.title} />
             <div className="absolute inset-0 flex justify-center items-center">
-              <div className="h-full w-full bg-gradient-to-r from-white to-transparent"></div>
+              <div className="h-full w-full bg-gradient-to-r sm:from-white to-transparent"></div>
             </div>
           </div>
           <div className="absolute inset-0 flex justify-center items-center">
             <div className="h-full w-1/2 bg-red md:hidden sm:hidden"></div>
           </div>
           <div className="absolute inset-0 flex justify-center items-center">
-            <div className="h-full w-1/2 hidden md:block" style={{ backgroundImage: 'url("/path-to-your-decorative-elements.png")', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundSize: 'contain' }}></div>
           </div>
         </div>
       ))}
