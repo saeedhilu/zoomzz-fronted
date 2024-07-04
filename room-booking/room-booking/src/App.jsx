@@ -26,7 +26,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'
 import Signin from './pages/Signin'
-import SearchResults from './pages/SearchResult';
+import RoomListPage from './pages/RoomListPage';
 import ReservationStatusListPage from './pages/ReservationsStatusPage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import RoomDetail from './pages/RoomDetails';
@@ -40,7 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/room-list" element={<SearchResults />} />
+          <Route path="/room-list" element={<RoomListPage />} />
           <Route path="/reservations-status" element={<ReservationStatusListPage />} />
           <Route path="/room-details/:roomId" element={<RoomDetail />} />
           <Route path="/booking" element={<Booking/>} />
