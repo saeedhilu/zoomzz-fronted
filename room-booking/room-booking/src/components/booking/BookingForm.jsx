@@ -36,7 +36,7 @@ const BookingForm = () => {
         <h3 className="text-xl font-semibold">{room.name}</h3>
         <p className="text-gray-600 mb-2">{room.location.city}, {room.location.name}</p>
         <div className="flex items-center mb-4">
-          <span className="text-yellow-500">{renderStars(room.average_rating)}</span>
+          <span className="text-gray-500">{renderStars(room.average_rating)}</span>
           <span className="ml-2 text-gray-600">({room.user_feedbacks.length} Reviews)</span>
         </div>
         <p className="text-lg font-bold mb-4">Price per night: ₹{room.price_per_night}</p>
