@@ -1,6 +1,6 @@
-
-// This main axios file
+// axiosInstance.js
 import axios from 'axios';
+import { store } from '../redux/store'; 
 
 const instance = axios.create({
   baseURL: 'http://localhost:8000/',
@@ -10,7 +10,12 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const state = store.getState();
+    const token = state.auth.accessToken; 
+    
+    console.log('====================================');
+    console.log('access token from axions filoe ',token);
+    console.log('====================================');
     if (token) {
       config.headers['Authorization'] = 'Bearer ' + token;
     }
@@ -20,5 +25,6 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 export default instance;

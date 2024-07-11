@@ -3,14 +3,13 @@ import { CircularProgress } from "@mui/material";
 import { FaGoogle } from "react-icons/fa";
 import GoogleSignIn from "./GoogleSignIn";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux"; // Import useDispatch
+import { setUser } from "../../../redux/slices/authSlice"; // Import your action
 
 // Services files
 import sendOtp from "../../../services/sendOtpService";
 import resendOtp from "../../../services/resendOtpService";
 import verifyOtp from "../../../services/verifyOtpService";
-
-
-
 
 const PhoneNumberSignIn = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -19,6 +18,7 @@ const PhoneNumberSignIn = () => {
   const [error, setError] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch(); 
 
   const handlePhoneNumberChange = (event) => {
     setPhoneNumber(event.target.value);
@@ -33,18 +33,11 @@ const PhoneNumberSignIn = () => {
     }
   };
 
-  // handle key down 
-
-
   const handleKeyDown = (event, index) => {
     if (event.key === "Backspace" && index > 0 && !otp[index]) {
       document.getElementById(`otp-${index - 1}`).focus();
     }
   };
-
-
-
-  // for senting otp
 
   const handleOtpSending = async () => {
     if (!phoneNumber) {
@@ -64,10 +57,6 @@ const PhoneNumberSignIn = () => {
     }
   };
 
-
-
-  // For resending otp
-
   const handleResendOtp = async () => {
     setLoading(true);
     setError("");
@@ -80,20 +69,18 @@ const PhoneNumberSignIn = () => {
     }
   };
 
-
-
-  // handle  verification 
-
-
-
   const handleOtpVerification = async () => {
     setLoading(true);
     setError("");
     try {
-      await verifyOtp(phoneNumber, otp.join(""));
-      // alert('success');
+      const response = await verifyOtp(phoneNumber, otp.join(""));
+      console.log('response is :',response);
+      dispatch(setUser({
+        accessToken:response.access_token ,
+        refreshToken:response.refresh_token,
+        username : response.user.username || null,
+      })); 
       navigate("/"); 
-      
     } catch (error) {
       setError("Failed to verify OTP. Please try again.");
     } finally {
@@ -102,7 +89,7 @@ const PhoneNumberSignIn = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen  bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-md shadow-md max-w-sm w-full">
         <h2 className="text-center text-2xl font-semibold mb-4">Sign in</h2>
         <div className="mb-4">
@@ -154,7 +141,7 @@ const PhoneNumberSignIn = () => {
         {!otpSent ? (
           <button
             onClick={handleOtpSending}
-            className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2  hover:bg-slate-600"
+            className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2 hover:bg-slate-600"
             disabled={loading}
           >
             {loading ? <CircularProgress size={24} /> : "Continue"}
@@ -163,14 +150,14 @@ const PhoneNumberSignIn = () => {
           <div>
             <button
               onClick={handleOtpVerification}
-              className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2  hover:bg-slate-600"
+              className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2 hover:bg-slate-600"
               disabled={loading}
             >
               {loading ? <CircularProgress size={24} /> : "Verify OTP"}
             </button>
             <button
               onClick={handleResendOtp}
-              className="w-full bg-gray-500 text-white py-2 px-4 rounded-md mt-2 flex justify-center items-center  hover:bg-slate-600"
+              className="w-full bg-gray-500 text-white py-2 px-4 rounded-md mt-2 flex justify-center items-center hover:bg-slate-600"
               disabled={loading}
             >
               {loading ? <CircularProgress size={24} /> : "Resend OTP"}

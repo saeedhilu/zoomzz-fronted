@@ -20,7 +20,7 @@ const ImageGallery = ({ mainImage, otherImages }) => {
         <img
           src={currentMainImage}
           alt="Main"
-          className="w-full h-64 object-cover cursor-pointer"
+          className="w-full h-80 rounded-lg object-cover cursor-pointer"
           onClick={() => handleImageClick(mainImage)}
         />
       </div>

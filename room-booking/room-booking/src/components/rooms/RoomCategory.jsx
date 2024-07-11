@@ -5,7 +5,7 @@ const RoomCategory = ({ category }) => {
       <div className="img-div w-10 m-auto">
         <img src={category.image} alt="catogary image" />
       </div>
-      <h2 className="font-semibold">
+      <h2 className="font-semibold text-center">
         {category.name}
       </h2>
     </div>

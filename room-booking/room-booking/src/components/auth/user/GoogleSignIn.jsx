@@ -1,29 +1,40 @@
-import React, { useEffect } from "react";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
-import instance from "../../../utils/Axiox";
+import React from 'react';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {  setUser } from '../../../redux/slices/authSlice';
+import instance from '../../../utils/Axiox';
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const GoogleSignIn = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSuccess = async (credentialResponse) => {
     const accessToken = credentialResponse.credential;
     try {
-      console.log("Access Token:", accessToken);
-      const response = await instance.post("accounts/google/auth/", {
+      const response = await instance.post('accounts/google/auth/', {
         access_token: accessToken,
       });
-      console.log("Backend response:", response.data);
-      navigate("/");
+      console.log('response from google signin',response);
+
+      dispatch(setUser({
+        accessToken:response.access_token ,
+        refreshToken:response.refresh_token,
+        username : response.user.username || null,
+      }));  
+
+      
+
+      navigate('/');
     } catch (error) {
-      console.error("Error sending access token to backend:", error);
+      console.error('Error sending access token to backend:', error);
     }
   };
 
   const handleFailure = (error) => {
-    console.error("Google Sign-In failed:", error);
+    console.error('Google Sign-In failed:', error);
   };
 
   return (

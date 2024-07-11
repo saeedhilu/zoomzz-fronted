@@ -49,6 +49,7 @@ const BookingInfo = ({ room }) => {
       setTotalPrice(pricePerNight);
     }
   };
+  
 
   const handleBooking = () => {
     const bookingDetails = {
@@ -62,6 +63,7 @@ const BookingInfo = ({ room }) => {
     navigate("/booking", { state: bookingDetails });
   };
 
+  
   const days =
     dateRange[0] && dateRange[1]
       ? (new Date(dateRange[1]).getTime() - new Date(dateRange[0]).getTime()) /
@@ -71,7 +73,7 @@ const BookingInfo = ({ room }) => {
   return (
     <div className="border border-gray-200 p-4 rounded-lg shadow-md">
       <div className="flex">
-        <img src={image} alt={name} className="w-1/3 rounded-md" />
+        <img src={image} alt={name} className="w-1/3 object-cover h-28 rounded-md" />
         <div className="p-2">
           <h2 className="text-lg font-semibold">{name}</h2>
           <p className="text-gray-600 flex items-center font-normal">
@@ -94,7 +96,7 @@ const BookingInfo = ({ room }) => {
               className="border rounded-full w-full py-2 px-3 text-gray-700 pl-10"
               value={dateRange}
               onChange={(dates) => setDateRange(dates)}
-              options={{ mode: "range", dateFormat: "Y-m-d" }}
+              options={{ mode: "range", dateFormat: "Y-m-d" ,minDate:"today"}}
               aria-label="Select Dates"
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -142,12 +144,13 @@ const BookingInfo = ({ room }) => {
       </div>
 
       <button
-  className={`bg-gray-500 text-white w-full mt-5 py-2 hover:bg-gray-700 rounded ${(!dateRange[0] || !dateRange[1] || guests < 1 || guests > maxOccupancy) ? 'opacity-50 cursor-not-allowed' : ''}`}
-  onClick={handleBooking}
-  disabled={!dateRange[0] || !dateRange[1] || guests < 1 || guests > maxOccupancy}
->
-  Book Now
-</button>
+        className={`bg-gray-500 text-white w-full mt-5 py-2 hover:bg-gray-700 rounded ${(!dateRange[0] || !dateRange[1] || guests < 1 || guests > maxOccupancy) ? 'opacity-50 cursor-not-allowed' : ''}`}
+        onClick={handleBooking}
+        disabled={!dateRange[0] || !dateRange[1] || guests < 1 || guests > maxOccupancy}
+        title={!dateRange[0] || !dateRange[1] ? 'Please select valid dates to book.' : guests < 1 ? 'Please select at least one guest.' : guests > maxOccupancy ? `The maximum occupancy is ${maxOccupancy}.` : ''}
+      >
+        Book Now
+      </button>
 
     </div>
   );

@@ -1,10 +1,10 @@
 import instance from "../utils/Axiox";
 
-export const sendOtp = async (phoneNumber) => {
+export const UpdatesendOtp = async (phoneNumber) => {
   //This service file for sent otp
     
   try {
-    const response = await instance.post("accounts/generate-ph-otp/", {
+    const response = await instance.post("accounts/phone-number/update/", {
       phone_number: phoneNumber,
     });
     
@@ -14,4 +14,4 @@ export const sendOtp = async (phoneNumber) => {
     throw error;
   }
 };
-export default sendOtp;
+export default UpdatesendOtp;

@@ -30,9 +30,9 @@ const BookingForm = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col  lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col  lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
       <div className="lg:w-1/2 bg-gray-100 p-4 rounded-lg shadow-inner">
-        <img src={room.image} alt={room.name} className="w-full h-auto rounded-lg mb-4" />
+        <img src={room.image} alt={room.name} className="w-96  h-48 object-cover  rounded-lg mb-4" />
         <h3 className="text-xl font-semibold">{room.name}</h3>
         <p className="text-gray-600 mb-2">{room.location.city}, {room.location.name}</p>
         <div className="flex items-center mb-4">
@@ -96,7 +96,7 @@ const BookingForm = () => {
           {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className="bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-700"
+            className="bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-gray-700"
           >
             Continue
           </button>
