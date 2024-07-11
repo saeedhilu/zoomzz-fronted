@@ -40,7 +40,7 @@ const BookingForm = () => {
           <span className="ml-2 text-gray-600">({room.user_feedbacks.length} Reviews)</span>
         </div>
         <p className="text-lg font-bold mb-4">Price per night: ₹{room.price_per_night}</p>
-        <p className="text-lg font-bold text-green-600 mb-4">Discount: 10%</p>
+        <p className="text-lg font-bold text-gray-600 mb-4">Discount: 10%</p>
         <p className="text-lg font-bold mb-4">Total Price: ₹{calculateTotalPrice(checkinDate, checkoutDate, room.price_per_night)}</p>
         <p className="text-lg font-bold mb-4">Selected Dates: {checkinDate} to {checkoutDate}</p>
       </div>
