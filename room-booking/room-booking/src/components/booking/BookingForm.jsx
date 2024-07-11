@@ -87,7 +87,7 @@ const BookingForm = () => {
             onChange={(e) => setCheckInDate(e.target.value)}
           />
           <InputField
-            label="Check-out Date"
+            label="Check-out Date "
             id="checkOutDate"
             type="date"
             value={checkoutDate}
