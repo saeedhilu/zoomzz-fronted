@@ -2,7 +2,7 @@
 .flatpickr-day.startRange,
 .flatpickr-day.endRange,
 .flatpickr-day.inRange {
-    background-color: #4a90e2 !important;
+    background-color: #656565 !important;
     border-color: #000000 !important;
     color: white !important;
 }

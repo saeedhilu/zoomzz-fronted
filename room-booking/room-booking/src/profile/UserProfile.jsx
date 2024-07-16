@@ -118,8 +118,8 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex p-4 shadow-lg">
-      <div className="bg-gray-100 w-1/3 p-6 flex flex-col items-center relative rounded-lg shadow-md">
+    <div className="flex flex-col md:flex-row p-4 shadow-xl bg-white rounded-lg max-w-4xl mx-auto my-8">
+      <div className="bg-gray-100 w-full md:w-1/3 p-6 flex flex-col items-center relative rounded-lg shadow-md">
         {user.profileImage ? (
           <>
             <img
@@ -129,20 +129,17 @@ const UserProfile = () => {
             />
             <label
               htmlFor="imageInput"
-              className="absolute bottom-0  cursor-pointer"
+              className="absolute bottom-0 right-0 cursor-pointer"
             >
-              <div className="bg-gray-600  rounded-xl   mb-12 ml-20">
-                <FontAwesomeIcon icon={faCamera} className="text-white p-1 " />
+              <div className="bg-gray-600 rounded-xl mb-2 ml-20">
+                <FontAwesomeIcon icon={faCamera} className="text-white p-1" />
               </div>
             </label>
           </>
         ) : (
           <>
             <div className="bg-gray-300 rounded-full w-28 h-28 flex items-center justify-center mb-4">
-              <FontAwesomeIcon
-                icon={faUser}
-                className="text-6xl text-gray-600"
-              />
+              <FontAwesomeIcon icon={faUser} className="text-6xl text-gray-600" />
               <label
                 htmlFor="imageInput"
                 className="absolute bottom-0 right-0 mb-2 mr-2 cursor-pointer"
@@ -161,18 +158,14 @@ const UserProfile = () => {
         />
       </div>
 
-      <div className="flex flex-col justify-center ml-16">
-        {/* Conditionally render greeting based on username */}
+      <div className="flex flex-col justify-center ml-0 md:ml-16 mt-4 md:mt-0">
         {user.username ? (
           <div className="flex items-center mb-6">
             <p className="text-xl font-bold text-gray-600">
               Hello, {user.username}
               {!editMode && (
                 <button onClick={handlePencilClick} className="ml-4">
-                  <FontAwesomeIcon
-                    icon={faPencilAlt}
-                    className="text-gray-600"
-                  />
+                  <FontAwesomeIcon icon={faPencilAlt} className="text-gray-600" />
                 </button>
               )}
             </p>
@@ -197,7 +190,7 @@ const UserProfile = () => {
             </button>
           </p>
         )}
-        
+
         {user.joinedDate && (
           <p className="text-gray-600 mb-6">
             Joined in {getYearFromDatetime(user.joinedDate)}

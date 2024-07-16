@@ -5,7 +5,7 @@ import UpddateverifyOtp from "../services/PhoneNumberUpdateVerify";
 
 const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]); // Initialize OTP state as an array of 6 empty strings
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
@@ -13,16 +13,15 @@ const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
     setPhoneNumber(newPhoneNumber);
-    setPhoneNumberError(""); 
-    onPhoneNumberChange(newPhoneNumber); 
+    setPhoneNumberError("");
+    onPhoneNumberChange(newPhoneNumber);
   };
-  
+
   const handleOtpChange = (event, index) => {
     const newOtp = [...otp];
     newOtp[index] = event.target.value;
     setOtp(newOtp);
 
-    // Move focus to the next input field
     if (event.target.value && index < 5) {
       document.getElementById(`otp-${index + 1}`).focus();
     }
@@ -37,14 +36,13 @@ const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
   const handleSendOtp = async () => {
     try {
       const response = await UpdatesendOtp(phoneNumber);
-      console.log(response);
       if (response) {
         setOtpSent(true);
         setError("");
       }
     } catch (error) {
       if (error.response && error.response.data.phone_number) {
-        setPhoneNumberError(error.response.data.phone_number[0]); 
+        setPhoneNumberError(error.response.data.phone_number[0]);
       } else {
         setOtpSent(false);
         setError("Error sending OTP");
@@ -68,7 +66,12 @@ const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onRequestClose} className="flex justify-center items-center">
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      className="fixed inset-0 flex items-center justify-center"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+    >
       <div className="bg-white w-full sm:w-1/2 md:w-1/3 text-center p-8 rounded-lg shadow-2xl">
         {!otpSent ? (
           <div>
@@ -79,7 +82,7 @@ const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
               name="phoneNumber"
               value={phoneNumber}
               onChange={handlePhoneNumberChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
             />
             {phoneNumberError && (
               <p className="mt-1 text-red-500 text-sm">{phoneNumberError}</p>
@@ -105,7 +108,7 @@ const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
                   onChange={(e) => handleOtpChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                   maxLength={1}
-                  className="w-12 sm:w-16 h-12 sm:h-16 text-center border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-lg"
+                  className="w-12 sm:w-16 h-12 sm:h-16 text-center border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-lg"
                 />
               ))}
             </div>

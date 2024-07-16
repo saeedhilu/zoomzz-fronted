@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { FaGoogle } from "react-icons/fa";
 import GoogleSignIn from "./GoogleSignIn";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // Import useDispatch
-import { setUser } from "../../../redux/slices/authSlice"; // Import your action
-
-// Services files
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/slices/authSlice";
 import sendOtp from "../../../services/sendOtpService";
 import resendOtp from "../../../services/resendOtpService";
 import verifyOtp from "../../../services/verifyOtpService";
@@ -17,13 +15,44 @@ const PhoneNumberSignIn = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  const [timer, setTimer] = useState(30); // Initial timer value in seconds
   const navigate = useNavigate();
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
-  const handlePhoneNumberChange = (event) => {
-    setPhoneNumber(event.target.value);
+  // Countdown timer effect
+  useEffect(() => {
+    let interval;
+    if (otpSent && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+  }, [otpSent, timer]);
+
+  // Reset timer and clear interval
+  const resetTimer = () => {
+    setTimer(30);
+    clearInterval();
   };
 
+  // Validate phone number format
+  const validatePhoneNumber = () => {
+    const isValidPhoneNumber = /^\d{10}$/;
+    return isValidPhoneNumber.test(phoneNumber);
+  };
+
+  // Handle phone number input change
+  const handlePhoneNumberChange = (event) => {
+    setPhoneNumber(event.target.value);
+    resetTimer(); // Reset timer if phone number changes
+    setOtpSent(false); // Reset OTP sent status
+  };
+
+  // Handle OTP input change
   const handleOtpChange = (event, index) => {
     const newOtp = [...otp];
     newOtp[index] = event.target.value;
@@ -33,17 +62,20 @@ const PhoneNumberSignIn = () => {
     }
   };
 
+  // Handle OTP input key press
   const handleKeyDown = (event, index) => {
     if (event.key === "Backspace" && index > 0 && !otp[index]) {
       document.getElementById(`otp-${index - 1}`).focus();
     }
   };
 
+  // Handle OTP sending
   const handleOtpSending = async () => {
-    if (!phoneNumber) {
-      setError("Phone number cannot be empty.");
+    if (!validatePhoneNumber()) {
+      setError("Please enter a valid 10-digit phone number.");
       return;
     }
+
     setLoading(true);
     setError("");
     try {
@@ -57,11 +89,13 @@ const PhoneNumberSignIn = () => {
     }
   };
 
+  // Handle OTP resend
   const handleResendOtp = async () => {
     setLoading(true);
     setError("");
     try {
       await resendOtp(phoneNumber);
+      resetTimer(); // Reset timer on OTP resend
     } catch (error) {
       setError("Failed to resend OTP. Please try again.");
     } finally {
@@ -69,20 +103,27 @@ const PhoneNumberSignIn = () => {
     }
   };
 
+  // Handle OTP verification
   const handleOtpVerification = async () => {
     setLoading(true);
     setError("");
     try {
       const response = await verifyOtp(phoneNumber, otp.join(""));
-      console.log('response is :',response);
-      dispatch(setUser({
-        accessToken:response.access_token ,
-        refreshToken:response.refresh_token,
-        username : response.user.username || null,
-      })); 
-      navigate("/"); 
+      dispatch(
+        setUser({
+          profileImage: response.user.image || null,
+          accessToken: response.access_token,
+          refreshToken: response.refresh_token,
+          username: response.user.username || null,
+        })
+      );
+      navigate("/");
     } catch (error) {
-      setError("Failed to verify OTP. Please try again.");
+      if (error.response && error.response.data && error.response.data.error_message) {
+        setError(error.response.data.error_message);
+      } else {
+        setError("Failed to verify OTP. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -135,6 +176,11 @@ const PhoneNumberSignIn = () => {
                 />
               ))}
             </div>
+            {timer > 0 && (
+              <p className="text-center text-gray-500 mt-2">
+                Resend OTP in {timer} seconds
+              </p>
+            )}
           </div>
         )}
         {error && <p className="text-red-500 text-center">{error}</p>}
@@ -151,14 +197,14 @@ const PhoneNumberSignIn = () => {
             <button
               onClick={handleOtpVerification}
               className="w-full bg-gray-500 text-white py-2 px-4 rounded-md flex justify-center items-center mt-2 hover:bg-slate-600"
-              disabled={loading}
+              disabled={loading || timer === 0}
             >
               {loading ? <CircularProgress size={24} /> : "Verify OTP"}
             </button>
             <button
               onClick={handleResendOtp}
-              className="w-full bg-gray-500 text-white py-2 px-4 rounded-md mt-2 flex justify-center items-center hover:bg-slate-600"
-              disabled={loading}
+              className={`w-full bg-gray-500 text-white py-2 px-4 rounded-md mt-2 flex justify-center items-center hover:bg-slate-600 ${timer > 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={loading || timer > 0}
             >
               {loading ? <CircularProgress size={24} /> : "Resend OTP"}
             </button>
@@ -171,7 +217,7 @@ const PhoneNumberSignIn = () => {
             <span className="h-px w-12 bg-gray-300"></span>
           </div>
           <button className="w-full text-black py-2 px-4 flex justify-center items-center mt-2">
-            <FaGoogle className="mr-2" /> <GoogleSignIn/>
+            <FaGoogle className="mr-2" /> <GoogleSignIn />
           </button>
         </div>
       </div>

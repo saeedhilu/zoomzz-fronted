@@ -38,7 +38,7 @@ const TopRatedRooms = () => {
         <p>Loading...</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
-          {topRatedRooms.map((room) => (
+          {topRatedRooms?.map((room) => (
             <div key={room.id} className="bg-white shadow-md rounded-md p-4">
               <div className="relative mb-4 w-full h-48">
                 <img src={room.image} alt={room.name} className="rounded-md w-full h-full object-cover" />

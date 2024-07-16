@@ -1,12 +1,10 @@
 import React from "react";
 import Wishlist from "../components/rooms/whishlist/Whishlist";
-const WhishlistPage=()=>{
+const WishlistPage=()=>{
     return(
         <div>
-            <Wishlist/>
+            <Wishlist />
         </div>
     )
-
 }
-
-export default WhishlistPage;
+export default WishlistPage;

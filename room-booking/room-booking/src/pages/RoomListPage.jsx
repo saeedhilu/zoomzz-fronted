@@ -5,14 +5,17 @@ import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { renderStars } from "../utils/ratingStar";
 import RoomSearch from "../components/layout/SearchBar";
 import RoomFilter from "../components/rooms/roomFilter/RoomFilterForm";
-
+import Navbar from "../components/layout/Navbar";
 const RoomList = () => {
   const location = useLocation();
   const { rooms } = location.state || { rooms: [] };
 
   return (
+<div> <Navbar />
     <div className="max-w-6xl mx-auto p-4">
+
       <RoomSearch />
+     
       <RoomFilter />
 
       <h1 className="text-3xl font-bold mb-4">Room List</h1>
@@ -109,6 +112,7 @@ const RoomList = () => {
           <p>No rooms found.</p>
         )}
       </div>
+    </div>
     </div>
   );
 };

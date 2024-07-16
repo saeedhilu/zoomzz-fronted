@@ -1,12 +1,16 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaUser, FaPaw } from "react-icons/fa";
 
-const InfoCard = ({ icon, description }) => {
+const InfoCard = ({ description, icon }) => {
+  const iconMap = {
+    user: FaUser,
+    pet: FaPaw,
+  };
+
+  const IconComponent = iconMap[icon];
   return (
-    <div className="bg-slate-100 p-4 shadow-lg rounded-sm ">
-      <div className="info-card-icon flex justify-center mb-4">
-        <FontAwesomeIcon icon={icon} className="text-2xl text-gray-600" />
-      </div>
+    <div className="bg-slate-100 p-4 shadow-lg rounded-sm flex items-center flex-col justify-between" >
+      {IconComponent && <IconComponent className="text-2xl text-gray-600 mr-2" />} 
       <p className="font-semibold">{description}</p>
     </div>
   );

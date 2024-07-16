@@ -23,6 +23,7 @@
     "flatpickr": "^4.6.13",
     "framer-motion": "^11.2.13",
     "lodash": "^4.17.21",
+    "razorpay": "^2.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-flatpickr": "^3.10.13",
@@ -35,8 +36,6 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",

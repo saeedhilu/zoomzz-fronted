@@ -5,8 +5,8 @@ import TopRatedRooms from "../components/rooms/TopRatedRooms";
 import Banner from "../components/layout/Banner";
 
 const HomePage = () => {
-  const userLogoUrl = "";
-  const websiteName = "ZOOMZZZ";
+ 
+
 
   const handleOnclick = () => {
     alert("Hosting button is clicked");
@@ -14,7 +14,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <Header websiteName={websiteName} userLogoUrl={userLogoUrl} />
+      <Header />
       <div className=" mx-auto mt-20 p-4">
         <TopRatedRooms />
         <Banner onclickButton={handleOnclick} />

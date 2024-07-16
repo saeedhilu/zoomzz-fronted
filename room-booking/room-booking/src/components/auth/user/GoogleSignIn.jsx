@@ -18,11 +18,12 @@ const GoogleSignIn = () => {
         access_token: accessToken,
       });
       console.log('response from google signin',response);
+      console.log('response from google signin',response.data.access_token);
 
       dispatch(setUser({
-        accessToken:response.access_token ,
-        refreshToken:response.refresh_token,
-        username : response.user.username || null,
+        accessToken:response.data.access_token ,
+        refreshToken:response.data.refresh_token,
+        username : response.data.username || null,
       }));  
 
       

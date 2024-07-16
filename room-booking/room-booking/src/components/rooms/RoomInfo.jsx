@@ -1,22 +1,71 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { FaPaw, FaUser, FaMapMarkerAlt, FaShareAlt, FaHeart as FaHeartSolid } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPaw,
-  faUser,
-  faMapMarkerAlt,
-  faShareNodes,
-  faHeart,
-} from "@fortawesome/free-solid-svg-icons";
+  
+import { LuHeart } from "react-icons/lu";
 import InfoCard from "./InfoCard/InfoCard";
 import RoomCategory from "./RoomCategory";
-import { addToWishlist, removeFromWishlist, selectWishlist } from "../../redux/slices/whishlistSlice";
 import wishlistService from "../../services/WhishlistServices";
 
 const RoomInfo = ({ room }) => {
-  const dispatch = useDispatch();
-  const wishlist = useSelector(selectWishlist);
-  const isRoomInWishlist = wishlist.includes(room.id);
+  const [inWishlist, setInWishlist] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    checkWishlist();
+  }, []);
+
+  const checkWishlist = async () => {
+    try {
+      const wishlistItems = await wishlistService.getWishlist();
+      const isInWishlist = wishlistItems.some(
+        (item) => item.room.id === room.id
+      );
+      setInWishlist(isInWishlist);
+    } catch (error) {
+      console.error("Error checking wishlist:", error);
+    }
+  };
+
+  const addToWishlist = async () => {
+    try {
+      await wishlistService.addToWishlist(room.id);
+      setInWishlist(true);
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+    }
+  };
+
+  const removeFromWishlist = async (wishlistItemId) => {
+    try {
+      await wishlistService.removeFromWishlist(wishlistItemId);
+      setInWishlist(false);
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+    }
+  };
+
+  const handleWishlistToggle = async () => {
+    if (inWishlist) {
+      const wishlistItem = await findWishlistItem();
+      if (wishlistItem) {
+        await removeFromWishlist(wishlistItem.id);
+      }
+    } else {
+      await addToWishlist();
+    }
+  };
+
+  const findWishlistItem = async () => {
+    try {
+      const wishlistItems = await wishlistService.getWishlist();
+      return wishlistItems.find((item) => item.room.id === room.id);
+    } catch (error) {
+      console.error("Error finding wishlist item:", error);
+      return null;
+    }
+  };
 
   const handleShareClick = () => {
     if (navigator.share) {
@@ -31,41 +80,6 @@ const RoomInfo = ({ room }) => {
         });
     } else {
       console.error("Web Share API not supported in this browser.");
-    }
-  };
-
-  const handleAddToWishlist = async () => {
-    try {
-      await wishlistService.addToWishlist(room.id);
-      dispatch(addToWishlist(room.id));
-      console.log("Added to wishlist successfully", room.id);
-    } catch (error) {
-      console.error("Error adding room to wishlist:", error);
-    }
-  };
-
-  //TODO
-
-
-
-  
-  const handleRemoveFromWishlist = async () => {
-    try {
-      console.log('helllo',room.id)
-      await wishlistService.removeFromWishlist(room.id);
-      print('handle removce from whishslist',room.id)
-      dispatch(removeFromWishlist(room.id));
-      console.log("Removed from wishlist successfully", room.id);
-    } catch (error) {
-      console.error("Error removing room from wishlist:", error);
-    }
-  };
-
-  const handleWishlistToggle = () => {
-    if (isRoomInWishlist) {
-      handleRemoveFromWishlist();
-    } else {
-      handleAddToWishlist();
     }
   };
 
@@ -84,26 +98,22 @@ const RoomInfo = ({ room }) => {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between ">
         <div>
           <h1 className="text-3xl text-gray-800 mt-4 font-bold">{room.name}</h1>
           <p className="text-gray-600 mt-2 flex items-center font-medium">
-            <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" />
+            <FaMapMarkerAlt className="mr-2" />
             {`${room.location.country}, ${room.location.city}, ${room.location.name}`}
           </p>
         </div>
         <div>
           <div className="flex gap-3 text-gray-600 text-2xl mt-8">
-            <FontAwesomeIcon
-              icon={faHeart}
-              className={`bg-white cursor-pointer ${isRoomInWishlist ? "text-red-500" : ""}`}
-              onClick={handleWishlistToggle}
-            />
-            <FontAwesomeIcon
-              icon={faShareNodes}
-              className="cursor-pointer"
-              onClick={handleShareClick}
-            />
+            {inWishlist ? (
+              <FaHeartSolid className="text-red-600 text-3xl cursor-pointer " onClick={handleWishlistToggle} />
+            ) : (
+              <LuHeart   className="cursor-pointer text-3xl " onClick={handleWishlistToggle} />
+            )}
+            <FaShareAlt className="cursor-pointer mt-1" onClick={handleShareClick} />
           </div>
         </div>
       </div>
@@ -111,12 +121,13 @@ const RoomInfo = ({ room }) => {
       <div className="flex justify-between items-center mt-3">
         <div className="flex gap-3">
           <RoomCategory category={room.category} />
+          
           <InfoCard
-            icon={faUser}
+            icon="user"
             description={`${room.max_occupancy} Guests`}
           />
           <InfoCard
-            icon={faPaw}
+            icon="pet"
             description={room.pet_allowed ? "Pets Allowed" : "No Pets Allowed"}
           />
         </div>
