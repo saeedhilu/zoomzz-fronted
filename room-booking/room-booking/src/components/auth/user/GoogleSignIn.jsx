@@ -18,7 +18,7 @@ const GoogleSignIn = () => {
         access_token: accessToken,
       });
       console.log('response from google signin',response);
-      console.log('accesss token i s',response.data.access_token);
+     
 
       dispatch(setUser({
         accessToken:response.data.access_token ,
