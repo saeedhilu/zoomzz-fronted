@@ -178,7 +178,7 @@ const PhoneNumberSignIn = () => {
             </div>
             {timer > 0 && (
               <p className="text-center text-gray-500 mt-2">
-                Resend OTP in {timer} seconds.
+                Resend OTP in {timer} seconds
               </p>
             )}
           </div>
