@@ -3,7 +3,7 @@ import topRatedRoomsService from "../../services/topRatedRoomsService";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faStarHalfAlt, faStar as faStarEmpty } from '@fortawesome/free-solid-svg-icons';
 import { renderStars } from "../../utils/ratingStar";
-
+import Spinner from "../Spinner/Spinner";
 const TopRatedRooms = () => {
   const [topRatedRooms, setTopRatedRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +35,7 @@ const TopRatedRooms = () => {
       </h2>
       
       {loading ? (
-        <p>Loading...</p>
+        <Spinner/>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
           {topRatedRooms?.map((room) => (

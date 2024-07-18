@@ -4,6 +4,7 @@ import { SearchIcon, CalendarIcon, UsersIcon } from '@heroicons/react/outline';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import searchRooms from '../../services/searchServices';
+import Spinner from '../Spinner/Spinner'; // Import your Spinner component
 
 const RoomSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,20 +25,19 @@ const RoomSearch = () => {
   const handleSearch = async () => {
     setLoading(true);
     setError(null);
+
     const searchParams = {
       search: searchQuery,
       check_in: formatDate(dates[0]),
       check_out: formatDate(dates[1]),
       guest_count: guestCount,
     };
+
     try {
       const data = await searchRooms(searchParams);
-      console.log('====================================');
-      console.log('data from backend fro search roomms:',data);
-      console.log('====================================');
       navigate('/room-list', { state: { rooms: data } });
     } catch (error) {
-      setError('No rooms found.');
+      setError('No rooms found.'); // Handle specific error messages based on response
     } finally {
       setLoading(false);
     }
@@ -95,12 +95,14 @@ const RoomSearch = () => {
                 />
               </div>
             </div>
-            <div>
+            <div className="flex items-center justify-center relative">
               <button
                 onClick={handleSearch}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto w-full"
+                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto w-full relative"
+                style={{ minHeight: '40px' }} // Ensure a minimum height to contain the spinner
               >
-                Search
+                {loading && <Spinner className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2" />}
+                {!loading && 'Search'}
               </button>
             </div>
           </div>
@@ -153,25 +155,42 @@ const RoomSearch = () => {
                 />
               </div>
             </div>
-            <div>
+            <div className="flex items-center justify-center relative">
               <button
                 onClick={handleSearch}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto w-full"
+                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 sm:w-auto w-full relative"
+                style={{ minHeight: '40px' }} // Ensure a minimum height to contain the spinner
               >
-                Search
+                
+                {!loading && 'Search'}
               </button>
             </div>
           </div>
         </div>
+        {loading && <Spinner className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2" />}
       </div>
 
-      {loading && <p className="mt-2 text-sm text-gray-500">Loading...</p>}
       {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
     </div>
   );
 };
 
 export default RoomSearch;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // import React, { useState } from 'react';

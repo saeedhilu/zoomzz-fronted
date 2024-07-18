@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Reviews = ({ reviews, averageRating }) => {
-  const showRating = averageRating > 0; // Check if there are reviews with non-zero average rating
 
+  const showRating = averageRating > 0; // Check if there are reviews with non-zero average rating
+  
   return (
     <div className="mt-6">
       <h2 className="text-xl font-semibold">Reviews</h2>

@@ -14,4 +14,4 @@ export const sendOtp = async (phoneNumber) => {
     throw error;
   }
 };
-export default sendOtp;
+export default sendOtp; 

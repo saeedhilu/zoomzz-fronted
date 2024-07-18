@@ -1,0 +1,25 @@
+.star {
+    transition: transform 0.3s;
+  }
+  
+  .star:hover {
+    transform: scale(1.2);
+    transition: transform 0.3s;
+  }
+  
+  .star-active {
+    animation: pulse 0.3s;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  

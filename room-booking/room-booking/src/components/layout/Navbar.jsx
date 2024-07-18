@@ -4,7 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { TiThMenu } from "react-icons/ti";
 import { clearAuth } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { showToast } from "../../utils/toastUtils";
 const Navbar = () => {
   const websiteName = "ZOOMZZZ";
   const baseURL = "http://localhost:8000/images/";
@@ -19,10 +21,14 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(clearAuth());
+    showToast('You have successfully logged out!', 'success');
   };
 
   const handleSignIn = () => {
     navigate("/signin");
+  };
+  const handleBookingHistory = () => {
+    navigate("/reservations-status");
   };
 
   const handleWishlist = () => {
@@ -32,9 +38,10 @@ const Navbar = () => {
   const handleHost = () => {
     navigate("/host-page");
   };
-  const handleProfile=()=>{
-    navigate("/user-profile")
-  }
+
+  const handleProfile = () => {
+    navigate("/user-profile");
+  };
 
   return (
     <div className="flex items-center justify-between py-6 px-4 sm:px-8 w-full z-50">
@@ -70,13 +77,15 @@ const Navbar = () => {
           {/* Dropdown menu with arrow indicator and transition */}
           <div
             className={`absolute top-14 right-0 mt-2 w-48 rounded-lg bg-gray-100 shadow-lg py-1 transform transition-transform duration-300 ${
-              showMenu ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
+              showMenu
+                ? "scale-100 opacity-100"
+                : "scale-95 opacity-0 pointer-events-none"
             }`}
           >
-            <div className="relative ">
+            <div className="relative">
               {/* Arrow Indicator */}
               <div
-                className={`absolute right-1 w-3 h-3 bg-gray-100  z-10   transform rotate-45 -mt-2 ${
+                className={`absolute right-1 w-3 h-3 bg-gray-100 z-10 transform rotate-45 -mt-2 ${
                   showMenu ? "opacity-100" : "opacity-0"
                 } transition-opacity duration-300`}
               />
@@ -100,6 +109,12 @@ const Navbar = () => {
                   >
                     Profile
                   </button>
+                  <button
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-white w-full text-left"
+                    onClick={handleBookingHistory}
+                  >
+                    Booking History
+                  </button>
                 </div>
               ) : (
                 <div>
@@ -114,7 +129,19 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       </div>
+     
     </div>
   );
 };

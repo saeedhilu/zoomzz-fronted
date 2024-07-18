@@ -15,11 +15,10 @@ const PhoneNumberSignIn = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [timer, setTimer] = useState(30); // Initial timer value in seconds
+  const [timer, setTimer] = useState(30); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Countdown timer effect
   useEffect(() => {
     let interval;
     if (otpSent && timer > 0) {
@@ -33,23 +32,21 @@ const PhoneNumberSignIn = () => {
     return () => clearInterval(interval);
   }, [otpSent, timer]);
 
-  // Reset timer and clear interval
   const resetTimer = () => {
     setTimer(30);
     clearInterval();
   };
 
-  // Validate phone number format
   const validatePhoneNumber = () => {
     const isValidPhoneNumber = /^\d{10}$/;
     return isValidPhoneNumber.test(phoneNumber);
   };
 
-  // Handle phone number input change
+  
   const handlePhoneNumberChange = (event) => {
     setPhoneNumber(event.target.value);
-    resetTimer(); // Reset timer if phone number changes
-    setOtpSent(false); // Reset OTP sent status
+    resetTimer(); 
+    setOtpSent(false); 
   };
 
   // Handle OTP input change

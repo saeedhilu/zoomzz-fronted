@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { FaPaw, FaUser, FaMapMarkerAlt, FaShareAlt, FaHeart as FaHeartSolid } from "react-icons/fa";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-  
+import { FaMapMarkerAlt, FaShareAlt, FaHeart as FaHeartSolid } from "react-icons/fa";
 import { LuHeart } from "react-icons/lu";
 import InfoCard from "./InfoCard/InfoCard";
 import RoomCategory from "./RoomCategory";
 import wishlistService from "../../services/WhishlistServices";
+import { showToast } from "../../utils/toastUtils";
 
 const RoomInfo = ({ room }) => {
   const [inWishlist, setInWishlist] = useState(false);
@@ -31,7 +30,8 @@ const RoomInfo = ({ room }) => {
   const addToWishlist = async () => {
     try {
       await wishlistService.addToWishlist(room.id);
-      setInWishlist(true);
+      showToast('Room added to wishlist!', 'success');
+      setInWishlist(true); 
     } catch (error) {
       console.error("Error adding to wishlist:", error);
     }
@@ -40,10 +40,11 @@ const RoomInfo = ({ room }) => {
   const removeFromWishlist = async (wishlistItemId) => {
     try {
       await wishlistService.removeFromWishlist(wishlistItemId);
-      setInWishlist(false);
+      showToast("Room removed from wishlist!", 'success'); // Pass color argument here
+      setInWishlist(false); 
     } catch (error) {
       console.error("Error removing from wishlist:", error);
-    }
+    } 
   };
 
   const handleWishlistToggle = async () => {
@@ -98,7 +99,7 @@ const RoomInfo = ({ room }) => {
 
   return (
     <div>
-      <div className="flex justify-between ">
+      <div className="flex justify-between">
         <div>
           <h1 className="text-3xl text-gray-800 mt-4 font-bold">{room.name}</h1>
           <p className="text-gray-600 mt-2 flex items-center font-medium">
@@ -109,9 +110,15 @@ const RoomInfo = ({ room }) => {
         <div>
           <div className="flex gap-3 text-gray-600 text-2xl mt-8">
             {inWishlist ? (
-              <FaHeartSolid className="text-red-600 text-3xl cursor-pointer " onClick={handleWishlistToggle} />
+              <FaHeartSolid
+                className="text-red-600 text-3xl cursor-pointer"
+                onClick={handleWishlistToggle}
+              />
             ) : (
-              <LuHeart   className="cursor-pointer text-3xl " onClick={handleWishlistToggle} />
+              <LuHeart
+                className="cursor-pointer text-3xl"
+                onClick={handleWishlistToggle}
+              />
             )}
             <FaShareAlt className="cursor-pointer mt-1" onClick={handleShareClick} />
           </div>
@@ -121,7 +128,6 @@ const RoomInfo = ({ room }) => {
       <div className="flex justify-between items-center mt-3">
         <div className="flex gap-3">
           <RoomCategory category={room.category} />
-          
           <InfoCard
             icon="user"
             description={`${room.max_occupancy} Guests`}
@@ -132,6 +138,7 @@ const RoomInfo = ({ room }) => {
           />
         </div>
       </div>
+
       <h2 className="mt-7 font-bold text-xl pb-2 border-b-2 border-gray-300">
         Property Description
       </h2>

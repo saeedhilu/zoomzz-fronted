@@ -13,9 +13,9 @@ const wishlistService = {
   },
 
   addToWishlist: async (room_id) => {
-    console.log('rooom id from ',room_id);
     try {
       const response = await instance.post('accounts/wishlists/', { room_id });
+      
       return response.data; 
     } catch (error) {
       console.error('Error adding to wishlist', error);
