@@ -2,26 +2,39 @@ import React, { useState } from 'react';
 import adminLogin from '../../../services/admin/Login';
 import { useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi'; 
+import { setUser } from '../../../redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
 
-const AdminLogin = () => {
+const   AdminLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false); 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const data = await adminLogin(username, password);
-      console.log('Login successful:', data);
+      const {access_token,refresh_token,is_superadmin} = data
+
+      dispatch(setUser({
+        username:data.username,
+        accessToken: access_token,
+        refreshToken: refresh_token,
+        isSuperAdmin: is_superadmin,
+        isVendor: false, 
+      }));
       navigate('/admin/dashboard');
     } catch (error) {
       console.error('Login error:', error);
       setError('Invalid credentials. Please try again.');
     }
   };
+
+  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

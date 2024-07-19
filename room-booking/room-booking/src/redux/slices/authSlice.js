@@ -1,4 +1,4 @@
-// authSlice.js
+// src/store/slices/authSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
 
@@ -8,6 +8,8 @@ const initialState = {
   profileImage: null,
   accessToken: null,
   refreshToken: null,
+  isSuperAdmin: false,
+  isVendor: false,
 };
 
 const authSlice = createSlice({
@@ -20,13 +22,12 @@ const authSlice = createSlice({
       state.profileImage = action.payload.profileImage || null;
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
+      state.isSuperAdmin = action.payload.isSuperAdmin || false;
+      state.isVendor = action.payload.isVendor || false;
     },
-    clearAuth: (state) => {
-      state.isAuthenticated = false;
-      state.username = null;
-      state.profileImage = null;
-      state.accessToken = null;
-      state.refreshToken = null;
+    clearAuth: () => {
+  
+      return initialState;
     },
   },
 });

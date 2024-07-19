@@ -1,12 +1,13 @@
 // src/components/routes/admin/AdminRoutes.jsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AdminLoginPage from "../../../pages/admin/Login";
+import AdminDashboard from "../../../pages/admin/Dashboard";
 
 const AdminRoutes = () => {
   return (
     <Routes>
-      <Route path="login" element={<AdminLoginPage />} />
+     
+      <Route path="dashboard/" element={<AdminDashboard />} />
     </Routes>
   );
 };

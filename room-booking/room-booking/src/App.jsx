@@ -17,17 +17,44 @@ const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const WishlistPage = lazy(() => import("./pages/WishlistPage"));
 const VendorPage = lazy(() => import("./pages/HostPage"));
 import AdminRoutes from "./components/routes/admin/AdminRoutes";
+import RoleProtecterRoute from "./components/auth/protectedrouted/RoleProtecterRoute";
+import UnauthorizedPage from "./components/unauthorized/UnauthorizedPage";
+import AdminLoginPage from "./pages/admin/Login";
 
 function App() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
+        {/* 
+        ------------------------------------
+          Unathorized users redircting Page
+        ------------------------------------
+        
+        */}
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-        {/* Include admin routes */}
-        <Route path="admin/*" element={<AdminRoutes />} />
+        {/* 
+          -----------------------------------------------
+          Admin Login Page
+          -----------------------------------------------
+        */}
 
+        <Route path="admin/login/" element={<AdminLoginPage />} />
 
+        {/* 
+        --------------------------------------
+        Admin RoleProtected Pages
+        --------------------------------------
+        */}
 
+        <Route
+          path="/admin*"
+          element={
+            <RoleProtecterRoute allowedRoles={["superadmin"]}>
+              <AdminRoutes />
+            </RoleProtecterRoute>
+          }
+        />
 
         {/* Regular routes */}
         <Route path="/" element={<Home />} />
