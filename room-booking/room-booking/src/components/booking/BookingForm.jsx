@@ -8,7 +8,7 @@ import { initiatePayment } from "../../services/IniatiatePayment";
 
 const BookingForm = () => {
   const location = useLocation();
-  const bookingDetails = location.state || {}; // Ensure safe access to location.state
+  const bookingDetails = location.state || {}; 
   const {
     room = {},
     guests: initialGuests,

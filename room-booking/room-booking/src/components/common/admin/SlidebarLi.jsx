@@ -2,9 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Sidebar = ({ title, menuItems, profile }) => {
-  console.log(profile);
-  if (!menuItems) return null; // Ensure menuItems is defined
-  const baseURL = "http://localhost:8000/images/";
+  if (!menuItems) return null; 
+  const baseURL = "http://localhost:8000/";
 
   return (
     <div className="h-screen w-64 bg-gray-800 text-white fixed top-0 left-0">
@@ -25,7 +24,7 @@ const Sidebar = ({ title, menuItems, profile }) => {
         </div>
         <ul className="space-y-4">
           {menuItems.map((item, index) => (
-            <li key={index} className="hover:bg-gray-700 px-4 py-2 rounded">
+            <li key={index} className="hover:bg-gray-700 px-4 py-2 rounded-lg">
               {item}
             </li>
           ))}

@@ -21,7 +21,6 @@ export const AdminSidebar = () => {
     username: state.auth.username,
     profileImage: state.auth.profileImage,
   }));
-  console.log('image',profile);
 
   return <Sidebar title="Admin Panel" menuItems={adminMenuItems} profile={profile} />;
 };

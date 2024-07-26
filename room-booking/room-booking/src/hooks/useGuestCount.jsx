@@ -2,6 +2,10 @@
 import { useState } from "react";
 
 const useGuestCount = (initialGuests, maxOccupancy) => {
+  console.log(
+    'initial guest:',initialGuests,
+    'max occupancy:',maxOccupancy
+  );
   const [guests, setGuests] = useState(initialGuests);
   const [error, setError] = useState("");
 

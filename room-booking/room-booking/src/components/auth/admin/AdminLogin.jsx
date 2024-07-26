@@ -18,7 +18,10 @@ const   AdminLogin = () => {
 
     try {
       const data = await adminLogin(username, password);
-      const {access_token,refresh_token,is_superadmin} = data
+      console.log('====================================');
+      console.log('vlaue is :0',data);
+      console.log('====================================');
+      const {access_token,refresh_token,is_superadmin,profile_image} = data
 
       dispatch(setUser({
         username:data.username,
@@ -26,6 +29,7 @@ const   AdminLogin = () => {
         refreshToken: refresh_token,
         isSuperAdmin: is_superadmin,
         isVendor: false, 
+        profileImage: profile_image,
       }));
       navigate('/admin/dashboard');
     } catch (error) {

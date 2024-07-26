@@ -1,8 +1,8 @@
 import React from "react";
 import SearchBar from "../layout/SearchBar";
-import Navbar from "./Navbar"; // Import Navbar component
+import Navbar from "./Navbar";
 
-const Header = () => {
+const   Header = () => {
   const bgImage =
     "https://www.wakefit.co/guides/wp-content/uploads/2021/10/Modern-room-Banner.jpg";
 
