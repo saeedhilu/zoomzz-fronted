@@ -1,8 +1,11 @@
-// src/App.jsx
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/auth/protectedrouted/ProtectedRoute";
 import Spinner from "./components/Spinner/Spinner";
+import RoleProtecterRoute from "./components/auth/protectedrouted/RoleProtecterRoute";
+import UnauthorizedPage from "./components/unauthorized/UnauthorizedPage";
+import AdminLoginPage from "./pages/admin/Login";
+import AdminRoutes from "./components/routes/admin/AdminRoutes";
 
 // Lazy load components
 const Home = lazy(() => import("./pages/Home"));
@@ -16,39 +19,20 @@ const Booking = lazy(() => import("./pages/Booking"));
 const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const WishlistPage = lazy(() => import("./pages/WishlistPage"));
 const VendorPage = lazy(() => import("./pages/HostPage"));
-import AdminRoutes from "./components/routes/admin/AdminRoutes";
-import RoleProtecterRoute from "./components/auth/protectedrouted/RoleProtecterRoute";
-import UnauthorizedPage from "./components/unauthorized/UnauthorizedPage";
-import AdminLoginPage from "./pages/admin/Login";
 
 function App() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
-        {/* 
-        ------------------------------------
-          Unathorized users redircting Page
-        ------------------------------------
-        
-        */}
+        {/* Unauthorized users redirecting Page */}
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-        {/* 
-          -----------------------------------------------
-          Admin Login Page
-          -----------------------------------------------
-        */}
+        {/* Admin Login Page */}
+        <Route path="admin/login" element={<AdminLoginPage />} />
 
-        <Route path="admin/login/" element={<AdminLoginPage />} />
-
-        {/* 
-        --------------------------------------
-        Admin RoleProtected Pages
-        --------------------------------------
-        */}
-
+        {/* Admin RoleProtected Pages */}
         <Route
-          path="/admin*"
+          path="/admin/*"
           element={
             <RoleProtecterRoute allowedRoles={["superadmin"]}>
               <AdminRoutes />
@@ -60,10 +44,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<ProtectedRoute element={Signin} />} />
         <Route path="/room-list" element={<RoomListPage />} />
-        <Route
-          path="/reservations-status"
-          element={<ReservationStatusListPage />}
-        />
+        <Route path="/reservations-status" element={<ReservationStatusListPage />} />
         <Route path="/room-details/:roomId" element={<RoomDetail />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/user-profile" element={<UserProfilePage />} />
