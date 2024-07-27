@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ title, menuItems, profile }) => {
-  if (!menuItems) return null; 
+  if (!menuItems) return null;
   const baseURL = "http://localhost:8000/";
 
   return (
@@ -25,7 +26,9 @@ const Sidebar = ({ title, menuItems, profile }) => {
         <ul className="space-y-4">
           {menuItems.map((item, index) => (
             <li key={index} className="hover:bg-gray-700 px-4 py-2 rounded-lg">
-              {item}
+              <Link to={`/admin/${item.toLowerCase().replace(/\s+/g, '-')}`}>
+                {item}
+              </Link>
             </li>
           ))}
         </ul>
@@ -38,9 +41,9 @@ Sidebar.propTypes = {
   title: PropTypes.string.isRequired,
   menuItems: PropTypes.arrayOf(PropTypes.string).isRequired,
   profile: PropTypes.shape({
-    photo: PropTypes.string,
+    profileImage: PropTypes.string,
     icon: PropTypes.node.isRequired,
-    name: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
   }).isRequired,
 };
 

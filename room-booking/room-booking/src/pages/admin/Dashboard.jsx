@@ -10,7 +10,7 @@ const AdminDashboard = () => {
       <div className="ml-64  p-6">
         <div className=" w-full">
           <AdminStatics/>
-        </div>
+        </div>  
         <div className="mt-20">
           <AllRooms />
         </div>
