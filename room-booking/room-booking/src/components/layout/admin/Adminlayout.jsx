@@ -28,7 +28,7 @@ const AdminLayout = () => {
     <div className="flex">
       <Sidebar title="Admin Panel" menuItems={adminMenuItems} profile={profile} />
       <div className="flex-1 p-6">
-        <Outlet /> {/* This renders the nested routes */}
+        <Outlet /> 
       </div>
     </div>
   );

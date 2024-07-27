@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import AdminLayout from "../../layout/admin/Adminlayout";
 import AdminDashboard from "../../../pages/admin/Dashboard";
-import Allguests from "../../layout/admin/Allguests";
+import Allguests from "../../../pages/admin/Allusers";
 
 const AdminRoutes = () => {
   return (
