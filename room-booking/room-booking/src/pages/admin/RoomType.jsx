@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import getCatogary from "../../services/admin/Catogary";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import getBedType from "../../services/BedType";
+
+import getRoomType from "../../services/RoomType";
 
 const RoomType = () => {
-  const [bedtypes, setBedtypes] = useState([]);
+  const [roomtypes, setRoomtypes] = useState([]);
   const localhost = "http://127.0.0.1:8000/";
 
   const fetchBedTypes = async () => {
     try {
-      const data = await getBedType();
-      setBedtypes(data);
+      const data = await getRoomType();
+      setRoomtypes(data);
     } catch (error) {
       console.log("error from catogary ", error);
     }
@@ -26,7 +26,7 @@ const RoomType = () => {
     <main className="ml-64 p-6">
       <header>
         <h1 className="text-3xl font-bold border-b-2 border-gray-400 pb-2">
-          All Bedtypes (<span>{bedtypes.length}</span>)
+          All Bedtypes (<span>{roomtypes.length}</span>)
         </h1>
       </header>
 
@@ -42,29 +42,29 @@ const RoomType = () => {
             </tr>
           </thead>
           <tbody>
-            {bedtypes.map((bedtypes, idx) => (
+            {roomtypes.map((roomtypes, idx) => (
               <tr
-                key={bedtypes.id}
+                key={roomtypes.id}
                 className={`hover:bg-gray-100 ${
                   idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                 }`}
               >
                 <td className="py-3 px-4">{idx + 1}</td>
-                <td className="py-3 px-4">{bedtypes.id}</td>
+                <td className="py-3 px-4">{roomtypes.id}</td>
                 
-                <td className="py-3 px-4">{bedtypes.name}</td>
+                <td className="py-3 px-4">{roomtypes.name}</td>
                 <td className="py-3 px-4 text-center">
                   <div className="flex justify-center gap-2">
                     <button
                       className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-                      aria-label={`Edit ${bedtypes.name}`}
+                      aria-label={`Edit ${roomtypes.name}`}
                     >
                       <FaEdit className="w-5 h-5" />
                       <span className="hidden sm:inline">Edit</span>
                     </button>
                     <button
                       className="bg-red-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
-                      aria-label={`Delete ${bedtypes.name}`}
+                      aria-label={`Delete ${roomtypes.name}`}
                     >
                       <FaTrashAlt className="w-5 h-5" />
                       <span className="hidden sm:inline">Delete</span>

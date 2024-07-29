@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import getCatogary from "../../services/admin/Catogary";
+import Catogary from "../../services/admin/Catogary";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 const Categories = () => {
@@ -8,7 +8,7 @@ const Categories = () => {
 
   const fetchCatogaries = async () => {
     try {
-      const data = await getCatogary();
+      const data = await Catogary.getCategory();
       setCatogaries(data);
     } catch (error) {
       console.log("error from catogary ", error);
@@ -19,8 +19,25 @@ const Categories = () => {
     fetchCatogaries();
   }, []);
 
-  console.log(catogaries);
+ const catogaryDeleting= async (id)=>{
+    try {
+          await Catogary.deleteCategory(id)
+          setCatogaries(catogaries.filter(category => category.id != id))
+    } catch (error) {
+        console.log(error);
+    }
+ }
 
+ const catoaryEditing=async (id)=>{
+    try {
+        const updatedData = await Catogary.updateCategory(id)
+        console.log('updated data is :',updatedData);
+        setCatogaries(catogaries.map(category => category.id === id ? updatedData : category))
+        
+    } catch (error) {
+        console.log('error',error);
+    }
+ }
   return (
     <main className="ml-64 p-6">
       <header>
@@ -38,13 +55,12 @@ const Categories = () => {
               <th className="py-3 px-4 text-left">Image</th>
               <th className="py-3 px-4 text-left">Name</th>
               <th className="py-3 px-4 text-wrap">Action</th>
-   
             </tr>
           </thead>
           <tbody>
             {catogaries.map((category, idx) => (
               <tr
-                key={category.id}
+                key={idx}
                 className={`hover:bg-gray-100 ${
                   idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                 }`}
@@ -62,6 +78,7 @@ const Categories = () => {
                 <td className="py-3 px-4 text-center">
                   <div className="flex justify-center gap-2">
                     <button
+                       onClick={()=>catoaryEditing(category.id)} 
                       className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
                       aria-label={`Edit ${category.name}`}
                     >
@@ -69,6 +86,7 @@ const Categories = () => {
                       <span className="hidden sm:inline">Edit</span>
                     </button>
                     <button
+                      onClick={() => catogaryDeleting(category.id)}
                       className="bg-red-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
                       aria-label={`Delete ${category.name}`}
                     >
