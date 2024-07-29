@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import getAllusers from "../../services/admin/Allusers";
+import putBlockandUnblock from "../../services/admin/BlockandUnblock";
 
 const Allguests = () => {
   const [users, setUsers] = useState([]);
@@ -22,25 +23,33 @@ const Allguests = () => {
     return is_active ? 'text-green-600' : 'text-red-600';
   };
 
-  const handleBlockToggle = (userId) => {
-    // Implement the functionality to block or unblock a user here
-    console.log(`Toggle block status for user with ID: ${userId}`);
-  };
-
-  const getTextClass = (value) => {
-    return !value ? 'text-center' : '';
+  const handleBlockToggle =async (userId) => {
+    try {
+        const data = await putBlockandUnblock(userId)
+        setUsers((preuser)=>
+        preuser.map((user)=>    
+        user.id === userId ? {...user , is_active : !user.is_active } : user
+        )
+        )
+        console.log(data);
+    } catch (error) {
+        console.log(error);
+    }
   };
 
   return (
     <main className="ml-64 pl-6 mx-auto max-w-6xl">
       <header>
-        <h1 className="text-3xl font-bold border-b-2 border-gray-400 pb-2">
-          All Users
+        <h1 className="text-3xl font-bold flex border-b-2 border-gray-400 pb-2">
+          All Users (
+            <p>
+                {users.length}
+            </p>
+          )
         </h1>
-       
       </header>
       <section className="overflow-x-auto mt-4">
-        <div className="overflow-y-auto h-[calc(100vh-110px)]"> 
+        <div className="overflow-y-auto h-[calc(100vh-110px)]">
           <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
             <thead className="bg-gray-800 text-white sticky top-0 z-10">
               <tr>
@@ -62,9 +71,9 @@ const Allguests = () => {
                   <tr key={user.id} className="hover:bg-gray-100">
                     <td className="py-3 px-4">{index + 1}</td>
                     <td className="py-3 px-4">{user.id}</td>
-                    <td className={`py-3 px-4 ${getTextClass(user.username)}`}>{user.username || '-'}</td>
-                    <td className={`py-3 px-4 ${getTextClass(user.phone_number)}`}>{user.phone_number || '-'}</td>
-                    <td className={`py-3 px-4 ${getTextClass(user.email)}`}>{user.email || '-'}</td>
+                    <td className="py-3 px-4">{user.username || '-'}</td>
+                    <td className="py-3 px-4">{user.phone_number || '-'}</td>
+                    <td className="py-3 px-4">{user.email || '-'}</td>
                     <td className={`py-3 px-4 font-semibold ${colorHandling(user.is_active)}`}>
                       {user.is_active ? 'Active' : 'Inactive'}
                     </td>

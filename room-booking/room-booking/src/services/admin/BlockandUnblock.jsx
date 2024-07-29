@@ -1,9 +1,10 @@
 import instance from "../../utils/Axiox";
 
-const putBlockandUnblock=(id)=>{
+const putBlockandUnblock= async (id)=>{
+    console.log('id from axios',id);
     try {
-        const response = instance.post(`users/${id}/block-unblock/`)
-        console.log('response from instance ',response);
+        const response =await instance.post(`users/${id}/block-unblock/`)
+        return response.data
     } catch (error) {
         console.log(error);
     }
