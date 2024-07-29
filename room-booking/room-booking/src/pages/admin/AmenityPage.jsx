@@ -1,31 +1,32 @@
 import { useEffect, useState } from "react";
-import getCatogary from "../../services/admin/Catogary";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
-const Categories = () => {
-  const [catogaries, setCatogaries] = useState([]);
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import getAmenity from "../../services/admin/Amenity";
+
+const Amenity = () => {
+  const [amenities, setAmenities] = useState([]);
   const localhost = "http://127.0.0.1:8000/";
 
-  const fetchCatogaries = async () => {
+  const fetchAmenity = async () => {
     try {
-      const data = await getCatogary();
-      setCatogaries(data);
+      const data = await getAmenity();
+      setAmenities(data);
     } catch (error) {
       console.log("error from catogary ", error);
     }
   };
 
   useEffect(() => {
-    fetchCatogaries();
+    fetchAmenity();
   }, []);
 
-  console.log(catogaries);
+
 
   return (
     <main className="ml-64 p-6">
       <header>
         <h1 className="text-3xl font-bold border-b-2 border-gray-400 pb-2">
-          All Categories (<span>{catogaries.length}</span>)
+          All Amenity (<span>{amenities.length}</span>)
         </h1>
       </header>
 
@@ -42,35 +43,35 @@ const Categories = () => {
             </tr>
           </thead>
           <tbody>
-            {catogaries.map((category, idx) => (
+            {amenities.map((amenity, idx) => (
               <tr
-                key={category.id}
+                key={amenity.id}
                 className={`hover:bg-gray-100 ${
                   idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                 }`}
               >
                 <td className="py-3 px-4">{idx + 1}</td>
-                <td className="py-3 px-4">{category.id}</td>
+                <td className="py-3 px-4">{amenity.id}</td>
                 <td className="py-3 px-4">
                   <img
                     className="w-16 h-12 rounded-lg object-cover"
-                    src={localhost + category.image}
-                    alt={`${category.name} category`}
+                    src={localhost + amenity.image}
+                    alt={`${amenity.name} amenity`}
                   />
                 </td>
-                <td className="py-3 px-4">{category.name}</td>
+                <td className="py-3 px-4">{amenity.name}</td>
                 <td className="py-3 px-4 text-center">
                   <div className="flex justify-center gap-2">
                     <button
                       className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-                      aria-label={`Edit ${category.name}`}
+                      aria-label={`Edit ${amenity.name}`}
                     >
                       <FaEdit className="w-5 h-5" />
                       <span className="hidden sm:inline">Edit</span>
                     </button>
                     <button
                       className="bg-red-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
-                      aria-label={`Delete ${category.name}`}
+                      aria-label={`Delete ${amenity .name}`}
                     >
                       <FaTrashAlt className="w-5 h-5" />
                       <span className="hidden sm:inline">Delete</span>
@@ -86,4 +87,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Amenity;
