@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Sidebar from "../../common/admin/SlidebarLi";
 
 const adminMenuItems = [
-  "Dashboard",
+  "Dashboard  ",
   "Guests",
   "Booking",
   "Reservation",
@@ -14,6 +14,7 @@ const adminMenuItems = [
   "City",
   "Country",
   "Banner",
+  "Payment",
 ];
 
 export const AdminSidebar = () => {

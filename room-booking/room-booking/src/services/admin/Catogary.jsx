@@ -21,9 +21,23 @@ const deleteCategory = async (id) => {
     }
 };
 
+
 const updateCategory = async (id, updatedData) => {
     try {
-        const response = await instance.put(`category/${id}/`, updatedData);
+        const formData = new FormData();
+        formData.append('name', updatedData.name);
+        
+        // Only append the image if it is provided
+        if (updatedData.image) {
+            formData.append('image', updatedData.image);
+        }
+
+        const response = await instance.patch(`category/${id}/`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
         return response.data;
     } catch (error) {
         console.error('Error updating category:', error);
