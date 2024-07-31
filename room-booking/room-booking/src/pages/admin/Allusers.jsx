@@ -38,7 +38,7 @@ const Allguests = () => {
   };
 
   return (
-    <main className="ml-64 pl-6 mx-auto max-w-6xl">
+    <main className="ml-64 pl-6 mx-auto max-w-6xl ">
       <header>
         <h1 className="text-3xl font-bold flex border-b-2 border-gray-400 pb-2">
           All Users (
@@ -59,6 +59,7 @@ const Allguests = () => {
                 <th className="py-3 px-4 text-left">Phone Number</th>
                 <th className="py-3 px-4 text-left">Email</th>
                 <th className="py-3 px-4 text-left">Status</th>
+                <th className="py-3 px-4 text-left">Role</th>
                 <th className="py-3 px-10 text-left">Action</th>
               </tr>
             </thead>
@@ -77,6 +78,7 @@ const Allguests = () => {
                     <td className={`py-3 px-4 font-semibold ${colorHandling(user.is_active)}`}>
                       {user.is_active ? 'Active' : 'Inactive'}
                     </td>
+                    <td className="py-3 px-4 ">{user.is_superuser ? "Admin" : user.is_vendor ? 'Vendor' : 'User'}</td>
                     <td className="py-3 px-4 text-center">
                       <button
                         onClick={() => handleBlockToggle(user.id)}

@@ -69,7 +69,7 @@ const AllRooms = () => {
                   <td className="py-3 px-4">{room.category.name}</td>
                   <td className="py-3 px-4">{room.created_by}</td>
                   <td className="py-3 px-4">{room.location.city}, {room.location.country}</td>
-                  <td className="py-3 px-4">${room.price_per_night}</td>
+                  <td className="py-3 px-4">{room.price_per_night}</td>
                   <td className={`py-3 px-4 font-semibold ${getStatusClass(room.availability)}`}>
                     {room.availability ? 'Active' : 'Inactive'}
                   </td>
