@@ -68,7 +68,7 @@ const Allguests = () => {
                 const buttonColor = user.is_active ? 'bg-green-600' : 'bg-red-600';
 
                 return (
-                  <tr key={user.id} className="hover:bg-gray-100">
+                  <tr key={user.id} className={`hover:bg-gray-200 ${index % 2 ==0 ? "bg-gray-50":"bg-white"}`}>
                     <td className="py-3 px-4">{index + 1}</td>
                     <td className="py-3 px-4">{user.id}</td>
                     <td className="py-3 px-4">{user.username || '-'}</td>

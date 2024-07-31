@@ -5,8 +5,8 @@ import Sidebar from "../../common/admin/SlidebarLi";
 const adminMenuItems = [
   "Dashboard  ",
   "Guests",
-  "Booking",
-  "Reservation",
+  // "Booking",
+  // "Reservation",
   "Category",
   "Amenity",
   "Room Type",

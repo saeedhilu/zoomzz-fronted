@@ -6,8 +6,7 @@ import { useSelector } from "react-redux";
 const adminMenuItems = [
   "Dashboard",
   "Guests",
-  "Booking",
-  "Reservation",
+  
   "Category",
   "Amenity",
   "Room Type",

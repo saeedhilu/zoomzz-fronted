@@ -13,6 +13,7 @@ import Banner from "../../../pages/admin/BannerPage";
 const AdminRoutes = () => {
   return (
     <Routes>
+      
       <Route path="/" element={<AdminLayout />}>
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="guests" element={<Allguests />} />

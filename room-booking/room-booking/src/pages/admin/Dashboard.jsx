@@ -6,7 +6,8 @@ import AdminStatics from "../../components/layout/admin/AdminStatics";
 const AdminDashboard = () => {
   return (
     <div className="flex justify-center">
-      <AdminSidebar />
+      {/* For updatimg the sidebar  */}
+      {/* <AdminSidebar /> */}
       <div className="ml-64  p-6">
         <div className=" w-full">
           <AdminStatics/>
