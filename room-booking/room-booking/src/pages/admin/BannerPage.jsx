@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrashAlt, FaTimes } from "react-icons/fa"; // Import FaTimes icon
 import getBanner from "../../services/Banner";
-
+// This section for banner section
 const Banner = () => {
   const [banner, setBanner] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null); // State for the selected image
