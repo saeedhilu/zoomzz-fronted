@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import getAmenity from "../../services/admin/Amenity";
-
+// This section for amenity
 const Amenity = () => {
   const [amenities, setAmenities] = useState([]);
   const localhost = "http://127.0.0.1:8000/";
