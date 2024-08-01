@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import getAllusers from "../../services/admin/Allusers";
 import putBlockandUnblock from "../../services/admin/BlockandUnblock";
-
+// This is all guest page
 const Allguests = () => {
   const [users, setUsers] = useState([]);
 
