@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import getCatogary from "../../services/admin/Catogary";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import getBedType from "../../services/BedType";
+// This section for Bedtype section
 
 const Bedtypes = () => {
   const [bedtypes, setBedtypes] = useState([]);
