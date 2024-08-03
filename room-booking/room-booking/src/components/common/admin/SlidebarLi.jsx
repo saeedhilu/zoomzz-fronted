@@ -7,7 +7,7 @@ const Sidebar = ({ title, menuItems, profile }) => {
   const baseURL = "http://localhost:8000/";
 
   return (
-    <aside className="h-screen w-64 bg-gray-800 text-white fixed top-0 left-0">
+    <aside className="h-screen w-64 bg-red-800 text-white fixed top-0 left-0">
       <header className="py-4 px-6">
         <h2 className="text-xl font-semibold mb-6">{title}</h2>
         <div className="flex items-center mb-6">

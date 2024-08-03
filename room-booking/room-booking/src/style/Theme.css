@@ -1,0 +1,17 @@
+/* styles.css */
+
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+  }
+  
+  [data-theme='dark'] {
+    --background-color: #000000;
+    --text-color: #4f4d4d;
+  }
+  
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  

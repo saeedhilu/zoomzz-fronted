@@ -59,8 +59,8 @@ const AllRooms = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {data.map((room) => (
-                <tr key={room.id} className="hover:bg-gray-100">
+              {data.map((room,index) => (
+                <tr key={room.id} className={`hover:bg-gray-200 ${index % 2 ==0 ? "bg-gray-50":"bg-white"}`}>
                   <td className="py-3 px-4">{room.id}</td>
                   <td className="py-3 px-4 flex items-center gap-2">
                     <img className="w-16 h-12 rounded-lg" src={room.image} alt={`${room.name} room`} />

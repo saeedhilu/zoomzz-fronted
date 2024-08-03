@@ -69,11 +69,11 @@ const AdminLayout = () => {
   const profile = useSelector((state) => ({
     username: state.auth.username,
     profileImage: state.auth.profileImage,
-    icon: state.auth.icon || "A", // Default icon if none provided
+    icon: state.auth.icon || "A", 
   }));
 
   const handleLogout = () => {
-    // Implement your logout logic here
+    
     console.log("User logged out");
   };
 
@@ -83,7 +83,7 @@ const AdminLayout = () => {
         title="Admin Panel"
         menuItems={adminMenuItems}
         profile={profile}
-        onLogout={handleLogout} // Pass logout handler to Sidebar
+        onLogout={handleLogout} 
       />
       <div className="flex-1 p-6">
         <Outlet />

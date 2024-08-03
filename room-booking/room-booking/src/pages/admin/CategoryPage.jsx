@@ -163,7 +163,7 @@ const Categories = () => {
 
   const catoaryEditing = (category) => {
     setSelectedCategory(category);
-    setFormData({ name: '', image: "" }); 
+    setFormData({ name: category.name, image: "" }); 
     setIsModalOpen(true);
     setErrorMessage("");
   };
@@ -180,6 +180,9 @@ const Categories = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log('====================================');
+      console.log('for cheching',formData);
+      console.log('====================================');
       const updatedData = await Catogary.updateCategory(selectedCategory.id, formData);
       setCatogaries(catogaries.map((category) =>
         category.id === selectedCategory.id ? updatedData : category

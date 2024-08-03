@@ -10,6 +10,8 @@ import RoomType from "../../../pages/admin/RoomType";
 import City from "../../../pages/admin/CityPage";
 import Country from "../../../pages/admin/CountryPage";
 import Banner from "../../../pages/admin/BannerPage";
+import LogoutPage from "../../../pages/admin/LogoutPage";
+import SettingsPage from "../../../pages/admin/Settings";
 const AdminRoutes = () => {
   return (
     <Routes>
@@ -24,6 +26,9 @@ const AdminRoutes = () => {
         <Route path="city/" element={<City/>} />
         <Route path="country/" element={<Country/>} />
         <Route path="banner/" element={<Banner/>} />
+        <Route path="logout/" element={<LogoutPage/>} />
+        <Route path="settings/" element={<SettingsPage/>} />
+        
        
       </Route>
     </Routes>
