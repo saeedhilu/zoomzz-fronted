@@ -12,7 +12,7 @@ const SettingsPage = () => {
   const handleLogout = () => {
     dispatch(clearAuth()); // Clear authentication state
     localStorage.removeItem('authToken'); // Optionally clear the auth token from localStorage
-    navigate('/login'); // Redirect to login pages
+    navigate('/login'); // Redirect to login pagese
   };
 
   return (
