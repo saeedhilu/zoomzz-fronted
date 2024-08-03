@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
@@ -15,8 +14,7 @@ import instance from '../../../utils/Axiox';
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend
@@ -35,18 +33,51 @@ const TestChart = () => {
         });
         const data = response.data;
 
+        // Extract and organize data
+        const labels = Array.from(new Set([
+          ...data.confirmed.map(d => d.check_in),
+          ...data.upcoming.map(d => d.check_in),
+          ...data.canceled.map(d => d.check_in),
+        ])).sort();
+
+        const confirmedData = labels.map(date => {
+          const entry = data.confirmed.find(d => d.check_in === date);
+          return entry ? entry.total : 0;
+        });
+
+        const upcomingData = labels.map(date => {
+          const entry = data.upcoming.find(d => d.check_in === date);
+          return entry ? entry.total : 0;
+        });
+
+        const canceledData = labels.map(date => {
+          const entry = data.canceled.find(d => d.check_in === date);
+          return entry ? entry.total : 0;
+        });
+
         setChartData({
-          labels: data.map(reservation => reservation.check_in),
+          labels,
           datasets: [
             {
-              label: `${data.length} Bookings `,
-              data: data.map(reservation => reservation.total_guest),
-              fill: false,
-              backgroundColor: '#3e3e3e',
-              borderColor: '#3e3e3e',
-              borderWidth: 3, 
-              pointRadius: 5,
-              roomNames: data.map(reservation => reservation.room_name),
+              label: 'Confirmed',
+              data: confirmedData,
+              backgroundColor: 'rgba(0, 255, 0, 0.2)',
+              borderColor: 'green',
+              borderWidth: 1,
+            },
+            {
+              label: 'Upcoming',
+              data: upcomingData,
+              backgroundColor: 'rgba(0, 0, 255, 0.2)',
+              borderColor: 'blue',
+              borderWidth: 1,
+            },
+            {
+              label: 'Canceled',
+              data: canceledData,
+              backgroundColor: 'rgba(255, 0, 0, 0.2)',
+              borderColor: 'red',
+              borderWidth: 1,
             },
           ],
         });
@@ -72,14 +103,23 @@ const TestChart = () => {
           label: (tooltipItem) => {
             const dataset = tooltipItem.dataset;
             const dataIndex = tooltipItem.dataIndex;
-            const roomName = dataset.roomNames[dataIndex]; // Access room name
-            return `Room: ${roomName} `;
+            return `${dataset.label}: ${tooltipItem.formattedValue}`;
           }
         }
       }
     },
     scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+        },
+      },
       y: {
+        title: {
+          display: true,
+          text: 'Number of Bookings',
+        },
         beginAtZero: true,
         ticks: {
           stepSize: 1,
@@ -113,9 +153,10 @@ const TestChart = () => {
           />
         </label>
       </div>
-      <div className="w-full md:w-1/2 h-64"> {/* Adjust the width and height here */}
-        <Line data={chartData} options={options} />
-      </div>
+      <div style={{ width: '80%', height: '400px' }}> {/* Adjust width and height here */}
+  <Bar data={chartData} options={options} />
+</div>
+
     </>
   );
 };

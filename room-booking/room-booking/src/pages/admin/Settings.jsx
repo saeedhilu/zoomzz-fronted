@@ -16,7 +16,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <main className="p-6 md:p-8 lg:p-10 ml-64">
+    <main className="p-6 md:p-8 lg:p-10 ">
       <header className="mb-6">
         <h1 className="text-3xl font-bold">Settings</h1>
       </header>

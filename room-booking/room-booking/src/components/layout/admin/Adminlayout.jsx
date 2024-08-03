@@ -85,7 +85,7 @@ const AdminLayout = () => {
         profile={profile}
         onLogout={handleLogout} 
       />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 ml-56">
         <Outlet />
       </div>
     </div>

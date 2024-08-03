@@ -23,7 +23,7 @@ const RoomType = () => {
 
 
   return (
-    <main className="ml-64 p-6">
+    <main className=" p-6">
       <header>
         <h1 className="text-3xl font-bold border-b-2 border-gray-400 pb-2">
           All Bedtypes (<span>{roomtypes.length}</span>)

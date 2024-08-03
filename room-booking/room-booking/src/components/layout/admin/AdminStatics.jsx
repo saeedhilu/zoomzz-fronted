@@ -22,7 +22,7 @@ const AdminStatics = () => {
     data;
 
   return (
-    <div className="flex md:gap-6 justify-center">
+    <div className="flex md:gap-6  justify-between">
       <div className="gap-3 bg-gray-100 shadow-lg shadow-gray-400 rounded-lg p-8  flex items-center">
         <div>
           <p className="text-lg font-bold text-start">{total_bookings}</p>

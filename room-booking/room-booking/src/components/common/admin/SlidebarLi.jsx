@@ -7,7 +7,7 @@ const Sidebar = ({ title, menuItems, profile }) => {
   const baseURL = "http://localhost:8000/";
 
   return (
-    <aside className="h-screen w-64 bg-red-800 text-white fixed top-0 left-0">
+    <aside className="h-screen w-64   fixed top-0 border-r-2 shadow-xl left-0">
       <header className="py-4 px-6">
         <h2 className="text-xl font-semibold mb-6">{title}</h2>
         <div className="flex items-center mb-6">
@@ -26,7 +26,7 @@ const Sidebar = ({ title, menuItems, profile }) => {
         <nav>
           <ul className="space-y-4">
             {menuItems.map((item, index) => (
-              <li key={index} className="hover:bg-gray-700 px-4 py-2 rounded-lg">
+              <li key={index} className="hover:bg-gray-100 px-4 py-2 rounded-lg">
                 <Link to={`/admin/${item.label.toLowerCase().replace(/\s+/g, '-')}`}>
                   <span className="flex items-center">
                     {item.icon}

@@ -38,7 +38,7 @@ const Allguests = () => {
   };
 
   return (
-    <main className="ml-64 pl-6 mx-auto max-w-6xl ">
+    <main className="pl-6 mx-auto max-w-6xl ">
       <header>
         <h1 className="text-3xl font-bold flex border-b-2 border-gray-400 pb-2">
           All Users (
