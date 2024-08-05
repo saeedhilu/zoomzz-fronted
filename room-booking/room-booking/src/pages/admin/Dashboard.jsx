@@ -33,7 +33,7 @@ const AdminDashboard = () => {
 
         {/* Section for other components */}
         <div className="mt-6">
-          <div className="col-span-1">
+          <div className="col-span-1 ">
             <AllRooms />
           </div>
         </div>
