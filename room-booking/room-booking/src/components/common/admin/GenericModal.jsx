@@ -28,7 +28,6 @@ const GenericModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
-        console.log('data form modal ',formData);
       onSubmit(formData);
       onClose();
     } catch (error) {

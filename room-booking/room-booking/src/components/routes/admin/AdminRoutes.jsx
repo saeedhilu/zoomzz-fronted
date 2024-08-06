@@ -17,6 +17,7 @@ const AdminRoutes = () => {
     <Routes>
       
       <Route path="/" element={<AdminLayout />}>
+      
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="guests" element={<Allguests />} />
         <Route path="category/" element={<Categories />} />

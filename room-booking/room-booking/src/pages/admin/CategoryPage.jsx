@@ -84,7 +84,7 @@ const Categories = () => {
         setCategories((prev) => [...prev, data]);
         toast.success(`Category ${data.name} created successfully!`);
       } catch (error) {
-        console.error("Error creating category:", error);
+       
         setErrorMessage("Error occurred while creating category");
         toast.error("Error occurred while creating category");
       }
@@ -113,7 +113,6 @@ const Categories = () => {
         toast.error("Error occurred while saving category");
       }
     }
-
     setIsGenericModalOpen(false);
     setErrorMessage("");
   };
