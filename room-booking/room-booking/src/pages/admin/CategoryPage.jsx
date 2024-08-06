@@ -1,126 +1,140 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Catogary from "../../services/admin/Catogary";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import ConfirmationModal from "../../components/common/admin/ConfirmModal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AddNewButton from "../../components/common/admin/AddNewButton";
+import GenericModal from "../../components/common/admin/GenericModal";
 
 const Categories = () => {
-  const [catogaries, setCatogaries] = useState([]);
-  const [formData, setFormData] = useState({ name: "", image: "" });
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCreating, setIsCreating] = useState(false); // New state for creating
+  const [isGenericModalOpen, setIsGenericModalOpen] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [deleteName, setDeleteName] = useState("");
   const localhost = "http://127.0.0.1:8000/";
 
-  const fetchCatogaries = async () => {
+  const fetchCategories = async () => {
     try {
       const data = await Catogary.getCategory();
-      setCatogaries(data);
+      setCategories(data);
     } catch (error) {
       console.log("Error fetching categories:", error);
     }
   };
 
   useEffect(() => {
-    fetchCatogaries();
+    fetchCategories();
   }, []);
 
-  const catogaryDeleting = async (id) => {
+  const handleDeleteClick = (id, name) => {
+    setDeleteId(id);
+    setDeleteName(name);
+    setIsConfirmModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
     try {
-      await Catogary.deleteCategory(id);
-      setCatogaries(catogaries.filter((category) => category.id !== id));
+      await Catogary.deleteCategory(deleteId);
+      setCategories(categories.filter((category) => category.id !== deleteId));
+      setIsConfirmModalOpen(false);
+      setDeleteId(null);
+      setDeleteName("");
+      setErrorMessage("");
+      toast.success(`Category "${deleteName}" deleted successfully!`);
     } catch (error) {
       console.log("Error deleting category:", error);
+      setErrorMessage("Error deleting category");
+      toast.error("Error deleting category");
     }
   };
 
-  const catoaryEditing = (category) => {
-    setSelectedCategory(category);
-    setFormData({ name: category.name, image: "" });
-    setIsCreating(false);
-    setIsModalOpen(true);
-    setErrorMessage("");
+  const cancelDelete = () => {
+    setDeleteId(null);
+    setDeleteName("");
+    setIsConfirmModalOpen(false);
   };
 
   const handleCreate = () => {
     setSelectedCategory(null);
-    setFormData({ name: "", image: "" });
     setIsCreating(true);
-    setIsModalOpen(true);
+    setIsGenericModalOpen(true);
     setErrorMessage("");
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleEdit = (category) => {
+    setSelectedCategory(category);
+    setIsCreating(false);
+    setIsGenericModalOpen(true);
+    setErrorMessage("");
   };
+  const handleSubmit = async (formData) => {
+   
+    const formDataToSend = new FormData();
 
-  const handleFileChange = (e) => {
-    setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const updatedFields = {};
-
-    try {
-      if (isCreating) {
-        
-
-        if (formData.name) {
-          updatedFields.name = formData.name;
-        }
-
-        if (formData.image) {
-          updatedFields.image = formData.image;
-        }
-        const data = await Catogary.createCategory(
-          
-          updatedFields
-        );
-        console.log(data);
-        
-        setCatogaries((pre)=> [...pre,data])
-
-
-
-
-      } else {
-        if (formData.name !== selectedCategory.name) {
-          updatedFields.name = formData.name;
-        }
-
-        if (formData.image) {
-          updatedFields.image = formData.image;
-        }
+    if (isCreating) {
+      if (formData.name) formDataToSend.append("name", formData.name);
+      if (formData.image && formData.image instanceof File)formDataToSend.append("image", formData.image);
+      try {
+        const data = await Catogary.createCategory(formDataToSend, true);
+        setCategories((prev) => [...prev, data]);
+        toast.success(`Category ${data.name} created successfully!`);
+      } catch (error) {
+        console.error("Error creating category:", error);
+        setErrorMessage("Error occurred while creating category");
+        toast.error("Error occurred while creating category");
+      }
+    } else {
+      if (formData.name && formData.name !== selectedCategory.name) {
+        formDataToSend.append("name", formData.name);
+      }
+      if (formData.image && formData.image instanceof File) {
+        formDataToSend.append("image", formData.image)
+      } 
+      try {
         const updatedData = await Catogary.updateCategory(
           selectedCategory.id,
-          updatedFields
+          formDataToSend,
+          true
         );
-        setCatogaries(
-          catogaries.map((category) =>
+        setCategories(
+          categories.map((category) =>
             category.id === selectedCategory.id ? updatedData : category
           )
         );
+        toast.success(`Category ${updatedData.name} updated successfully!`);
+      } catch (error) {
+        console.error("Error updating category:", error);
+        setErrorMessage("Error occurred while saving category");
+        toast.error("Error occurred while saving category");
       }
-      setIsModalOpen(false);
-      setErrorMessage("");
-    } catch (error) {
-      setErrorMessage(error);
     }
+
+    setIsGenericModalOpen(false);
+    setErrorMessage("");
   };
 
+  const modalFields = [
+    {
+      name: "name",
+      type: "text",
+      label: "Name",
+      placeholder: "Enter Category name",
+    },
+    { name: "image", type: "file", label: "Image", accept: "image/*" },
+  ];
+
   return (
-    <main className="p-6">
+    <main className="p-6">  
       <header className="border-b-2 border-gray-400 pb-2 flex justify-between">
         <h1 className="text-3xl font-bold">
-          All Categories (<span>{catogaries.length}</span>)
+          All Categories (<span>{categories.length}</span>)
         </h1>
-        <button
-          className="bg-gray-600 p-3 rounded-lg text-white hover:bg-gray-800"
-          onClick={handleCreate}
-        >
-          Add New +
-        </button>
+        <AddNewButton onClick={handleCreate} label="Add New +" />
       </header>
 
       <section className="mt-4">
@@ -135,7 +149,7 @@ const Categories = () => {
             </tr>
           </thead>
           <tbody>
-            {catogaries.map((category, idx) => (
+            {categories.map((category, idx) => (
               <tr
                 key={idx}
                 className={`hover:bg-gray-200 ${
@@ -152,23 +166,21 @@ const Categories = () => {
                   />
                 </td>
                 <td className="py-3 px-4">{category.name}</td>
-                <td className="py-3 px-4 text-center">
-                  <div className="flex justify-center gap-2">
+                <td className="py-3 px-4">
+                  <div className="flex gap-2">
                     <button
-                      onClick={() => catoaryEditing(category)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-                      aria-label={`Edit ${category.name}`}
+                      onClick={() => handleEdit(category)}
+                      className="text-blue-500 hover:text-blue-600"
                     >
-                      <FaEdit className="w-5 h-5" />
-                      <span className="hidden sm:inline">Edit</span>
+                      <FaEdit />
                     </button>
                     <button
-                      onClick={() => catogaryDeleting(category.id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
-                      aria-label={`Delete ${category.name}`}
+                      onClick={() =>
+                        handleDeleteClick(category.id, category.name)
+                      }
+                      className="text-red-500 hover:text-red-600"
                     >
-                      <FaTrashAlt className="w-5 h-5" />
-                      <span className="hidden sm:inline">Delete</span>
+                      <FaTrashAlt />
                     </button>
                   </div>
                 </td>
@@ -177,66 +189,27 @@ const Categories = () => {
           </tbody>
         </table>
       </section>
-
-      {isModalOpen && (
-        <section>
-          <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900/50">
-            <article className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-              <h2 className="text-lg font-bold text-gray-900">
-                {isCreating ? "Create Category" : "Edit Category"}
-              </h2>
-              <form onSubmit={handleSubmit} className="mt-4">
-                {errorMessage && (
-                  <div className="mb-4 p-4 bg-red-100 text-red-700 border border-red-400 rounded-md">
-                    {errorMessage}
-                  </div>
-                )}
-                <div className="mb-4">
-                  <label htmlFor="name" className="block text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="image" className="block text-gray-700">
-                    Image
-                  </label>
-                  <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="w-full border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="flex justify-end gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-150 ease-in-out"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-                  >
-                    {isCreating ? "Create" : "Update"}
-                  </button>
-                </div>
-              </form>
-            </article>
-          </div>
-        </section>
+      {isGenericModalOpen && (
+        <GenericModal
+          isOpen={isGenericModalOpen}
+          onClose={() => setIsGenericModalOpen(false)}
+          onSubmit={handleSubmit}
+          initialData={selectedCategory || {}}
+          isCreating={isCreating}
+          title={isCreating ? "Create New Category" : "Edit Category"}
+          fields={modalFields}
+        />
       )}
+
+      {isConfirmModalOpen && (
+        <ConfirmationModal
+          message={`Are you sure you want to delete the category "${deleteName}"?`}
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+        />
+      )}
+
+      <ToastContainer />
     </main>
   );
 };
