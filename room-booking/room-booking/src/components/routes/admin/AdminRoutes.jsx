@@ -16,9 +16,7 @@ import AllRooms from "../../../pages/admin/AllRooms";
 const AdminRoutes = () => {
   return (
     <Routes>
-      
       <Route path="/" element={<AdminLayout />}>
-      
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="guests" element={<Allguests />} />
         <Route path="all-rooms" element={<AllRooms />} />

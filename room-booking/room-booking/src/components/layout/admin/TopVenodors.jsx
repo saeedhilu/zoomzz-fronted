@@ -1,4 +1,3 @@
-// src/components/layout/admin/TopVendors.js
 import React, { useEffect, useState } from "react";
 
 import getTopVendors from "../../../services/admin/TopVendors";

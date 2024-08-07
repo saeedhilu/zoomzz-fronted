@@ -89,7 +89,7 @@ const AdminStatics = () => {
   const { total_bookings, total_check_ins, total_check_outs, total_vendors } = data;
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4 mt-10 p-2">
       <div className="flex items-center bg-blue-100 shadow-lg shadow-gray-300 rounded-lg p-6 md:p-8">
         <div className="flex flex-col items-center">
           <p className="text-xl font-bold">{total_bookings}</p>

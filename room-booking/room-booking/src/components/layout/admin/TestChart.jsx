@@ -20,7 +20,7 @@ ChartJS.register(
   Legend
 );
 
-const TestChart = () => {
+const BookingChart = () => {
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -162,4 +162,4 @@ const TestChart = () => {
   );
 };
 
-export default TestChart;
+export default BookingChart;

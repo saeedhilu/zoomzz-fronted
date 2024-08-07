@@ -22,7 +22,7 @@ const SettingsPage = () => {
     dispatch(clearAuth()); 
     localStorage.removeItem("authToken"); 
     toast.success("You have successfully logged out!");
-    navigate("/login"); 
+    navigate("admin/login"); 
   };
 
   const handleModalConfirm = () => {

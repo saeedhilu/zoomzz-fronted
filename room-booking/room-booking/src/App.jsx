@@ -6,6 +6,7 @@ import RoleProtecterRoute from "./components/auth/protectedrouted/RoleProtecterR
 import UnauthorizedPage from "./components/unauthorized/UnauthorizedPage";
 import AdminLoginPage from "./pages/admin/Login";
 import AdminRoutes from "./components/routes/admin/AdminRoutes";
+import SignupPage from "./pages/vendor/Signup";
 
 // Lazy load components
 const Home = lazy(() => import("./pages/Home"));
@@ -39,6 +40,27 @@ function App() {
             </RoleProtecterRoute>
           }
         />
+
+
+
+        {/* 
+        
+        ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇ Vendor Routes ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇
+        
+        */}
+
+          <Route path="/vendor-signup" element={<SignupPage />} />
+
+
+
+
+
+
+
+
+
+
+
 
         {/* Regular routes */}
         <Route path="/" element={<Home />} />

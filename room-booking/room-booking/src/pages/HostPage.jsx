@@ -59,7 +59,7 @@ const BecomeMemberPage = () => {
                 <li>Networking opportunities.</li>
               </ul>
               <a
-                // href="/join"
+                href="/vendor-signup"
                 className="bg-gray-600 text-white text-lg font-semibold px-6 py-3 mt-6 rounded-lg shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105 inline-block"
               >
                 Become a Member

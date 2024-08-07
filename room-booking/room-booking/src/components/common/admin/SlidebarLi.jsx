@@ -183,8 +183,8 @@ const Sidebar = ({ title, menuItems, profile }) => {
   if (!menuItems) return null;
 
   return (
-    <div>
-      {/* Hamburger Menu Icon for Mobile */}
+    <div className="border-r-2 shadow-lg shadow-blue-200">
+      
       <div className="lg:hidden fixed top-4 right-4 z-50">
         <button
           onClick={handleToggleSidebar}
@@ -194,7 +194,7 @@ const Sidebar = ({ title, menuItems, profile }) => {
         </button>
       </div>
 
-      {/* Sidebar */}
+      
       <aside
         className={`fixed top-0 left-0 w-64 h-screen bg-white border-r-2 border-gray-200 shadow-xl transition-transform transform z-40 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
