@@ -10,6 +10,7 @@ const GenericModal = ({
   submitLabel = 'Submit',
   cancelLabel = 'Cancel',
 }) => {
+    
   const [formData, setFormData] = useState(initialData);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -24,6 +25,9 @@ const GenericModal = ({
       [name]: type === 'file' ? files[0] : value,
     }));
   };
+  console.log('====================================');
+  console.log('fropm data is L',formData);
+  console.log('====================================');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,7 +41,7 @@ const GenericModal = ({
 
 
   return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-900/50">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-gray-900/50">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-lg font-bold text-gray-900">{title}</h2>
         <form onSubmit={handleSubmit}>

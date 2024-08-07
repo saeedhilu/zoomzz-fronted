@@ -131,8 +131,8 @@ const TestChart = () => {
 
   return (
     <>
-      <div className="mb-4">
-        <label>
+      <div className="mb-4 flex flex-col sm:flex-row">
+        <label className="mb-2 sm:mb-0">
           Month:
           <input
             type="number"
@@ -140,9 +140,10 @@ const TestChart = () => {
             onChange={(e) => setMonth(Number(e.target.value))}
             min="1"
             max="12"
+            className="ml-2 p-1 border rounded"
           />
         </label>
-        <label className="ml-4">
+        <label className="ml-0 sm:ml-4">
           Year:
           <input
             type="number"
@@ -150,13 +151,13 @@ const TestChart = () => {
             onChange={(e) => setYear(Number(e.target.value))}
             min="2000"
             max={new Date().getFullYear()}
+            className="ml-2 p-1 border rounded"
           />
         </label>
       </div>
-      <div style={{ width: '80%', height: '400px' }}> {/* Adjust width and height here */}
-  <Bar data={chartData} options={options} />
-</div>
-
+      <div className="w-full max-w-full md:max-w-4xl mx-auto p-2">
+        <Bar data={chartData} options={options} />
+      </div>
     </>
   );
 };

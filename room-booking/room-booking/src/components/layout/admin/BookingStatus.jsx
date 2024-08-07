@@ -49,7 +49,7 @@ const BookingStatusChart = () => {
   }, []);
 
   return (
-    <div className="w-full md:w-1/2 h-64">
+    <div className="w-full md:w-1/3 h-64">
       <Pie data={chartData} />
     </div>
   );

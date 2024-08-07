@@ -24,6 +24,9 @@ const Banner = () => {
   const fetchBanner = async () => {
     try {
       const data = await Banners.getBanner();
+      console.log('====================================');
+      console.log('data s OL:',data);
+      console.log('====================================');
       setBanner(data);
     } catch (error) {
       console.log("error from Banner ", error);
@@ -94,20 +97,19 @@ const Banner = () => {
         console.log("Error is :", error);
       }
     } else {
+      console.log('====================================');
+      console.log('from, babder:',formData);
+      console.log('====================================');
       if (formData.title !== selectedData.title) {
         formDataToSend.append("title", formData.title);
       }
-      if (formData.content !== selectedData.content) {
-        formDataToSend.append("content", formData.content);
-      }
+      
       if (formData.btn_text !== selectedData.btn_text) {
         formDataToSend.append("btn_text", formData.btn_text);
       }
-      if (formData.image) {
-       
-        formDataToSend.append("image", formData.image);
-      }
-
+      if (formData.image && formData.image instanceof File) {
+        formDataToSend.append("image", formData.image)
+      } 
       try {
         const data = await Banners.updateBanner(selectedData.id, formDataToSend, true);
         setBanner((prev) =>
@@ -127,12 +129,7 @@ const Banner = () => {
       label: "Title",
       placeholder: "Enter Banner Title",
     },
-    {
-      name: "content",
-      type: "text",
-      label: "Content",
-      placeholder: "Enter Banner Content",
-    },
+   
     {
       name: "btntxt",
       type: "text",
@@ -143,13 +140,13 @@ const Banner = () => {
   ];
 
   return (
-    <main className="p-6">
+    <main className="">
       <header className="border-b-2 border-gray-400 pb-2 flex justify-between">
         <h1 className="text-3xl font-bold">Banner Management</h1>
         <AddNewButton onClick={handleCreate} label="Add New +" />
       </header>
 
-      <section className="mt-4">
+      <section className="mt-4 overflow-y-auto h-[calc(100vh-125px)]  ">
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead className="bg-gray-800 text-white sticky top-0 z-10">
             <tr>
@@ -157,7 +154,7 @@ const Banner = () => {
               <th className="py-3 px-4 text-left">ID</th>
               <th className="py-3 px-4 text-left">Image</th>
               <th className="py-3 px-4 text-left">Title</th>
-              <th className="py-3 px-4 text-left">Banner Content</th>
+              
               <th className="py-3 px-4 text-left">Button Text</th>
               <th className="py-3 px-4 text-left">Action</th>
             </tr>
@@ -181,7 +178,6 @@ const Banner = () => {
                   />
                 </td>
                 <td className="py-3 px-4">{banner.title}</td>
-                <td className="py-3 px-4">{banner.banner_content}</td>
                 <td className="py-3 px-4">{banner.button_text}</td>
                 <td className="py-3 px-4 text-center">
                   <div className="flex justify-center gap-2">

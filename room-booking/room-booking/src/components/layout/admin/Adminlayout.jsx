@@ -26,6 +26,10 @@ const adminMenuItems = [
     icon: <FaUsers />,
   },
   {
+    label: "All Rooms",
+    icon: <FaSignOutAlt />,
+  },
+  {
     label: "Category",
     icon: <FaList />,
   },
@@ -58,11 +62,7 @@ const adminMenuItems = [
     icon: <FaCogs />,
     link: "/settings", 
   },
-  {
-    label: "Logout",
-    icon: <FaSignOutAlt />,
-    action: "logout", 
-  },
+  
 ];
 
 const AdminLayout = () => {
@@ -85,7 +85,7 @@ const AdminLayout = () => {
         profile={profile}
         onLogout={handleLogout} 
       />
-      <div className="flex-1 p-6 ml-56">
+      <div className="flex-1 lg:p-6">
         <Outlet />
       </div>
     </div>

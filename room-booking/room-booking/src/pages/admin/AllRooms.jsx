@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import getAllRooms from "../../../services/admin/AllroomsServices";
+import getAllRooms from "../../services/admin/AllroomsServices";
 
 const AllRooms = () => {
   const [data, setData] = useState([]);
@@ -35,8 +35,8 @@ const AllRooms = () => {
   };
 
   return (
-    <main className="p-6 mx-auto max-w-6xl ">
-      <header >
+    <main className="">
+      <header>
         <h1 className="text-3xl font-bold mb-3 border-b-2 border-gray-400 pb-2">
           All Rooms
         </h1>
@@ -46,19 +46,35 @@ const AllRooms = () => {
       {error && <p className="text-center text-red-600">{error}</p>}
 
       {!loading && !error && (
-        <section className="overflow-x-auto ">
+        <section className="overflow-x-auto h-full">
           <div className="overflow-y-auto h-[calc(100vh-110px)]">
-            <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md ">
+            <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
               <thead className="bg-gray-800 text-white sticky top-0 z-10">
                 <tr>
-                  <th className="py-3 px-4 text-left">ID</th>
-                  <th className="py-3 px-4 text-left">Room Name</th>
-                  <th className="py-3 px-4 text-left">Category</th>
-                  <th className="py-3 px-4 text-left">Vendor Name</th>
-                  <th className="py-3 px-4 text-left">Location</th>
-                  <th className="py-3 px-4 text-left">Price</th>
-                  <th className="py-3 px-4 text-left">Status</th>
-                  <th className="py-3 px-4 text-left">Action</th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    ID
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    Room Name
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    Category
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    Vendor Name
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    Location
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    Price
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    Status
+                  </th>
+                  <th className="py-3 px-4 text-left text-sm sm:text-base">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -66,32 +82,40 @@ const AllRooms = () => {
                   <tr
                     key={room.id}
                     className={`hover:bg-gray-200 ${
-                      index % 2 == 0 ? "bg-gray-50" : "bg-white"
+                      index % 2 === 0 ? "bg-gray-50" : "bg-white"
                     }`}
                   >
-                    <td className="py-3 px-4">{room.id}</td>
-                    <td className="py-3 px-4 flex items-center gap-2">
+                    <td className="py-3 px-4 text-sm sm:text-base">
+                      {room.id}
+                    </td>
+                    <td className="py-3 px-4 text-sm sm:text-base flex items-center gap-2">
                       <img
-                        className="w-16 h-12 rounded-lg"
+                        className="w-16 h-12 rounded-lg object-cover"
                         src={room.image}
                         alt={`${room.name} room`}
                       />
                       {room.name}
                     </td>
-                    <td className="py-3 px-4">{room.category.name}</td>
-                    <td className="py-3 px-4">{room.created_by}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4 text-sm sm:text-base">
+                      {room.category.name}
+                    </td>
+                    <td className="py-3 px-4 text-sm sm:text-base">
+                      {room.created_by}
+                    </td>
+                    <td className="py-3 px-4 text-sm sm:text-base">
                       {room.location.city}, {room.location.country}
                     </td>
-                    <td className="py-3 px-4">{room.price_per_night}</td>
+                    <td className="py-3 px-4 text-sm sm:text-base">
+                      {room.price_per_night}
+                    </td>
                     <td
-                      className={`py-3 px-4 font-semibold ${getStatusClass(
+                      className={`py-3 px-4 font-semibold text-sm sm:text-base ${getStatusClass(
                         room.availability
                       )}`}
                     >
                       {room.availability ? "Active" : "Inactive"}
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3 px-4 text-center text-sm sm:text-base">
                       <button
                         onClick={() => handleViewClick(room.id)}
                         className="px-4 py-2 text-white bg-gray-500 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition duration-150 ease-in-out"
