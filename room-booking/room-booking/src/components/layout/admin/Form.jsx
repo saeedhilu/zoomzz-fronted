@@ -1,47 +1,51 @@
-// src/components/layout/admin/Form.js
-
 import React from 'react';
-import { useFormik } from 'formik';
+import { Formik, Field, Form as FormikForm, ErrorMessage } from 'formik';
 
-const Form = ({ initialValues, validationSchema, fields, onSubmit }) => {
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit,
-  });
-
+const Form = ({ initialValues, validationSchema, fields, onSubmit, errors }) => {
   return (
-    <form onSubmit={formik.handleSubmit} className=" p-6  rounded-lg">
-      {fields.map((field) => (
-        <div key={field.name} className="mb-4">
-          <label htmlFor={field.name} className="block text-gray-700 font-medium mb-2">
-            {field.label}
-          </label>
-          <input
-            className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none  focus:border-gray-800 ${
-              formik.touched[field.name] && formik.errors[field.name] ? 'border-red-500' : 'border-gray-300 '
-            }`}
-            id={field.name}
-            name={field.name}
-            type={field.type}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values[field.name]}
-          />
-          {formik.touched[field.name] && formik.errors[field.name] ? (
-            <p className="text-red-500 text-sm mt-1">{formik.errors[field.name]}</p>
-          ) : null}
-        </div>
-      ))}
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
+      {({ isSubmitting }) => (
+        <FormikForm>
+          {fields.map((field) => (
+            <div key={field.name} className="mb-4">
+              <label htmlFor={field.name} className="block text-sm font-medium text-gray-700">
+                {field.label}
+              </label>
+              <Field
+                name={field.name}
+                type={field.type}
+                id={field.name}
+                className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50 ${
+                  errors[field.name] ? 'border-red-500' : ''
+                }`}
+              />
+              <ErrorMessage
+                name={field.name}
+                component="div"
+                className="text-red-600 text-sm mt-1"
+              />
+              {/* Display backend errors */}
+              {errors[field.name] && (
+                <div className="text-red-600 text-sm mt-1">
+                  {errors[field.name].join(', ')}
+                </div>
+              )}
+            </div>
+          ))}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md"
+          >
+            Sign Up
+          </button>
+        </FormikForm>
+      )}
+    </Formik>
   );
 };
 

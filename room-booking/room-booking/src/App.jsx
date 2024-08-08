@@ -7,6 +7,7 @@ import UnauthorizedPage from "./components/unauthorized/UnauthorizedPage";
 import AdminLoginPage from "./pages/admin/Login";
 import AdminRoutes from "./components/routes/admin/AdminRoutes";
 import SignupPage from "./pages/vendor/Signup";
+import VendorRoutes from "./components/routes/vendor/VendorRoutes";
 
 // Lazy load components
 const Home = lazy(() => import("./pages/Home"));
@@ -51,7 +52,14 @@ function App() {
 
           <Route path="/vendor-signup" element={<SignupPage />} />
 
-
+          <Route
+          path="/vendor/*"
+          element={
+            <RoleProtecterRoute allowedRoles={["vendor"]}>
+              <VendorRoutes />
+            </RoleProtecterRoute>
+          }
+        />
 
 
 
