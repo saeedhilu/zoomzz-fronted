@@ -6,43 +6,52 @@ import { set } from "lodash";
 import OtpForm from "../../components/layout/admin/OtpForm";
 import instance from "../../utils/Axiox";
 import { useNavigate } from "react-router-dom";
+import { setUser } from "../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
+
+
+
+
 const SignupPage = () => {
-  const naviagate = useNavigate();
+  const naviagate = useNavigate()
   const [formErrors, setFormErrors] = useState({});
   const [otpSent, setOtpSent] = useState(false);
-  const [formData, setFormData] = useState([]);
-
-  console.log("FormData is :", formData);
+  const [formData,setFormData]  = useState([]);
+  const dispatch = useDispatch();
+  console.log('FormData is :',formData);
+  
 
   const handleVendorSubmit = async (values) => {
     try {
       const response = await Signup(values);
-
-      console.log("response data foerm backend :,", response.data);
-
-      setFormData(values);
+      
+      console.log('response data foerm backend :,',response.data);
+      
+      setFormData(values)
       setFormErrors({});
       setOtpSent(true);
     } catch (error) {
       setFormErrors(error);
     }
   };
-  const verifyClick = async (otp) => {
-    console.log("otp from verify Click function", otp);
-
+  const verifyClick= async (otp)=>{
+    console.log('otp from verify Click function',otp);
+    
     try {
-      const response = await instance.post("/vendor/verify-email-otp/", {
-        ...formData,
-        otp,
-      });
-      if (response.status === 200) {
-        navigate("/vendor/dashboard");
-      }
-      console.log("response is :", response);
+        const response = await instance.post('/vendor/verify-email-otp/',
+          {
+            ...formData,otp
+          }
+        )  
+          
+        console.log('response is :',response.data);
+        
     } catch (error) {
-      console.log("From verify ", error);
+      console.log('From verify ',error);
+      
     }
-  };
+  
+  }
 
   return (
     <main className="h-screen items-center flex justify-center">
@@ -76,7 +85,7 @@ const SignupPage = () => {
         </aside>
         {otpSent ? (
           <section className="w-3/4 p-10 bg-white shadow-lg rounded-2xl rounded-l-[60px]">
-            <OtpForm onSubmitOtp={verifyClick} />
+            <OtpForm onSubmitOtp={verifyClick}  />
           </section>
         ) : (
           <section className="w-3/4 p-10 bg-white shadow-lg rounded-2xl rounded-l-[60px]">
@@ -85,7 +94,7 @@ const SignupPage = () => {
               validationSchema={vendorSignupConfig.validationSchema}
               fields={vendorSignupConfig.fields}
               onSubmit={handleVendorSubmit}
-              errors={formErrors}
+              errors={formErrors} 
             />
           </section>
         )}
