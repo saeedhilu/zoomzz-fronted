@@ -8,7 +8,7 @@ import {
   FaSignOutAlt,
   FaBed,
   FaStar, // Import an icon for reviews
-} from "react-icons/fa"; 
+} from "react-icons/fa";
 
 // Updated menu items for vendor
 const vendorMenuItems = [
@@ -26,24 +26,32 @@ const vendorMenuItems = [
   },
   {
     label: "Reviews",
-    icon: <FaStar />, 
+    icon: <FaStar />,
   },
   {
     label: "Logout",
     icon: <FaSignOutAlt />,
-    onClick: () => handleLogout(), 
+    onClick: () => handleLogout(),
   },
 ];
 
 const VendorLayout = () => {
-  const profile = useSelector((state) => ({
+  const { username, profileImage } = useSelector((state) => ({
     username: state.auth.username,
     profileImage: state.auth.profileImage,
-    icon: state.auth.icon || "A", 
   }));
+
+  // Compute the icon based on the username
+  const icon = username ? username.charAt(0).toUpperCase() : "U";
 
   const handleLogout = () => {
     console.log("User logged out");
+  };
+
+  const profile = {
+    username,
+    profileImage,
+    icon,
   };
 
   return (
@@ -52,7 +60,7 @@ const VendorLayout = () => {
         title="Vendor Panel"
         menuItems={vendorMenuItems}
         profile={profile}
-        onLogout={handleLogout} 
+        onLogout={handleLogout}
         role="vendor"
       />
       <div className="flex-1">

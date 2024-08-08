@@ -4,6 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Sidebar = ({ title, menuItems, profile, role }) => {
+  console.log('for side bar',profile);
+  
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const baseURL = "http://localhost:8000/";
