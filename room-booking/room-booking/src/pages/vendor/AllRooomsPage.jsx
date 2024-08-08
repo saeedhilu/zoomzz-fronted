@@ -4,6 +4,11 @@ import AddNewButton from "../../components/common/admin/AddNewButton";
 
 const AllRooms = () => {
   const [rooms, setRooms] = useState([]);
+  const [imageShow,setImageShow] =useState(false)
+  const [selectedImage,setSelectedImage] = useState('')
+  console.log('seleted image is ',selectedImage);
+  
+  
   const localHost = "http://127.0.0.1:8000/";
 
   const fetchRooms = async () => {
@@ -23,6 +28,13 @@ const AllRooms = () => {
   const handleCreate = () => {
     alert("create button is clicked...");
   };
+  const handleImageClick=(image)=>{
+    setImageShow(true)
+    setSelectedImage(image)
+  }
+  const handleCloseModal=()=>{
+    setImageShow(false)
+  }
 
   return (
     <main className="pl-1 pt-2 mx-auto max-w-6xl">
@@ -37,103 +49,129 @@ const AllRooms = () => {
           <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
             <thead className="bg-gray-800 text-white sticky top-0 z-10">
               <tr>
-              <th className=" py-4 px-2 border-b">#</th>
-              <th className=" py-4 px-2 border-b">Name</th>
-              <th className=" py-4 px-2 border-b">Description</th>
-              <th className=" py-4 px-2 border-b">Price Per Night</th>
-              <th className=" py-4 px-2 border-b">Category</th>
-              <th className=" py-4 px-2 border-b">Location</th>
-              <th className=" py-4 px-2 border-b">Availability</th>
-              <th className=" py-4 px-2 border-b">Pet Allowed</th>
-              <th className=" py-4 px-2 border-b">Max Occupancy</th>
-              <th className=" py-4 px-2 border-b">Images</th>
-              <th className=" py-4 px-2 border-b">RoomType</th>
-              <th className=" py-4 px-2 border-b">Amenities</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rooms.map((room,idx) => {
-              const {
-                id,
-                name,
-                description,
-                price_per_night,
-                category,
-                location,
-                availability,
-                pet_allowed,
-                max_occupancy,
-                image,
-                image2,
-                image3,
-                image4,
-                image5,
-                room_type,
-                amenities
-              } = room;
+                <th className=" py-4 px-2 border-b">#</th>
+                <th className=" py-4 px-2 border-b">Name</th>
+                <th className=" py-4 px-2 border-b">Description</th>
+                <th className=" py-4 px-2 border-b">Price Per Night</th>
+                <th className=" py-4 px-2 border-b">Category</th>
+                <th className=" py-4 px-2 border-b">Location</th>
+                <th className=" py-4 px-2 border-b">Availability</th>
+                <th className=" py-4 px-2 border-b">Pet Allowed</th>
+                <th className=" py-4 px-2 border-b">Max Occupancy</th>
+                <th className=" py-4 px-2 border-b">Images</th>
+                <th className=" py-4 px-2 border-b">RoomType</th>
+                <th className=" py-4 px-2 border-b">Amenities</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rooms.map((room, idx) => {
+                const {
+                  id,
+                  name,
+                  description,
+                  price_per_night,
+                  category,
+                  location,
+                  availability,
+                  pet_allowed,
+                  max_occupancy,
+                  image,
+                  image2,
+                  image3,
+                  image4,
+                  image5,
+                  room_type,
+                  amenities,
+                } = room;
 
-              return (
-                <tr key={id} className={`${idx % 2 == 0 ?'bg-white':'bg-gray-100'} hover:bg-gray-200`}>
-                  <td className=" py-4 px-2 border-b">{idx+1}</td>
-                  <td className=" py-4 px-2 border-b">{name}</td>
-                  <td className=" py-4 px-2 border-b">{description}</td>
-                  <td className=" py-4 px-2 border-b">{price_per_night}</td>
-                  <td className=" py-4 px-2 border-b">{category.name}</td>
-                  <td className=" py-4 px-2 border-b">
-                    {location.name}, {location.city}, {location.country}
-                  </td>
-                  <td className=" py-4 px-2 border-b">
-                    {availability ? "Available" : "Not Available"}
-                  </td>
-                  <td className=" py-4 px-2 border-b">
-                    {pet_allowed ? "Yes" : "No"}
-                  </td>
-                  <td className=" py-4 px-2 border-b">{max_occupancy}</td>
-                  <td className=" py-4 px-2 border-b flex flex-wrap gap-2">
-                    <img
-                      src={localHost + image}
-                      alt="room"
-                      className="w-10 h-10 object-cover rounded-lg"
-                    />
-                    {image2 &&  (
+                return (
+                  <tr
+                    key={id}
+                    className={`${
+                      idx % 2 == 0 ? "bg-white" : "bg-gray-100"
+                    } hover:bg-gray-200`}
+                  >
+                    <td className=" py-4 px-2 border-b">{idx + 1}</td>
+                    <td className=" py-4 px-2 border-b">{name}</td>
+                    <td className=" py-4 px-2 border-b">{description}</td>
+                    <td className=" py-4 px-2 border-b">{price_per_night}</td>
+                    <td className=" py-4 px-2 border-b">{category.name}</td>
+                    <td className=" py-4 px-2 border-b">
+                      {location.name}, {location.city}, {location.country}
+                    </td>
+                    <td className=" py-4 px-2 border-b">
+                      {availability ? "Available" : "Not Available"}
+                    </td>
+                    <td className=" py-4 px-2 border-b">
+                      {pet_allowed ? "Yes" : "No"}
+                    </td>
+                    <td className=" py-4 px-2 border-b">{max_occupancy}</td>
+                    <td className=" py-4 px-2 border-b flex flex-wrap gap-2">
                       <img
-                        src={localHost +image2}
+                        src={localHost + image}
                         alt="room"
                         className="w-10 h-10 object-cover rounded-lg"
+                        onClick={()=>handleImageClick(image)}
                       />
-                    )}
-                    {image3 && (
-                      <img
-                        src={localHost +image3}
-                        alt="room"
-                        className="w-10 h-10 object-cover rounded-lg"
-                      />
-                    )}
-                    {image4 && (
-                      <img
-                        src={localHost +image4}
-                        alt="room"
-                        className="w-10 h-10 object-cover rounded-lg"
-                      />
-                    )}
-                    {image5 && (
-                      <img
-                        src={localHost +image5}
-                        alt="room"
-                        className="w-10 h-10 object-cover rounded-lg"
-                      />
-                    )}
-                  </td>
-                  <td className=" py-4 px-2 border-b">{room_type}</td>
-                  <td className=" py-4 px-2 border-b">{amenities}</td>
-
-                </tr>
-              );
-            })}
-          </tbody>
+                      {image2 && (
+                        <img
+                          src={localHost + image2}
+                          alt="room"
+                          className="w-10 h-10 object-cover rounded-lg"
+                        />
+                      )}
+                      {image3 && (
+                        <img
+                          src={localHost + image3}
+                          alt="room"
+                          className="w-10 h-10 object-cover rounded-lg"
+                        />
+                      )}
+                      {image4 && (
+                        <img
+                          src={localHost + image4}
+                          alt="room"
+                          className="w-10 h-10 object-cover rounded-lg"
+                        />
+                      )}
+                      {image5 && (
+                        <img
+                          src={localHost + image5}
+                          alt="room"
+                          className="w-10 h-10 object-cover rounded-lg"
+                        />
+                      )}
+                    </td>
+                    <td className=" py-4 px-2 border-b">{room_type}</td>
+                    <td className=" py-4 px-2 border-b">
+                      {amenities.length > 0 ? (
+                        amenities.map((amenity, index) => (
+                          <div key={index}>
+                            <img className="w-10 h-10" src={localHost + amenity.image} alt="" />
+                            <span >{amenity.name}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <span>No amenities</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
         </div>
       </section>
+      {
+        imageShow && (
+            <div className=" fixed inset-0 items-center bg-white  z-50 flex  justify-center">
+                <div className="w-1/2 h-1/2">
+                    <img src={localHost + selectedImage} alt="" className="w-full h-full object
+                    cover" />
+                </div>
+            </div>
+        )
+      }
     </main>
   );
 };
