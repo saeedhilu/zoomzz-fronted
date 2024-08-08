@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
-const Sidebar = ({ title, menuItems, profile ,role}) => {
+const Sidebar = ({ title, menuItems, profile, role }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
   const baseURL = "http://localhost:8000/";
 
   const handleToggleSidebar = () => {
@@ -15,7 +16,6 @@ const Sidebar = ({ title, menuItems, profile ,role}) => {
 
   return (
     <div className="border-r-2 shadow-lg shadow-blue-200">
-      
       <div className="lg:hidden fixed top-4 right-4 z-50">
         <button
           onClick={handleToggleSidebar}
@@ -25,7 +25,6 @@ const Sidebar = ({ title, menuItems, profile ,role}) => {
         </button>
       </div>
 
-      
       <aside
         className={`fixed top-0 left-0 w-64 h-screen bg-white border-r-2 border-gray-200 shadow-xl transition-transform transform z-40 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -52,17 +51,25 @@ const Sidebar = ({ title, menuItems, profile ,role}) => {
           </div>
           <nav>
             <ul className="space-y-4">
-              {menuItems.map((item, index) => (
-                <li
-                  key={index}
-                  className="hover:bg-gray-100 px-4 py-2 rounded-lg transition duration-150 ease-in-out"
-                >
-                  <Link to={`/${role}/${item.label.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center text-gray-700">
-                    {item.icon}
-                    <span className="ml-3">{item.label}</span>
-                  </Link>
-                </li>
-              ))}
+              {menuItems.map((item, index) => {
+                const isActive = location.pathname.includes(
+                  `/${role}/${item.label.toLowerCase().replace(/\s+/g, '-')}`
+                );
+
+                return (
+                  <li
+                    key={index}
+                    className={`px-4 py-2 rounded-lg transition duration-150 ease-in-out ${
+                      isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    <Link to={`/${role}/${item.label.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center">
+                      {item.icon}
+                      <span className="ml-3">{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         </header>
@@ -84,6 +91,7 @@ Sidebar.propTypes = {
     icon: PropTypes.node.isRequired,
     username: PropTypes.string.isRequired,
   }).isRequired,
+  role: PropTypes.string.isRequired,
 };
 
 export default Sidebar;
