@@ -84,6 +84,7 @@ const AdminLayout = () => {
         menuItems={adminMenuItems}
         profile={profile}
         onLogout={handleLogout} 
+        role="admin"
       />
       <div className="flex-1 ">
         <Outlet />

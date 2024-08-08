@@ -30,6 +30,13 @@ function App() {
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
         {/* Admin Login Page */}
+
+        {/* 
+        
+        ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇ Admin Routes ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇
+        
+        */}
+
         <Route path="admin/login" element={<AdminLoginPage />} />
 
         {/* Admin RoleProtected Pages */}
@@ -42,17 +49,15 @@ function App() {
           }
         />
 
-
-
         {/* 
         
         ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇ Vendor Routes ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇
         
         */}
 
-          <Route path="/vendor-signup" element={<SignupPage />} />
+        <Route path="/vendor-signup" element={<SignupPage />} />
 
-          <Route
+        <Route
           path="/vendor/*"
           element={
             <RoleProtecterRoute allowedRoles={["vendor"]}>
@@ -61,20 +66,19 @@ function App() {
           }
         />
 
-
-
-
-
-
-
-
-
-
+        {/* 
+        
+        ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇ User Routes ⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇⬇
+        
+        */}
         {/* Regular routes */}
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<ProtectedRoute element={Signin} />} />
         <Route path="/room-list" element={<RoomListPage />} />
-        <Route path="/reservations-status" element={<ReservationStatusListPage />} />
+        <Route
+          path="/reservations-status"
+          element={<ReservationStatusListPage />}
+        />
         <Route path="/room-details/:roomId" element={<RoomDetail />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/user-profile" element={<UserProfilePage />} />
