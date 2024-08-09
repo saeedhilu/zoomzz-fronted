@@ -219,7 +219,7 @@ const GenericModal = ({
             <div className="flex gap-4 mt-4">
               <button
                 type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                className="bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-600"
               >
                 {submitLabel}
               </button>
