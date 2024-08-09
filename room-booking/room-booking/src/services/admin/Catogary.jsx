@@ -3,7 +3,7 @@ import instance from "../../utils/Axiox";
 
 const getCategory = async () => {
   try {
-    const response = await instance.get("category/");
+    const response = await instance.get("categories/");
     return response.data;
   } catch (error) {
     console.error("Error fetching categories:", error);

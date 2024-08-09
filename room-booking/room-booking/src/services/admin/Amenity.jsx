@@ -1,17 +1,19 @@
 import instance from "../../utils/Axiox"
 
 
-
+// Change this for Vendor listign based on Permssion
 
 const getAmenity=async () =>{
     try {
-        const response = await instance.get('amenity/')
+        const response = await instance.get('amenities/')
         return response.data
         
     } catch (error) {
         console.log('errpor ', error);
     }
 }
+
+
 
 const createAmenity = async (data) => {
     console.log('post data is :',data);

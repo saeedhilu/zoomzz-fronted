@@ -3,7 +3,7 @@ import instance from "../../utils/Axiox";
 // Fetch all bed types
 const getBedType = async () => {
   try {
-    const response = await instance.get('bedtype/');
+    const response = await instance.get('bed-types/');
     return response.data;
   } catch (error) {
     console.error('Error fetching bed types:', error);

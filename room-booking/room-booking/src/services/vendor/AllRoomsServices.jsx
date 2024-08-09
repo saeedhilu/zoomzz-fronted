@@ -14,7 +14,7 @@ const getRooms = async () => {
 const createRooms = async (data) => {
     console.log('name',data);
   try {
-    const response = await instance.post("Rooms/", data, {
+    const response = await instance.post("rooms/create/", data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -28,7 +28,7 @@ const createRooms = async (data) => {
 
 const deleteRooms = async (id) => {
   try {
-    const response = await instance.delete(`Rooms/${id}/`);
+    const response = await instance.delete(`rooms/edit/${id}/`);
     return response.data;
   } catch (error) {
     console.error("Error deleting Rooms:", error);
@@ -39,7 +39,7 @@ const deleteRooms = async (id) => {
 const updateRooms = async (id, updatedData) => {
   console.log("services", updatedData);
   try {
-    const response = await instance.patch(`Rooms/${id}/`, updatedData, {
+    const response = await instance.patch(`rooms/edit/${id}/`, updatedData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

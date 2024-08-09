@@ -92,7 +92,7 @@ const PhoneNumberSignIn = () => {
     setError("");
     try {
       await resendOtp(phoneNumber);
-      resetTimer(); // Reset timer on OTP resend
+      resetTimer(); 
     } catch (error) {
       setError("Failed to resend OTP. Please try again.");
     } finally {
@@ -106,15 +106,20 @@ const PhoneNumberSignIn = () => {
     setError("");
     try {
       const response = await verifyOtp(phoneNumber, otp.join(""));
+      console.log('====================================');
+      console.log('response data from verify otp',response);
+      console.log('====================================');
       dispatch(
         setUser({
           profileImage: response.user.image || null,
           accessToken: response.access_token,
           refreshToken: response.refresh_token,
           username: response.user.username || null,
+          isVendor : response.user.is_vendor 
         })
       );
-      navigate("/");
+      
+     
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error_message) {
         setError(error.response.data.error_message);

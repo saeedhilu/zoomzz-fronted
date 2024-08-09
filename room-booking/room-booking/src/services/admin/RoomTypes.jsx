@@ -2,7 +2,7 @@ import instance from "../../utils/Axiox";
 
 const getRoomType = async () => {
   try {
-    const response = await instance.get("roomstype/");
+    const response = await instance.get("room-types/");
     return response.data;
   } catch (error) {
     console.log("error", error);
