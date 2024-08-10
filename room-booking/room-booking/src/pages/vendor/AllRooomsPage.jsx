@@ -519,7 +519,7 @@ const RoomImage = ({ imageSrc, onClick }) => (
   />
 );
 
-// All Rooms 
+// All Rooms 1
 const AllRooms = () => {
   const [room, setRoom] = useState([]);
   const [selectedRooms, setSelectedRooms] = useState(null);
