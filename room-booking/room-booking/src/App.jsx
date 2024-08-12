@@ -21,7 +21,7 @@ const Booking = lazy(() => import("./pages/Booking"));
 const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const WishlistPage = lazy(() => import("./pages/WishlistPage"));
 const VendorPage = lazy(() => import("./pages/HostPage"));
-// 
+
 function App() {
   return (
     <Suspense fallback={<Spinner />}>
