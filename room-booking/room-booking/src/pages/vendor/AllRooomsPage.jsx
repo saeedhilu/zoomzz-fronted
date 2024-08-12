@@ -461,6 +461,28 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState } from "react";
 import AllRoomsServices from "../../services/vendor/AllRoomsServices";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -511,7 +533,7 @@ const AllRooms = () => {
   const [roomTypes, setRoomTypes] = useState([]);
   const [imageShow, setImageShow] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-  
+
   const localHost = "http://127.0.0.1:8000/";
 
   const fetchData = async () => {
@@ -544,8 +566,7 @@ const AllRooms = () => {
       console.error("Error fetching data:", error);
     }
   };
-  console.log('room is :',rooms);
-  
+  console.log("room is :", rooms);
 
   useEffect(() => {
     fetchData();
@@ -601,46 +622,48 @@ const AllRooms = () => {
   };
 
   const handleSubmit = async (formData) => {
-    console.log('data checking from formData:', formData);
-  
+    console.log("data checking from formData:", formData);
+
     try {
       const formDataObj = new FormData();
-  
-      // Append fields with pk values as needed
-      formDataObj.append('name', formData.name);
-      formDataObj.append('category', formData.category); // Ensure this is the pk value
-      formDataObj.append('description', formData.description);
-      formDataObj.append('price_per_night', formData.price_per_night);
-      formDataObj.append('max_occupancy', formData.max_occupancy);
-      formDataObj.append('availability', formData.availability);
-  
-      // Handle amenities as an array of pk values
+
+      formDataObj.append("name", formData.name);
+      formDataObj.append("category", formData.category); // Ensure this is the pk value
+      formDataObj.append("description", formData.description);
+      formDataObj.append("price_per_night", formData.price_per_night);
+      formDataObj.append("max_occupancy", formData.max_occupancy);
+      formDataObj.append("availability", formData.availability);
+
       if (Array.isArray(formData.amenities)) {
-        formDataObj.append('amenities', JSON.stringify(formData.amenities.map(amenity => amenity.pk)));
+        formDataObj.append(
+          "amenities",
+          JSON.stringify(formData.amenities.map((amenity) => amenity.pk))
+        );
       } else {
-        console.error('Amenities is not an array or not properly formatted:', formData.amenities);
+        console.error(
+          "Amenities is not an array or not properly formatted:",
+          formData.amenities
+        );
       }
-  
-      // Append bed_type and room_type with pk values
-      formDataObj.append('bed_type', formData.bed_type); // Ensure this is the pk value
-      formDataObj.append('room_type', formData.room_type); // Ensure this is the pk value
-  
+
+      formDataObj.append("bed_type", formData.bed_type);
+      formDataObj.append("room_type", formData.room_type);
+
       // Handle file uploads
       if (formData.images.length > 1) {
         if (formData.images instanceof File) {
-          formDataObj.append('images', formData.images);
+          formDataObj.append("images", formData.images);
         } else if (formData.images.length) {
           for (let i = 0; i < formData.images.length; i++) {
-            formDataObj.append('images', formData.images[i]);
+            formDataObj.append("images", formData.images[i]);
           }
         }
       }
-  
+
       const response = isCreating
-      
         ? await AllRoomsServices.createRooms(formDataObj)
         : await AllRoomsServices.updateRooms(formData.id, formDataObj);
-  
+
       setRooms((prevRooms) =>
         isCreating
           ? [...prevRooms, response]
@@ -649,30 +672,114 @@ const AllRooms = () => {
       setIsGenericModalOpen(false);
       toast.success(`Room ${isCreating ? "created" : "updated"} successfully!`);
     } catch (error) {
-      console.error("Error saving Room:", error); 
+      console.error("Error saving Room:", error);
       setErrorMessage("Error saving Room");
       toast.error("Error saving Room");
     }
   };
-  
 
   const handleCloseGenericModal = () => {
     setIsGenericModalOpen(false);
   };
 
-  
   const modalFields = [
-    { name: 'name', type: 'text', placeholder: 'Room Name', label: 'Room Name' },
-    { name: 'category', type: 'select', placeholder: 'Select Category', label: 'Category', options: categories },
-    { name: 'description', type: 'textarea', placeholder: 'Room Description', label: 'Description' },
-    { name: 'price_per_night', type: 'number', placeholder: 'Price per Night', label: 'Price per Night' },
-    { name: 'max_occupancy', type: 'number', placeholder: 'Max Occupancy', label: 'Max Occupancy' },
-    { name: 'availability', type: 'checkbox', label: 'Available' },
-    { name: 'amenities', type: 'checkbox-group', placeholder: 'Select Amenities', label: 'Amenities', options: amenities, multiple: true },
-    { name: 'bed_type', type: 'select', placeholder: 'Select Bed Type', label: 'Bed Type', options: bedTypes },
-    { name: 'room_type', type: 'select', placeholder: 'Select Room Type', label: 'Room Type', options: roomTypes },
-    { name: 'images', type: 'file', placeholder: 'Upload Room Images', label: 'Images' }
-  ];
+  {
+    name: "name",
+    type: "text",
+    placeholder: "Room Name",
+    label: "Room Name",
+    required: true, // Required field
+  },
+  {
+    name: "location",
+    type: "text",
+    placeholder: "Location",
+    label: "Location",
+  },
+  {
+    name: "category",
+    type: "select",
+    placeholder: "Select Category",
+    label: "Category",
+    options: categories, // Ensure categories are available
+    required: true, // Required field
+  },
+  {
+    name: "description",
+    type: "textarea",
+    placeholder: "Room Description",
+    label: "Description",
+  },
+  {
+    name: "price_per_night",
+    type: "number",
+    placeholder: "Price per Night",
+    label: "Price per Night",
+    required: true, // Required field
+  },
+  {
+    name: "max_occupancy",
+    type: "number",
+    placeholder: "Max Occupancy",
+    label: "Max Occupancy",
+    required: true, // Required field
+  },
+  {
+    name: "availability",
+    type: "checkbox",
+    label: "Available",
+  },
+  {
+    name: "pet_allowed",
+    type: "checkbox",
+    label: "Pet Allowed",
+  },
+  {
+    name: "room_type",
+    type: "select",
+    placeholder: "Select Room Type",
+    label: "Room Type",
+    options: roomTypes, // Ensure roomTypes are available
+  },
+  {
+    name: "bed_type",
+    type: "select",
+    placeholder: "Select Bed Type",
+    label: "Bed Type",
+    options: bedTypes, // Ensure bedTypes are available
+  },
+  {
+    name: "amenities",
+    type: "checkbox-group",
+    placeholder: "Select Amenities",
+    label: "Amenities",
+    options: amenities, // Ensure amenities are available
+    multiple: true, // Allow multiple selections
+  },
+  {
+    name: "images",
+    type: "file",
+    placeholder: "Upload Room Images",
+    label: "Images",
+    multiple: true, // Allow multiple file uploads
+    accept: "image/*", // Restrict to image files
+  },
+  {
+    name: "images2",
+    type: "file",
+    placeholder: "Upload Room Images",
+    label: "Images2",
+    multiple: true, // Allow multiple file uploads
+    accept: "image/*", // Restrict to image files
+  },
+  {
+    name: "google_map_url",
+    type: "text",
+    placeholder: "Google Map URL",
+    label: "Google Map URL",
+  },
+];
+
 
   return (
     <main className="pl-1 pt-2 mx-auto max-w-6xl">
@@ -684,92 +791,135 @@ const AllRooms = () => {
         <AddNewButton onClick={handleCreate} label="Add New +" />
       </header>
       <section className="overflow-x-auto mt-4">
-        <div className="overflow-y-auto h-[calc(100vh-110px)]">
-          <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
-            <thead className="bg-gray-800 text-white sticky top-0 z-10">
-              <tr>
-                <th className="py-2 px-4 text-left truncate">ID</th>
-                <th className="py-2 px-4 text-left truncate">Images</th>
-                <th className="py-2 px-4 text-left truncate">Name</th>
-                <th className="py-2 px-4 text-left truncate">Category</th>
-                <th className="py-2 px-4 text-left truncate">Description</th>
-                <th className="py-2 px-4 text-left truncate">
-                  Price per Night
-                </th>
-                <th className="py-2 px-4 text-left truncate">Max Occupancy</th>
-                <th className="py-2 px-4 text-left truncate">Availability</th>
-                <th className="py-2 px-4 text-left truncate">Created By</th>
-                <th className="py-2 px-4 text-left truncate">Created At</th>
-                <th className="py-2 px-4 text-left truncate">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rooms.length === 0 ? (
-                <tr>
-                  <td colSpan="11" className="py-4 text-center">
-                    No rooms found
-                  </td>
-                </tr>
-              ) : (
-                rooms.map((r) => (
-                  <tr key={r.id} className="border-b">
-                    <td className="py-2 px-4">{r.id}</td>
-                    <td className="py-2 px-4">
-                      <RoomImagesGrid
-                        images={[
-                          `${localHost}${r.image}`,
-                          `${localHost}${r.image2}`,
-                          `${localHost}${r.image3}`,
-                          `${localHost}${r.image4}`,
-                          `${localHost}${r.image5}`,
-                        ]}
-                        onClick={handleImageClick}
-                      />
-                    </td>
-                    <td className="py-2 px-4">{r.name}</td>
-                    <td className="py-2 px-4">{r.category}</td>
-                    <td className="py-2 px-4">{r.description}</td>
-                    <td className="py-2 px-4">{r.price_per_night}</td>
-                    <td className="py-2 px-4">{r.max_occupancy}</td>
-                    <td className="py-2 px-4">
-                      {r.availability ? "Available" : "Not Available"}
-                    </td>
-                    <td className="py-2 px-4">{r.created_by}</td>
-                    <td className="py-2 px-4">
-                      {new Date(r.created_at).toLocaleString()}
-                    </td>
-                    <td className="py-2 px-4">
-                      <button
-                        onClick={() => handleEdit(r)}
-                        className="text-blue-600 hover:text-blue-800 mr-2"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteClick(r.id, r.name)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        <FaTrashAlt />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
+  <div className="overflow-y-auto h-[calc(100vh-110px)]">
+    <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+      <thead className="bg-gray-800 text-white sticky top-0 z-10">
+        <tr>
+          <th className="py-2 px-4 text-left truncate">ID</th>
+          <th className="py-2 px-4 text-left truncate">Images</th>
+          <th className="py-2 px-4 text-left truncate">Name</th>
+          <th className="py-2 px-4 text-left truncate">Category</th>
+          <th className="py-2 px-4 text-left truncate">Category Image</th>
+          <th className="py-2 px-4 text-left truncate">Description</th>
+          <th className="py-2 px-4 text-left truncate">Price per Night</th>
+          <th className="py-2 px-4 text-left truncate">Max Occupancy</th>
+          <th className="py-2 px-4 text-left truncate">Availability</th>
+          <th className="py-2 px-4 text-left truncate">Room Type</th>
+          <th className="py-2 px-4 text-left truncate">Bed Type</th>
+          <th className="py-2 px-4 text-left truncate">Created At</th>
+          <th className="py-2 px-4 text-left truncate">Amenities</th>
+          <th className="py-2 px-4 text-left truncate">Amenities Image</th>
+          {/* New column for Actions */}
+          <th className="py-2 px-4 text-left truncate">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rooms.length === 0 ? (
+          <tr>
+            <td colSpan="14" className="py-4 text-center">No rooms found</td>
+          </tr>
+        ) : (
+          rooms.map((r) => (
+            <tr key={r.id} className="border-b">
+              <td className="py-2 px-4">{r.id}</td>
+              <td className="py-2 px-4">
+                <RoomImagesGrid
+                  images={[
+                    `${localHost}${r.image}`,
+                    `${localHost}${r.image2}`,
+                    `${localHost}${r.image3}`,
+                    `${localHost}${r.image4}`,
+                    `${localHost}${r.image5}`,
+                  ]}
+                  onClick={handleImageClick}
+                />
+              </td>
+              <td className="py-2 px-4">{r.name}</td>
+              <td className="py-2 px-4">{r.category.name}</td>
+              <td className="py-2 px-4">
+                <img
+                  src={`${localHost}${r.category.image}`}
+                  alt="category"
+                  className="w-12 h-12 object-cover rounded-lg"
+                />
+              </td>
+              <td className="py-2 px-4">{r.description}</td>
+              <td className="py-2 px-4">{r.price_per_night}</td>
+              <td className="py-2 px-4">{r.max_occupancy}</td>
+              <td
+                className={`py-2 px-4 ${
+                  r.availability ? "text-green-500" : "text-red-700"
+                }`}
+              >
+                {r.availability ? "Available" : "Not Available"}
+              </td>
+              <td className="py-2 px-4">{r.room_type}</td>
+              <td className="py-2 px-4">{r.bed_type}</td>
+              <td className="py-2 px-4">
+                {new Date(r.created_at).toLocaleString()}
+              </td>
+              <td className="py-2 px-4">
+                {/* Display amenities */}
+                {r.amenities && r.amenities.length > 0 ? (
+                  r.amenities.map((amenity) => (
+                    <div key={amenity.id} className="flex items-center mb-1">
+                      <span className="mr-2">{amenity.name}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div>No amenities</div>
+                )}
+              </td>
+              <td className="py-2 px-4">
+                {r.amenities && r.amenities.length > 0 ? (
+                  r.amenities.map((amenity) => (
+                    <div key={amenity.id} className="flex items-center mb-1">
+                      {amenity.image && (
+                        <img
+                          src={localHost + amenity.image}
+                          alt={amenity.name}
+                          className="w-10 h-10 object-cover rounded-full"
+                        />
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <div>No images</div>
+                )}
+              </td>
+              <td className="py-2 px-4">
+                <button
+                  onClick={() => handleEdit(r)}
+                  className="text-blue-600 hover:text-blue-800 mr-2"
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  onClick={() => handleDeleteClick(r.id, r.name)}
+                  className="text-red-600 hover:text-red-800"
+                >
+                  <FaTrashAlt />
+                </button>
+              </td>
+            </tr>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+</section>
+
 
       {isGenericModalOpen && (
         <GenericModal
-        isOpen={isGenericModalOpen}
-        onClose={() => setIsGenericModalOpen(false)}
-        onSubmit={handleSubmit}
-        initialData={selectedRoom || {}}
-        isCreating={isCreating}
-        title={isCreating ? "Create New Category" : "Edit Category"}
-        fields={modalFields}
-      />
+          isOpen={isGenericModalOpen}
+          onClose={() => setIsGenericModalOpen(false)}
+          onSubmit={handleSubmit}
+          initialData={selectedRoom || {}}
+          isCreating={isCreating}
+          title={isCreating ? "Create New Category" : "Edit Category"}
+          fields={modalFields}
+        />
       )}
 
       {isConfirmModalOpen && (
@@ -779,7 +929,6 @@ const AllRooms = () => {
           onCancel={cancelDelete}
           message={`Are you sure you want to delete the room "${deleteName}"?`}
         />
-        
       )}
 
       {imageShow && (

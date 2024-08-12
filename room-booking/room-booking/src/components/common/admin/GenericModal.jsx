@@ -381,8 +381,6 @@
 
 
 
-
-
 import React, { useState, useEffect } from 'react';
 
 const GenericModal = ({
@@ -404,6 +402,7 @@ const GenericModal = ({
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     if (type === 'checkbox') {
       setFormData((prev) => {
         const selectedOptions = prev[name] || [];
@@ -466,7 +465,7 @@ const GenericModal = ({
                   </select>
                 ) : field.type === 'checkbox-group' ? (
                   field.options.map((option) => (
-                    <div key={option.id} className="flex items-center">
+                    <div key={option.id} className="flex items-center mt-2">
                       <input
                         type="checkbox"
                         name={field.name}
