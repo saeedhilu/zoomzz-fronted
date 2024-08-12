@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Catogary from "../../services/admin/Catogary";
+import Catogary from "../../services/admin/Categary";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import ConfirmationModal from "../../components/common/admin/ConfirmModal";
 import { ToastContainer, toast } from "react-toastify";
