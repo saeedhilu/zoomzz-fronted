@@ -38,8 +38,9 @@ const deleteRooms = async (id) => {
 
 const updateRooms = async (id, updatedData) => {
   console.log("services", updatedData);
+
   try {
-    const response = await instance.patch(`rooms/edit/${id}/`, updatedData, {
+    const response = await instance.put(`rooms/edit/${id}/`, updatedData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
