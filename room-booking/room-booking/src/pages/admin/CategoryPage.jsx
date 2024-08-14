@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddNewButton from "../../components/common/admin/AddNewButton";
 import GenericModal from "../../components/common/admin/GenericModal";
+import { updateAmenity } from "../../services/admin/Amenity";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -17,6 +18,9 @@ const Categories = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [deleteName, setDeleteName] = useState("");
   const localhost = "http://127.0.0.1:8000/";
+  console.log('====================================');
+  console.log('',categories);
+  console.log('====================================');
 
   const fetchCategories = async () => {
     try {
@@ -73,7 +77,9 @@ const Categories = () => {
     setErrorMessage("");
   };
   const handleSubmit = async (formData) => {
-   
+   console.log('====================================');
+   console.log('fromdata is catogary:',formData);
+   console.log('====================================');
     const formDataToSend = new FormData();
 
     if (isCreating) {
@@ -81,6 +87,9 @@ const Categories = () => {
       if (formData.image && formData.image instanceof File)formDataToSend.append("image", formData.image);
       try {
         const data = await Catogary.createCategory(formDataToSend, true);
+        console.log('====================================');
+        console.log('updated data is :',data);
+        console.log('====================================');
         setCategories((prev) => [...prev, data]);
         toast.success(`Category ${data.name} created successfully!`);
       } catch (error) {
@@ -101,6 +110,9 @@ const Categories = () => {
           formDataToSend,
           true
         );
+        console.log('====================================');
+        console.log('updated data is :',updatedData);
+        console.log('====================================');
         setCategories(
           categories.map((category) =>
             category.id === selectedCategory.id ? updatedData : category
@@ -160,7 +172,7 @@ const Categories = () => {
                 <td className="py-3 px-4">
                   <img
                     className="w-16 h-12 rounded-lg object-cover"
-                    src={localhost + category.image}
+                    src={ category.image_url}
                     alt={`${category.name} category`}
                   />
                 </td>

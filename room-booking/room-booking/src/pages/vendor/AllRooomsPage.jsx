@@ -458,31 +458,6 @@
 
 // export default AllRooms;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import AllRoomsServices from "../../services/vendor/AllRoomsServices";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -615,6 +590,9 @@ const AllRooms = () => {
   };
 
   const handleEdit = (room) => {
+    console.log('====================================');
+    console.log('sentign data to updte',room);
+    console.log('====================================');
     setSelectedRoom(room);
     setIsCreating(false);
     setIsGenericModalOpen(true);
@@ -622,23 +600,36 @@ const AllRooms = () => {
   };
 
   const handleSubmit = async (formData) => {
-    console.log("data checking from formData:", formData);
-
     try {
+      console.log("Submitting form data:", formData); // Debug: Log the initial form data
+
       const formDataObj = new FormData();
 
+      // Append text fields
       formDataObj.append("name", formData.name);
-      formDataObj.append("category", formData.category); // Ensure this is the pk value
+      formDataObj.append("category", formData.category);
       formDataObj.append("description", formData.description);
       formDataObj.append("price_per_night", formData.price_per_night);
       formDataObj.append("max_occupancy", formData.max_occupancy);
-      formDataObj.append("availability", formData.availability);
 
+      // Append checkbox fields with correct boolean values
+      console.log("Availability:", formData.availability); // Debug: Check the availability value
+      formDataObj.append(
+        "availability",
+        formData.availability ? "true" : "false"
+      );
+
+      console.log("Pet Allowed:", formData.pet_allowed); // Debug: Check the pet_allowed value
+      formDataObj.append(
+        "pet_allowed",
+        formData.pet_allowed ? "true" : "false"
+      );
+
+      // Append the amenities if available and properly formatted
       if (Array.isArray(formData.amenities)) {
-        formDataObj.append(
-          "amenities",
-          JSON.stringify(formData.amenities.map((amenity) => amenity.pk))
-        );
+        const amenitiesArray = formData.amenities.map((amenity) => amenity.pk);
+        console.log("Amenities array:", amenitiesArray); // Debug: Check the amenities array
+        formDataObj.append("amenities", JSON.stringify(amenitiesArray));
       } else {
         console.error(
           "Amenities is not an array or not properly formatted:",
@@ -646,23 +637,31 @@ const AllRooms = () => {
         );
       }
 
+      // Append the select fields
       formDataObj.append("bed_type", formData.bed_type);
       formDataObj.append("room_type", formData.room_type);
 
       // Handle file uploads
-      if (formData.images.length > 1) {
-        if (formData.images instanceof File) {
-          formDataObj.append("images", formData.images);
-        } else if (formData.images.length) {
-          for (let i = 0; i < formData.images.length; i++) {
-            formDataObj.append("images", formData.images[i]);
-          }
-        }
-      }
+      // Debug: Log each image being appended
 
+      formDataObj.append("image", formData.image);
+      formDataObj.append("image2", formData.image2);
+      formDataObj.append("image3", formData.image3);
+      formDataObj.append("image4", formData.image4);
+      formDataObj.append("image5", formData.image5);
+
+      // Debug: Log the FormData key-value pairs
+      console.log("FormData entries:");
+      formDataObj.forEach((value, key) => {
+        console.log(key, value);
+      });
+
+      // Decide whether to create or update
       const response = isCreating
         ? await AllRoomsServices.createRooms(formDataObj)
         : await AllRoomsServices.updateRooms(formData.id, formDataObj);
+
+      console.log("Response from server:", response); // Debug: Log the server response
 
       setRooms((prevRooms) =>
         isCreating
@@ -672,7 +671,7 @@ const AllRooms = () => {
       setIsGenericModalOpen(false);
       toast.success(`Room ${isCreating ? "created" : "updated"} successfully!`);
     } catch (error) {
-      console.error("Error saving Room:", error);
+      console.error("Error saving Room:", error); // Debug: Log the error
       setErrorMessage("Error saving Room");
       toast.error("Error saving Room");
     }
@@ -683,103 +682,122 @@ const AllRooms = () => {
   };
 
   const modalFields = [
-  {
-    name: "name",
-    type: "text",
-    placeholder: "Room Name",
-    label: "Room Name",
-    required: true, // Required field
-  },
-  {
-    name: "location",
-    type: "text",
-    placeholder: "Location",
-    label: "Location",
-  },
-  {
-    name: "category",
-    type: "select",
-    placeholder: "Select Category",
-    label: "Category",
-    options: categories, // Ensure categories are available
-    required: true, // Required field
-  },
-  {
-    name: "description",
-    type: "textarea",
-    placeholder: "Room Description",
-    label: "Description",
-  },
-  {
-    name: "price_per_night",
-    type: "number",
-    placeholder: "Price per Night",
-    label: "Price per Night",
-    required: true, // Required field
-  },
-  {
-    name: "max_occupancy",
-    type: "number",
-    placeholder: "Max Occupancy",
-    label: "Max Occupancy",
-    required: true, // Required field
-  },
-  {
-    name: "availability",
-    type: "checkbox",
-    label: "Available",
-  },
-  {
-    name: "pet_allowed",
-    type: "checkbox",
-    label: "Pet Allowed",
-  },
-  {
-    name: "room_type",
-    type: "select",
-    placeholder: "Select Room Type",
-    label: "Room Type",
-    options: roomTypes, // Ensure roomTypes are available
-  },
-  {
-    name: "bed_type",
-    type: "select",
-    placeholder: "Select Bed Type",
-    label: "Bed Type",
-    options: bedTypes, // Ensure bedTypes are available
-  },
-  {
-    name: "amenities",
-    type: "checkbox-group",
-    placeholder: "Select Amenities",
-    label: "Amenities",
-    options: amenities, // Ensure amenities are available
-    multiple: true, // Allow multiple selections
-  },
-  {
-    name: "images",
-    type: "file",
-    placeholder: "Upload Room Images",
-    label: "Images",
-    multiple: true, // Allow multiple file uploads
-    accept: "image/*", // Restrict to image files
-  },
-  {
-    name: "images2",
-    type: "file",
-    placeholder: "Upload Room Images",
-    label: "Images2",
-    multiple: true, // Allow multiple file uploads
-    accept: "image/*", // Restrict to image files
-  },
-  {
-    name: "google_map_url",
-    type: "text",
-    placeholder: "Google Map URL",
-    label: "Google Map URL",
-  },
-];
-
+    {
+      name: "name",
+      type: "text",
+      placeholder: "Room Name",
+      label: "Room Name",
+      required: true, // Required field
+    },
+    {
+      name: "location",
+      type: "location",
+      placeholder: "Location",
+      label: "Location",
+    },
+    {
+      name: "category",
+      type: "select",
+      placeholder: "Select Category",
+      label: "Category",
+      options: categories, // Ensure categories are available
+      required: true, // Required field
+    },
+    {
+      name: "description",
+      type: "textarea",
+      placeholder: "Room Description",
+      label: "Description",
+    },
+    {
+      name: "price_per_night",
+      type: "number",
+      placeholder: "Price per Night",
+      label: "Price per Night",
+      required: true, // Required field
+    },
+    {
+      name: "max_occupancy",
+      type: "number",
+      placeholder: "Max Occupancy",
+      label: "Max Occupancy",
+      required: true, // Required field
+    },
+    {
+      name: "availability",
+      type: "checkbox",
+      label: "Available",
+    },
+    {
+      name: "pet_allowed",
+      type: "checkbox",
+      label: "Pet Allowed",
+    },
+    {
+      name: "room_type",
+      type: "select",
+      placeholder: "Select Room Type",
+      label: "Room Type",
+      options: roomTypes, // Ensure roomTypes are available
+    },
+    {
+      name: "bed_type",
+      type: "select",
+      placeholder: "Select Bed Type",
+      label: "Bed Type",
+      options: bedTypes, // Ensure bedTypes are available
+    },
+    {
+      name: "amenities",
+      type: "checkbox-group",
+      placeholder: "Select Amenities",
+      label: "Amenities",
+      options: amenities, // Ensure amenities are available
+      multiple: true, // Allow multiple selections
+    },
+    {
+      name: "image",
+      type: "file",
+      placeholder: "Upload Room Images",
+      label: "Images",
+      accept: "image/*", // Restrict to image files
+      required: true,
+    },
+    {
+     name: "image2", type: "file", label: "Image2", accept: "image/*",required: true,
+      
+    },
+    {
+      name: "image3",
+      type: "file",
+      placeholder: "Upload Room Images",
+      label: "Images3",
+      accept: "image/*", // Restrict to image files
+      required: true,
+    },
+    {
+      name: "image4",
+      type: "file",
+      placeholder: "Upload Room Images",
+      label: "Images4",
+      accept: "image/*", // Restrict to image files
+      required: true,
+    },
+    {
+      name: "image5",
+      type: "file",
+      placeholder: "Upload Room Images",
+      label: "Images5",
+      accept: "image/*", // Restrict to image files
+      required: true,
+    },
+    {
+      name: "google_map_url",
+      type: "text",
+      placeholder: "Google Map URL",
+      label: "Google Map URL",
+    },
+  ];
 
   return (
     <main className="pl-1 pt-2 mx-auto max-w-6xl">
@@ -791,124 +809,135 @@ const AllRooms = () => {
         <AddNewButton onClick={handleCreate} label="Add New +" />
       </header>
       <section className="overflow-x-auto mt-4">
-  <div className="overflow-y-auto h-[calc(100vh-110px)]">
-    <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
-      <thead className="bg-gray-800 text-white sticky top-0 z-10">
-        <tr>
-          <th className="py-2 px-4 text-left truncate">ID</th>
-          <th className="py-2 px-4 text-left truncate">Images</th>
-          <th className="py-2 px-4 text-left truncate">Name</th>
-          <th className="py-2 px-4 text-left truncate">Category</th>
-          <th className="py-2 px-4 text-left truncate">Category Image</th>
-          <th className="py-2 px-4 text-left truncate">Description</th>
-          <th className="py-2 px-4 text-left truncate">Price per Night</th>
-          <th className="py-2 px-4 text-left truncate">Max Occupancy</th>
-          <th className="py-2 px-4 text-left truncate">Availability</th>
-          <th className="py-2 px-4 text-left truncate">Room Type</th>
-          <th className="py-2 px-4 text-left truncate">Bed Type</th>
-          <th className="py-2 px-4 text-left truncate">Created At</th>
-          <th className="py-2 px-4 text-left truncate">Amenities</th>
-          <th className="py-2 px-4 text-left truncate">Amenities Image</th>
-          {/* New column for Actions */}
-          <th className="py-2 px-4 text-left truncate">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rooms.length === 0 ? (
-          <tr>
-            <td colSpan="14" className="py-4 text-center">No rooms found</td>
-          </tr>
-        ) : (
-          rooms.map((r) => (
-            <tr key={r.id} className="border-b">
-              <td className="py-2 px-4">{r.id}</td>
-              <td className="py-2 px-4">
-                <RoomImagesGrid
-                  images={[
-                    `${localHost}${r.image}`,
-                    `${localHost}${r.image2}`,
-                    `${localHost}${r.image3}`,
-                    `${localHost}${r.image4}`,
-                    `${localHost}${r.image5}`,
-                  ]}
-                  onClick={handleImageClick}
-                />
-              </td>
-              <td className="py-2 px-4">{r.name}</td>
-              <td className="py-2 px-4">{r.category.name}</td>
-              <td className="py-2 px-4">
-                <img
-                  src={`${localHost}${r.category.image}`}
-                  alt="category"
-                  className="w-12 h-12 object-cover rounded-lg"
-                />
-              </td>
-              <td className="py-2 px-4">{r.description}</td>
-              <td className="py-2 px-4">{r.price_per_night}</td>
-              <td className="py-2 px-4">{r.max_occupancy}</td>
-              <td
-                className={`py-2 px-4 ${
-                  r.availability ? "text-green-500" : "text-red-700"
-                }`}
-              >
-                {r.availability ? "Available" : "Not Available"}
-              </td>
-              <td className="py-2 px-4">{r.room_type}</td>
-              <td className="py-2 px-4">{r.bed_type}</td>
-              <td className="py-2 px-4">
-                {new Date(r.created_at).toLocaleString()}
-              </td>
-              <td className="py-2 px-4">
-                {/* Display amenities */}
-                {r.amenities && r.amenities.length > 0 ? (
-                  r.amenities.map((amenity) => (
-                    <div key={amenity.id} className="flex items-center mb-1">
-                      <span className="mr-2">{amenity.name}</span>
-                    </div>
-                  ))
-                ) : (
-                  <div>No amenities</div>
-                )}
-              </td>
-              <td className="py-2 px-4">
-                {r.amenities && r.amenities.length > 0 ? (
-                  r.amenities.map((amenity) => (
-                    <div key={amenity.id} className="flex items-center mb-1">
-                      {amenity.image && (
-                        <img
-                          src={localHost + amenity.image}
-                          alt={amenity.name}
-                          className="w-10 h-10 object-cover rounded-full"
-                        />
+        <div className="overflow-y-auto h-[calc(100vh-110px)]">
+          <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+            <thead className="bg-gray-800 text-white sticky top-0 z-10">
+              <tr>
+                <th className="py-2 px-4 text-left truncate">ID</th>
+                <th className="py-2 px-4 text-left truncate">Images</th>
+                <th className="py-2 px-4 text-left truncate">Name</th>
+                <th className="py-2 px-4 text-left truncate">Category</th>
+                <th className="py-2 px-4 text-left truncate">Category Image</th>
+                <th className="py-2 px-4 text-left truncate">Description</th>
+                <th className="py-2 px-4 text-left truncate">
+                  Price per Night
+                </th>
+                <th className="py-2 px-4 text-left truncate">Max Occupancy</th>
+                <th className="py-2 px-4 text-left truncate">Availability</th>
+                <th className="py-2 px-4 text-left truncate">Room Type</th>
+                <th className="py-2 px-4 text-left truncate">Bed Type</th>
+                <th className="py-2 px-4 text-left truncate">Created At</th>
+                <th className="py-2 px-4 text-left truncate">Amenities</th>
+                <th className="py-2 px-4 text-left truncate">
+                  Amenities Image
+                </th>
+                {/* New column for Actions */}
+                <th className="py-2 px-4 text-left truncate">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rooms.length === 0 ? (
+                <tr>
+                  <td colSpan="14" className="py-4 text-center">
+                    No rooms found
+                  </td>
+                </tr>
+              ) : (
+                rooms.map((r) => (
+                  <tr key={r.id} className="border-b">
+                    <td className="py-2 px-4">{r.id}</td>
+                    <td className="py-2 px-4">
+                      <RoomImagesGrid
+                        images={[
+                          `${localHost}${r.image}`,
+                          `${localHost}${r.image2}`,
+                          `${localHost}${r.image3}`,
+                          `${localHost}${r.image4}`,
+                          `${localHost}${r.image5}`,
+                        ]}
+                        onClick={handleImageClick}
+                      />
+                    </td>
+                    <td className="py-2 px-4">{r.name}</td>
+                    <td className="py-2 px-4">{r.category.name}</td>
+                    <td className="py-2 px-4">
+                      <img
+                        src={`${localHost}${r.category.image}`}
+                        alt="category"
+                        className="w-12 h-12 object-cover rounded-lg"
+                      />
+                    </td>
+                    <td className="py-2 px-4">{r.description}</td>
+                    <td className="py-2 px-4">{r.price_per_night}</td>
+                    <td className="py-2 px-4">{r.max_occupancy}</td>
+                    <td
+                      className={`py-2 px-4 ${
+                        r.availability ? "text-green-500" : "text-red-700"
+                      }`}
+                    >
+                      {r.availability ? "Available" : "Not Available"}
+                    </td>
+                    <td className="py-2 px-4">{r.room_type}</td>
+                    <td className="py-2 px-4">{r.bed_type}</td>
+                    <td className="py-2 px-4">
+                      {new Date(r.created_at).toLocaleString()}
+                    </td>
+                    <td className="py-2 px-4">
+                      {/* Display amenities */}
+                      {r.amenities && r.amenities.length > 0 ? (
+                        r.amenities.map((amenity) => (
+                          <div
+                            key={amenity.id}
+                            className="flex items-center mb-1"
+                          >
+                            <span className="mr-2">{amenity.name}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <div>No amenities</div>
                       )}
-                    </div>
-                  ))
-                ) : (
-                  <div>No images</div>
-                )}
-              </td>
-              <td className="py-2 px-4">
-                <button
-                  onClick={() => handleEdit(r)}
-                  className="text-blue-600 hover:text-blue-800 mr-2"
-                >
-                  <FaEdit />
-                </button>
-                <button
-                  onClick={() => handleDeleteClick(r.id, r.name)}
-                  className="text-red-600 hover:text-red-800"
-                >
-                  <FaTrashAlt />
-                </button>
-              </td>
-            </tr>
-          ))
-        )}
-      </tbody>
-    </table>
-  </div>
-</section>
-
+                    </td>
+                    <td className="py-2 px-4">
+                      {r.amenities && r.amenities.length > 0 ? (
+                        r.amenities.map((amenity) => (
+                          <div
+                            key={amenity.id}
+                            className="flex items-center mb-1"
+                          >
+                            {amenity.image && (
+                              <img
+                                src={localHost + amenity.image}
+                                alt={amenity.name}
+                                className="w-10 h-10 object-cover rounded-full"
+                              />
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <div>No images</div>
+                      )}
+                    </td>
+                    <td className="py-2 px-4">
+                      <button
+                        onClick={() => handleEdit(r)}
+                        className="text-blue-600 hover:text-blue-800 mr-2"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(r.id, r.name)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       {isGenericModalOpen && (
         <GenericModal

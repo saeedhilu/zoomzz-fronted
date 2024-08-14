@@ -40,7 +40,7 @@ const RoomInfo = ({ room }) => {
   const removeFromWishlist = async (wishlistItemId) => {
     try {
       await wishlistService.removeFromWishlist(wishlistItemId);
-      showToast("Room removed from wishlist!", 'success'); // Pass color argument here
+      showToast("Room removed from wishlist!", 'success'); 
       setInWishlist(false); 
     } catch (error) {
       console.error("Error removing from wishlist:", error);
