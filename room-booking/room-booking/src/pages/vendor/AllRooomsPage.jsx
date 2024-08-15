@@ -445,17 +445,20 @@ const AllRooms = () => {
   ];
 
   return (
-    <main className="pl-1 pt-2 mx-auto max-w-6xl">
+      <main className=" pt-2 mx-auto max-w-6xl">
+      {/* <div>
+        
+      </div> */}
       <ToastContainer />
-      <header className="border-b-2 border-gray-400 pb-2 flex justify-between">
+      <header className="border-b-2 border-gray-400 pb-2 flex justify-between w-screen  ">
         <h1 className="text-3xl font-bold">
           All Rooms (<span>{rooms.length}</span>)
         </h1>
         <AddNewButton onClick={handleCreate} label="Add New +" />
       </header>
-      <section className="overflow-x-auto mt-4">
+      <section className="overflow-x-auto w-screen mt-4">
         <div className="overflow-y-auto h-[calc(100vh-110px)]">
-          <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+          <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md overflow-x-auto">
             <thead className="bg-gray-800 text-white sticky top-0 z-10">
               <tr>
                 <th className="py-2 px-4 text-left truncate">ID</th>

@@ -239,13 +239,7 @@ const GenericModal = ({
   const [formData, setFormData] = useState(initialData);
   const [errorMessage, setErrorMessage] = useState("");
   const modalRef = useRef(null); // Create a ref for the modal
-  console.log("====================================");
-  console.log("fieled", fields);
-  console.log("====================================");
-
-  console.log("====================================");
-  console.log("form data to sent:", formData);
-  console.log("====================================");
+  
   useEffect(() => {
     setFormData(initialData);
   }, [initialData]);
@@ -270,13 +264,7 @@ const GenericModal = ({
 
   const handleChange = (e) => {
     const { name, value, type, files, checked } = e.target;
-    console.log("====================================");
-    console.log("name :", name);
-    console.log("value :", value);
-    console.log("type :", type);
-    console.log("files :", files);
-    console.log("checked :", checked);
-    console.log("====================================");
+
 
     if (type === "checkbox") {
       setFormData((prev) => {

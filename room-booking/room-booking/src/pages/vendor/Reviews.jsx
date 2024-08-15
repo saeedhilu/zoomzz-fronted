@@ -1,35 +1,37 @@
-import { useEffect, useState } from "react";
-import getRating from "../../services/vendor/RatignRooms";
-import ReviewsDisplay from "../../components/rooms/Reviews";
+import React, { useEffect, useState } from "react";
+import { Button, Space, Table } from "antd";
+import getRating from "../../services/vendor/RatignRooms"; // Adjust the import path as needed
 
 const ReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
-  const [averageRating, setAverageRating] = useState(0);
+  const [filteredInfo, setFilteredInfo] = useState({});
+  const [sortedInfo, setSortedInfo] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [data, setData] = useState([]);
 
   const fetchReview = async () => {
     try {
-      const data = await getRating();
-      console.log('Response from Rating page:', data);
+      const response = await getRating();
+      console.log("Response from Rating page:", response);
 
-      if (Array.isArray(data) && data.length > 0) {
-        setReviews(data);
-      
-        // Calculate the average rating
-        const totalRating = data.reduce((acc, review) => acc + review.rating, 0);
-        const avgRating = totalRating / data.length;
-        setAverageRating(avgRating);
-      } else {
-        setReviews([]);
-        setAverageRating(0);
-        console.log('No reviews found.');
-      }
-      
+      // Transforming the data
+      const transformedData = response.flatMap((room) =>
+        room.ratings.map((rating) => ({
+          key: `${room.id}-${rating.id}`, 
+          roomName: room.name,
+          user: rating.user,
+          rating: rating.rating,
+          feedback: rating.feedback,
+          created_at: rating.created_at,
+        }))
+      );
+
+      setData(transformedData);
       setLoading(false);
     } catch (error) {
-      console.log('Error:', error);
-      setError('Failed to load reviews.');
+      console.log("Error:", error);
+      setError("Failed to load reviews.");
       setLoading(false);
     }
   };
@@ -38,54 +40,85 @@ const ReviewsPage = () => {
     fetchReview();
   }, []);
 
+  const handleChange = (pagination, filters, sorter) => {
+    console.log("Various parameters", pagination, filters, sorter);
+    setFilteredInfo(filters);
+    setSortedInfo(sorter);
+  };
+
+  const columns = [
+    {
+      title: "Room Name",
+      dataIndex: "roomName",
+      key: "roomName",
+      sorter: (a, b) => a.roomName.localeCompare(b.roomName),
+      sortOrder: sortedInfo.columnKey === "roomName" ? sortedInfo.order : null,
+      ellipsis: true,
+    },
+    {
+      title: "User",
+      dataIndex: "user",
+      key: "user",
+      sorter: (a, b) => a.user.localeCompare(b.user),
+      sortOrder: sortedInfo.columnKey === "user" ? sortedInfo.order : null,
+      ellipsis: true,
+    },
+    {
+      title: "Rating",
+      dataIndex: "rating",
+      key: "rating",
+      sorter: (a, b) => a.rating - b.rating,
+      sortOrder: sortedInfo.columnKey === "rating" ? sortedInfo.order : null,
+      ellipsis: true,
+    },
+    {
+      title: "Feedback",
+      dataIndex: "feedback",
+      key: "feedback",
+      ellipsis: true,
+    },
+    {
+      title: "Date",
+      dataIndex: "created_at",
+      key: "created_at",
+      sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
+      sortOrder:
+        sortedInfo.columnKey === "created_at" ? sortedInfo.order : null,
+      render: (text) => new Date(text).toLocaleString(), // Format date
+    },
+  ];
+
   return (
     <>
-      <main>
-        <header>
-          <h1>Reviews Page</h1>
-        </header>
-        <div>
-          {loading ? (
-            <p>Loading reviews...</p>
-          ) : error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            <>
-              
-              {reviews.length > 0 && (
-                <table className="min-w-full divide-y divide-gray-200 mt-6">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Feedback</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {reviews.map((review, index) => (
-                      <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{review.user__username}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{review.rating}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{review.feedback}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(review.created_at)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </>
-          )}
-        </div>
-      </main>
+    
+      <Space style={{ marginBottom: 16 }}>
+        <Button
+          onClick={() =>
+            setSortedInfo({ order: "descend", columnKey: "rating" })
+          }
+        >
+          Sort Rating
+        </Button>
+        <Button onClick={() => setFilteredInfo({})}>Clear filters</Button>
+        <Button
+          onClick={() => {
+            setFilteredInfo({});
+            setSortedInfo({});
+          }}
+        >
+          Clear filters and sorters
+        </Button>
+      </Space>
+      <Table
+        columns={columns}
+        dataSource={data}
+        onChange={handleChange}
+        loading={loading}
+        pagination={{ pageSize: 2 }}
+      />
+      {error && <p className="text-red-500">{error}</p>}
     </>
   );
-};
-
-// Helper function to format the date
-const formatDate = (dateTimeStr) => {
-  const date = new Date(dateTimeStr);
-  return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
 };
 
 export default ReviewsPage;
