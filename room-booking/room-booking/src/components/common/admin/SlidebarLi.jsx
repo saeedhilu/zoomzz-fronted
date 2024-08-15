@@ -4,14 +4,25 @@ import { Link, useLocation } from "react-router-dom";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Sidebar = ({ title, menuItems, profile, role }) => {
-  console.log('for side bar',profile);
+  console.log('image is :',profile.profileImage);
   
+  console.log('for side bar', profile);
+
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const baseURL = "http://localhost:8000/";
 
   const handleToggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  // Helper function to get the first letter of the username
+  const getInitials = (username) => {
+    return username
+      .split(' ')
+      .map(name => name.charAt(0))
+      .join('')
+      .toUpperCase();
   };
 
   if (!menuItems) return null;
@@ -43,7 +54,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
               />
             ) : (
               <span className="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center text-2xl text-white">
-                {profile.icon}
+                {getInitials(profile.username)}
               </span>
             )}
             <div className="ml-4">

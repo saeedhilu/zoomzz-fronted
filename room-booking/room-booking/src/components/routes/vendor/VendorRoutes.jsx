@@ -4,7 +4,7 @@ import VendorLayout from "../../layout/SidebarItems";
 import Dashboard from "../../../pages/vendor/Dashboard";
 import AllUsers from "../../../pages/vendor/AllUsers";
 import AllRooms from "../../../pages/vendor/AllRooomsPage";
-import Reviews from "../../../pages/vendor/Reviews";
+import ReviewsPage from "../../../pages/vendor/Reviews";
 // import LogoutPage from "../../../pages/Vendor/LogoutPage";
 
 const VendorRoutes = () => {
@@ -14,7 +14,7 @@ const VendorRoutes = () => {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="guests" element={<AllUsers />} />
         <Route path="rooms" element={<AllRooms />} />
-        <Route path="reviews" element={<Reviews />} />
+        <Route path="reviews" element={<ReviewsPage />} />
         {/* <Route path="logout" element={<LogoutPage />} />     */}
       </Route>
     </Routes>

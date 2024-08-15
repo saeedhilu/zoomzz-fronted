@@ -156,12 +156,15 @@ const AllRooms = () => {
 
       formDataObj.append(
         "availability",
-        formData.availability ? "true" : "false"
+        formData.availability === "yes" ? "true" : "false"
       );
 
+      console.log('====================================');
+      console.log('for checking yes or no ',formData.pet_allowed,formData.availability);
+      console.log('====================================');
       formDataObj.append(
         "pet_allowed",
-        formData.pet_allowed ? "true" : "false"
+        formData.pet_allowed=== "yes" ? "true" : "false"
       );
 
       formDataObj.append("bed_type", formData.bed_type);
@@ -189,6 +192,7 @@ const AllRooms = () => {
         console.log("issie");
         formDataObj.append("amenities", formData.amenities);
       }
+      
       }else {
 
 
@@ -354,15 +358,23 @@ const AllRooms = () => {
     },
     {
       name: "availability",
-      type: "checkbox",
+      type: "radio-group",
       label: "Available",
-      checked:'true'
+      options: {
+        yes: 'Yes',
+        no: 'No',
+      },
     },
     {
-      name: "pet_allowed",
-      type: "checkbox",
-      label: "Pet Allowed",
+      name: 'pet_allowed',
+      type: 'radio-group',
+      label: 'Pet Allowed',
+      options: {
+        yes: 'Yes',
+        no: 'No',
+      },
     },
+    
     {
       name: "room_type",
       type: "select",

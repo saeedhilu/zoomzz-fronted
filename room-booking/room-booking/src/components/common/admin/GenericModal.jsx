@@ -129,9 +129,9 @@
 //                     required={field.required}
 //                   />
 //                 ) : field.type === "select" ? (
-                  
+
 //                   <div>
-                    
+
 //                     <select
 //                     name={field.name}
 //                     value={formData[field.name ] || ""}
@@ -223,10 +223,6 @@
 
 // export default GenericModal;
 
-
-
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 
@@ -242,22 +238,26 @@ const GenericModal = ({
 }) => {
   const [formData, setFormData] = useState(initialData);
   const [errorMessage, setErrorMessage] = useState("");
+  const modalRef = useRef(null); // Create a ref for the modal
+  console.log("====================================");
+  console.log("fieled", fields);
+  console.log("====================================");
 
-  const modalRef = useRef(null);
-
-  // Initialize state from initialData
+  console.log("====================================");
+  console.log("form data to sent:", formData);
+  console.log("====================================");
   useEffect(() => {
     setFormData(initialData);
   }, [initialData]);
 
-  // Handle click outside modal
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
+  // Handle click outside of the modal
+  const handleOutsideClick = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose();
+    }
+  };
 
+  useEffect(() => {
     if (isOpen) {
       document.addEventListener("mousedown", handleOutsideClick);
     } else {
@@ -268,16 +268,48 @@ const GenericModal = ({
     };
   }, [isOpen]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, files, checked } = e.target;
+    console.log("====================================");
+    console.log("name :", name);
+    console.log("value :", value);
+    console.log("type :", type);
+    console.log("files :", files);
+    console.log("checked :", checked);
+    console.log("====================================");
 
     if (type === "checkbox") {
-      setFormData((prev) => ({ ...prev, [name]: checked }));
+      setFormData((prev) => {
+        console.log("====================================");
+        console.log("pre ", prev);
+        console.log("====================================");
+        console.log("====================================");
+        console.log(prev[name]);
+        console.log("====================================");
+        const selectedOptions = prev[name] || [];
+        console.log("====================================");
+        console.log("selected option is :", selectedOptions);
+        console.log("====================================");
+        if (checked) {
+          console.log("checked");
+          return { ...prev, [name]: [...selectedOptions, value] };
+        } else {
+          return {
+            ...prev,
+            [name]: selectedOptions.filter((item) => item !== name),
+          };
+        }
+      });
     } else if (type === "file") {
-      setFormData((prev) => ({ ...prev, [name]: files[0] }));
+      setFormData((prev) => ({
+        ...prev,
+        [name]: files[0],
+      }));
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
@@ -287,7 +319,6 @@ const GenericModal = ({
       onSubmit(formData);
       onClose();
     } catch (error) {
-      console.error("Error occurred while saving data:", error);
       setErrorMessage("Error occurred while saving data");
     }
   };
@@ -299,9 +330,10 @@ const GenericModal = ({
       }`}
     >
       <div
-        ref={modalRef}
+        ref={modalRef} // Attach the ref to the modal container
         className="relative bg-white p-6 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto"
       >
+        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
@@ -325,28 +357,34 @@ const GenericModal = ({
                     required={field.required}
                   />
                 ) : field.type === "select" ? (
-                  <select
-                    name={field.name}
-                    value={formData[field.name] || ""}
-                    onChange={handleChange}
-                    className="w-full mt-2 border-gray-300 rounded-md"
-                    required={field.required}
-                  >
-                    <option value="">Select {field.label}</option>
-                    {field.options.map((option, id) => (
-                      <option key={id} value={option.value}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
+                  <div>
+                    <select
+                      name={field.name}
+                      value={formData[field.name] || ""}
+                      onChange={handleChange}
+                      className="w-full mt-2 border-gray-300 rounded-md"
+                      required={field.required}
+                    >
+                      <option value="">Select {field.label}</option>
+                      {field.options.map((option, id) => (
+                        <option key={id} value={option.value}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 ) : field.type === "checkbox-group" ? (
                   field.options.map((option) => (
                     <div key={option.id} className="flex items-center">
+                      <h1>{formData[field.name]}</h1>
+                      <h1>{formData[field.name]}</h1>
                       <input
                         type="checkbox"
                         name={field.name}
                         value={option.name}
-                        checked={ formData[field.name].includes(option.name)}
+                        checked={
+                          formData[field.name]?.includes(option.name) || false
+                        }
                         onChange={handleChange}
                         className="mr-2"
                       />
@@ -368,6 +406,39 @@ const GenericModal = ({
                       </div>
                     )}
                   </>
+                ) : field.type === "radio-group" ? (
+                  <div key={index}>
+                    <label>{field.label}</label>
+                    {Object.entries(field.options).map(([value, label]) => (
+                      <div key={value}>
+                        {/* <h1>{value}</h1> */}
+                        {/* <h1>frm name is :{formData[field.name]}</h1> */}
+
+                        {console.log(
+                          "field name from fomr data  is :",
+                          formData[field.name]
+                        )}
+                        {/* {console.log('field name is :',field.name)} */}
+                        {/* {console.log('field name from . is :',formData.field.name ? 'und':'illa')} */}
+
+                        {/* <h1> availability : {formData.availability ? 'true ':'false '}</h1>
+                      <h1> pet_allowed :{formData.pet_allowed ? 'true ':'false '}</h1> */}
+                      {console.log('  1',formData[field.name] === (value === 'yes'))}
+                      {console.log('2', value)}
+                      {console.log('3',formData[field.name] )}
+                        <label>
+                          <input
+                            type="radio"
+                            name={field.name}
+                            value={value}
+                            checked={formData[field.name] === (value === 'yes')}
+                            onChange={handleChange}
+                          />
+                          {label}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
                   <input
                     type={field.type}

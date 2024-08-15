@@ -9,9 +9,9 @@ const RoomTable = ({
   localHost,
   handleAddNew,
 }) => {
-    console.log('====================================');
-    console.log('rooom',rooms);
-    console.log('====================================');
+  console.log("====================================");
+  console.log("rooom", rooms);
+  console.log("====================================");
   return (
     <main className="pl-1 pt-2 mx-auto max-w-6xl">
       <header className="border-b-2 border-gray-400 pb-2 flex justify-between">
