@@ -89,9 +89,14 @@ const ReviewsPage = () => {
   ];
 
   return (
-    <>
-    
-      <Space style={{ marginBottom: 16 }}>
+    <main className="p-4">
+     <header className="border-b-2 border-gray-400  w-full h-16  pl-4">
+        <h1 className="text-3xl font-bold">
+          All Reviews   
+        </h1>
+        
+      </header>
+      <Space style={{ marginBottom: 16, marginTop:16  }}>
         <Button
           onClick={() =>
             setSortedInfo({ order: "descend", columnKey: "rating" })
@@ -117,7 +122,7 @@ const ReviewsPage = () => {
         pagination={{ pageSize: 2 }}
       />
       {error && <p className="text-red-500">{error}</p>}
-    </>
+    </main>
   );
 };
 

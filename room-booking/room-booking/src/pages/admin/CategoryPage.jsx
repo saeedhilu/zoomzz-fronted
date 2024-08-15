@@ -140,8 +140,8 @@ const Categories = () => {
   ];
 
   return (
-    <main className="p-6">  
-      <header className="border-b-2 border-gray-400 pb-2 flex justify-between">
+    <main className="p-6 ">  
+      <header className="border-b-2 border-gray-400 pb-2 flex justify-between w-screen">
         <h1 className="text-3xl font-bold">
           All Categories (<span>{categories.length}</span>)
         </h1>

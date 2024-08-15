@@ -5,7 +5,7 @@ import Dashboard from "../../../pages/vendor/Dashboard";
 import AllUsers from "../../../pages/vendor/AllUsers";
 import AllRooms from "../../../pages/vendor/AllRooomsPage";
 import ReviewsPage from "../../../pages/vendor/Reviews";
-// import LogoutPage from "../../../pages/Vendor/LogoutPage";
+import SettingsPages from "../../../pages/vendor/SettingsPage";
 
 const VendorRoutes = () => {
   return (
@@ -15,7 +15,7 @@ const VendorRoutes = () => {
         <Route path="guests" element={<AllUsers />} />
         <Route path="rooms" element={<AllRooms />} />
         <Route path="reviews" element={<ReviewsPage />} />
-        {/* <Route path="logout" element={<LogoutPage />} />     */}
+        <Route path="settings" element={<SettingsPages />} />    
       </Route>
     </Routes>
   );

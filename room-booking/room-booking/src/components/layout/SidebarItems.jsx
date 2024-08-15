@@ -8,6 +8,7 @@ import {
   FaSignOutAlt,
   FaBed,
   FaStar, // Import an icon for reviews
+  FaCogs
 } from "react-icons/fa";
 
 // Updated menu items for vendor
@@ -29,9 +30,8 @@ const vendorMenuItems = [
     icon: <FaStar />,
   },
   {
-    label: "Logout",
-    icon: <FaSignOutAlt />,
-    onClick: () => handleLogout(),
+    label: "Settings",
+    icon: <FaCogs />,
   },
 ];
 

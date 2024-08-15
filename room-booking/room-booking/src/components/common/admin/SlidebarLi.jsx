@@ -73,7 +73,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
                   <li
                     key={index}
                     className={`px-4 py-2 rounded-lg transition duration-150 ease-in-out ${
-                      isActive ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100 text-gray-700"
+                      isActive ? "bg-blue-200 text-blue-700" : "hover:bg-blue-100 text-gray-700"
                     }`}
                   >
                     <Link to={`/${role}/${item.label.toLowerCase().replace(/\s+/g, '-')}`} className="flex items-center">
