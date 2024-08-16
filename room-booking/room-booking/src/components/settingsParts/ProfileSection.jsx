@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  AiOutlineEdit,
-} from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
+import { BsPerson } from "react-icons/bs"; // Icon for profile
 import { PhoneNumberChangeModal } from "../modals/PhoneNumberChange";
-import { updatePhoneNumber } from "../../redux/slices/authSlice"
-import { ToastContainer,toast } from "react-toastify";
+import { updatePhoneNumber } from "../../redux/slices/authSlice";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-
-
 
 const ProfileSection = ({ imageUrl, baseURL }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,13 +26,16 @@ const ProfileSection = ({ imageUrl, baseURL }) => {
 
   const handlePhoneNumberUpdated = (newPhoneNumber) => {
     dispatch(updatePhoneNumber(newPhoneNumber));
-    toast.success(`Phone number "${phoneNumber}" Update to ${newPhoneNumber} successfully!`);
+    toast.success(`Phone number updated from "${phoneNumber}" to "${newPhoneNumber}" successfully!`);
     setIsModalOpen(false);
   };
 
   return (
-    <article className="shadow-md rounded-lg p-6 md:p-8">
-      <h2 className="text-xl font-semibold mb-4">Profile</h2>
+    <article className="shadow-lg rounded-lg p-6 md:p-8 bg-white">
+      <h2 className="text-2xl font-bold mb-4 flex items-center">
+        <BsPerson className="mr-2 text-blue-500" />
+        Profile
+      </h2>
       <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
         <img
           src={
@@ -47,24 +46,24 @@ const ProfileSection = ({ imageUrl, baseURL }) => {
               : "/default-profile.png"
           }
           alt="Profile"
-          className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
+          className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-2 border-gray-300 shadow-md"
         />
         <div className="text-center md:text-left">
-          <p className="text-gray-700 text-xl font-semibold">
-            User Name : {username || "N/A"}
+          <p className="text-gray-800 text-xl font-semibold mb-1">
+            User Name: {username || "N/A"}
           </p>
-          {firstName && <p>First Name : {firstName}</p>}
-          {lastName && <p>Last Name : {lastName}</p>}
-          <p className="text-gray-600 text-sm flex items-center">
-            Email Address :{" "}
-            {email ? email : <span className="text-red-500">Not Provided</span>}
+          {firstName && <p className="text-gray-700">First Name: {firstName}</p>}
+          {lastName && <p className="text-gray-700">Last Name: {lastName}</p>}
+          <p className="text-gray-600 text-sm flex items-center mb-1">
+            Email Address:{" "}
+            {email ? email : <span className="text-red-500 ml-2">Not Provided</span>}
           </p>
           <p className="text-gray-600 text-sm flex items-center">
-            Phone Number :{" "}
+            Phone Number:{" "}
             {phoneNumber ? (
-              phoneNumber
+              <span className="ml-2">{phoneNumber}</span>
             ) : (
-              <span className="text-red-500">Not Provided</span>
+              <span className="text-red-500 ml-2">Not Provided</span>
             )}
             {phoneNumber && (
               <button
@@ -84,6 +83,8 @@ const ProfileSection = ({ imageUrl, baseURL }) => {
           onPhoneNumberUpdated={handlePhoneNumberUpdated}
         />
       )}
+
+      <ToastContainer />
     </article>
   );
 };
