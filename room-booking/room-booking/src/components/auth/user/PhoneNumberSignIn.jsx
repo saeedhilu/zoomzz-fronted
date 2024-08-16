@@ -91,7 +91,7 @@ const PhoneNumberSignIn = () => {
     setLoading(true);
     setError("");
     try {
-      await resendOtp(phoneNumber);
+      await resendOtp('accounts',phoneNumber);
       resetTimer(); 
     } catch (error) {
       setError("Failed to resend OTP. Please try again.");
@@ -107,19 +107,27 @@ const PhoneNumberSignIn = () => {
     try {
       const response = await verifyOtp(phoneNumber, otp.join(""));
       console.log('====================================');
-      console.log('response data from verify otp',response);
+      console.log('resposen for login user :',response);
       console.log('====================================');
+      const user = response.user; // Assuming the response structure includes user data
+      const { access_token, refresh_token, profile_image } = response;
+  
       dispatch(
         setUser({
-          profileImage: response.user.image || null,
-          accessToken: response.access_token,
-          refreshToken: response.refresh_token,
-          username: response.user.username || null,
-          isVendor : response.user.is_vendor 
+          username: user.username || '', // Default to empty string if username is not provided
+          firstName: user.first_name || '', // Add default values for all fields if necessary
+          lastName: user.last_name || '',
+          email: user.email || '',
+          phoneNumber: user.phone_number, // Use the phone number from the input
+          accessToken: access_token,
+          refreshToken: refresh_token,
+          isSuperAdmin: user.is_super_admin || false, // Use user-specific data
+          isVendor: user.is_vendor || false, // Ensure fallback if data is missing
+          profileImage: user.image || '', // Default to empty string if no profile image
         })
       );
-      
-     
+  
+
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error_message) {
         setError(error.response.data.error_message);
@@ -130,6 +138,7 @@ const PhoneNumberSignIn = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

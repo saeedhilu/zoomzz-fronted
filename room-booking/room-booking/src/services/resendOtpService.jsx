@@ -1,10 +1,10 @@
 import instance from "../utils/Axiox";
-export const resendOtp = async (phoneNumber) => {
+export const resendOtp = async (url,data) => {
     //This service file for re-sent otp
 
   try {
-    const response = await instance.post("accounts/resend-otp/", {
-      phone_number: phoneNumber,
+    const response = await instance.post(`${url}/resend-otp/`, {
+      data: data,
     });
     console.log("OTP resent successfully:", response.data);
     return response.data;

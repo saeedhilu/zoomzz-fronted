@@ -86,7 +86,7 @@ const AdminLayout = () => {
         onLogout={handleLogout} 
         role="admin"
       />
-      <div className="flex-1 ">
+      <div className="flex-1 lg:ml-64">
         <Outlet />
       </div>
     </div>

@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearAuth } from "../../../redux/slices/authSlice";
 import { toast, ToastContainer } from "react-toastify";
-import ConfirmationModal from "../../common/admin/ConfirmModal";
+import ProfileSection from "../../settingsParts/ProfileSection";
+import ThemeSelection from "../../settingsParts/ThemeSelection";
+import LogoutButton from "../../settingsParts/LogoutButton";
 import '../../../style/Theme.css';
 
-const SharedSettingsPage = ({ role }) => {
+const SharedSettingsPage = ({ role, imageUrl }) => {
   const { username, profileImage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,61 +50,21 @@ const SharedSettingsPage = ({ role }) => {
       </header>
 
       <section className="space-y-6">
-        {/* Profile Section */}
-        <article className="shadow-md rounded-lg p-6 md:p-8">
-          <h2 className="text-xl font-semibold mb-4">Profile</h2>
-          <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-            <img
-              src={
-                profileImage
-                  ? `${baseURL}${profileImage}`
-                  : "/default-profile.png"
-              }
-              alt="Profile"
-              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
-            />
-            <div className="text-center md:text-left">
-              <p className="text-gray-700 text-xl font-semibold">{username}</p>
-            </div>
-          </div>
-        </article>
-
-        {/* Theme Selection Section */}
-        <article className="bg-white shadow-md rounded-lg p-6 md:p-8">
-          <h2 className="text-xl font-semibold mb-4">Theme Selection</h2>
-          <div className="flex space-x-4">
-            <button
-              onClick={() => handleThemeChange('light')}
-              className={`py-2 px-4 rounded-md ${theme === 'light' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
-            >
-              Light
-            </button>
-            <button
-              onClick={() => handleThemeChange('dark')}
-              className={`py-2 px-4 rounded-md ${theme === 'dark' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
-            >
-              Dark
-            </button>
-          </div>
-        </article>
+        <ProfileSection
+          username={username}
+          profileImage={profileImage}
+          imageUrl={imageUrl}
+          baseURL={baseURL}
+        />
+        <ThemeSelection theme={theme} handleThemeChange={handleThemeChange} />
       </section>
 
-      {/* Logout Button */}
-      <div className="bg-white shadow-md rounded-lg p-6 md:p-8 mt-6">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-red-500 text-white py-2 px-4 rounded-md"
-        >
-          Logout
-        </button>
-      </div>
-      {isModalOpen && (
-        <ConfirmationModal
-          message="Are you sure you want to logout?"
-          onConfirm={handleModalConfirm}
-          onCancel={handleModalCancel}
-        />
-      )}
+      <LogoutButton
+        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+        handleModalConfirm={handleModalConfirm}
+        handleModalCancel={handleModalCancel}
+      />
 
       <ToastContainer />
     </main>

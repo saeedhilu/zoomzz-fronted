@@ -36,7 +36,7 @@ const vendorMenuItems = [
 ];
 
 const VendorLayout = () => {
-  const { username, profileImage } = useSelector((state) => ({
+  var { username, profileImage } = useSelector((state) => ({
     username: state.auth.username,
     profileImage: state.auth.profileImage,
   }));
@@ -47,12 +47,14 @@ const VendorLayout = () => {
   const handleLogout = () => {
     console.log("User logged out");
   };
-
+  var profileImage = 'images/'+profileImage
   const profile = {
     username,
     profileImage,
     icon,
   };
+  console.log('profile iamge ',profileImage);
+  
 
   return (
     <div className="flex">
@@ -62,8 +64,9 @@ const VendorLayout = () => {
         profile={profile}
         onLogout={handleLogout}
         role="vendor"
+      
       />
-      <div className="flex-1">
+      <div className="flex-1 lg:ml-64">
         <Outlet />
       </div>
     </div>

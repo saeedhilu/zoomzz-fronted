@@ -2,18 +2,17 @@ import React, { useState } from "react";
 import { vendorSignupConfig } from "../../components/layout/admin/FromConfig";
 import Form from "../../components/layout/admin/Form";
 import Signup from "../../services/vendor/Singup";
-import { set } from "lodash";
 import OtpForm from "../../components/layout/admin/OtpForm";
 import instance from "../../utils/Axiox";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "../../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+import { setUser } from "../../redux/slices/authSlice";
 
 const SignupPage = () => {
   const [formErrors, setFormErrors] = useState({});
   const [otpSent, setOtpSent] = useState(false);
   const [formData, setFormData] = useState([]);
+  const [otpError, setOtpError] = useState(""); // New state for OTP errors
   const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log("FormData is :", formData);
@@ -22,7 +21,7 @@ const SignupPage = () => {
     try {
       const response = await Signup(values);
 
-      console.log("response data foerm backend :,", response.data);
+      console.log("response data from backend :", response.data);
 
       setFormData(values);
       setFormErrors({});
@@ -32,37 +31,50 @@ const SignupPage = () => {
     }
   };
 
-
-
-
   const verifyClick = async (otp) => {
-    console.log("otp from verify Click function", otp);
+    console.log("otp from verifyClick function", otp);
 
     try {
       const response = await instance.post("/vendor/verify-email-otp/", {
         ...formData,
         otp,
       });
+      console.log("response from bacjkend when signup time :", response);
 
-      const {access_token,refresh_token,user,profile_image} = response.data
+      const { access_token, refresh_token, user, profile_image } =
+        response.data;
       console.log(
-          'datas are :','access_token',access_token,'refre',refresh_token,'username ',user? user.username :'none user','primg',profile_image
-        
+        "datas are :",
+        "access_token",
+        access_token,
+        "refresh_token",
+        refresh_token,
+        "username ",
+        user ? user.username : "none user",
+        "profile_image",
+        profile_image
       );
-      
-      dispatch(setUser({
-        username:user.username,
-        accessToken: access_token,
-        refreshToken: refresh_token,
-        isSuperAdmin: false,
-        isVendor: true, 
-        profileImage: profile_image ? profile_image : '',
-      }));
-      navigate('/vendor/dashboard');
+
+      dispatch(
+        setUser({
+          username: user.username,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+          accessToken: access_token,
+          refreshToken: refresh_token,
+          isSuperAdmin: false,
+          isVendor: true,
+          profileImage: profile_image ? profile_image : "",
+        })
+      );
+      navigate("/vendor/dashboard");
 
       console.log("response is :", response.data);
     } catch (error) {
       console.log("From verify ", error);
+      setOtpError("Invalid OTP. Please try again."); // Set OTP error message
     }
   };
 
@@ -91,17 +103,18 @@ const SignupPage = () => {
                 Regular notifications and updates
               </li>
             </ul>
-            <button className="mt-4 bg-green-300 hover:bg-green-500 w-full text-white font-semibold py-2 px-4 rounded-lg shadow-md">
-              Login
-            </button>
           </div>
         </aside>
         {otpSent ? (
-          <section className="w-3/4 p-10 bg-white shadow-lg rounded-2xl rounded-l-[60px]">
-            <OtpForm onSubmitOtp={verifyClick} />
-          </section>
+          <div className="flex items-center justify-center w-full bg-white shadow-lg rounded-2xl rounded-l-[60px]">
+            <OtpForm
+              onSubmitOtp={verifyClick}
+              error={otpError}
+              sentTo={formData.email}
+            />{" "}
+          </div>
         ) : (
-          <section className="w-3/4 p-10 bg-white shadow-lg rounded-2xl rounded-l-[60px]">
+          <section className="w-3/4 p-10  bg-white shadow-lg rounded-2xl rounded-l-[60px]  ">
             <Form
               initialValues={vendorSignupConfig.initialValues}
               validationSchema={vendorSignupConfig.validationSchema}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Sidebar = ({ title, menuItems, profile, role }) => {
@@ -11,7 +11,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const baseURL = "http://localhost:8000/";
-
+  const navigate = useNavigate()
   const handleToggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -26,9 +26,14 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
   };
 
   if (!menuItems) return null;
+  const handleEditClick = () => {
+    const currentURL = location.pathname.split('/')[0]
+    console.log("Current URL:", currentURL)
+    navigate(`${currentURL}\settings`);        
+  };
 
   return (
-    <div className="border-r-2 shadow-lg shadow-blue-200">
+    <div className="border-r-2 shadow-lg h-[100vh] fixed shadow-blue-200 overflow-y-auto">
       <div className="lg:hidden fixed top-4 right-4 z-50">
         <button
           onClick={handleToggleSidebar}
@@ -59,7 +64,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
             )}
             <div className="ml-4">
               <h3 className="text-lg">{profile.username}</h3>
-              <button className="text-sm text-blue-400 hover:underline">Edit</button>
+              <button className="text-sm text-blue-400 hover:underline" onClick={handleEditClick}>Edit</button>
             </div>
           </div>
           <nav>

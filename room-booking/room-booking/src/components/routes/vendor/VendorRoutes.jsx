@@ -6,18 +6,22 @@ import AllUsers from "../../../pages/vendor/AllUsers";
 import AllRooms from "../../../pages/vendor/AllRooomsPage";
 import ReviewsPage from "../../../pages/vendor/Reviews";
 import SettingsPages from "../../../pages/vendor/SettingsPage";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const VendorRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<VendorLayout />}>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="guests" element={<AllUsers />} />
-        <Route path="rooms" element={<AllRooms />} />
-        <Route path="reviews" element={<ReviewsPage />} />
-        <Route path="settings" element={<SettingsPages />} />    
-      </Route>
-    </Routes>
+    <>
+    <ToastContainer/>
+      <Routes>
+        <Route path="/" element={<VendorLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="guests" element={<AllUsers />} />
+          <Route path="rooms" element={<AllRooms />} />
+          <Route path="reviews" element={<ReviewsPage />} />
+          <Route path="settings" element={<SettingsPages />} />
+        </Route>
+      </Routes>
+    </>
   );
 };
 

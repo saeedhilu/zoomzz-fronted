@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import UpdatesendOtp from "../services/PhoneNumberChanging";
-import UpddateverifyOtp from "../services/PhoneNumberUpdateVerify";
+import UpdatesendOtp from "../services/common/PhoneNumberChanging";
+import UpddateverifyOtp from "../services/common/PhoneNumberUpdateVerify";
 
 const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
