@@ -1,10 +1,10 @@
 import React from 'react';
 import { TailSpin } from 'react-loader-spinner';
-
+import loader from "../../assets/roomSpinner.gif"
 const Spinner = () => {
   return (
     <div className="flex justify-center items-center h-screen">
-      <TailSpin
+      {/* <TailSpin
         height="60"
         width="60"
         color="#525252"
@@ -13,7 +13,8 @@ const Spinner = () => {
         wrapperStyle={{}}
         wrapperClass=""
         visible={true}
-      />
+      /> */}
+      <img className='' src={loader} alt="" />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import RoomInfo from "./RoomInfo";
 import Amenities from "./Amenities";
 import Reviews from "./Reviews";
 import BookingInfo from "./BookingInfo/BookingInfo";
+import Spinner from "../Spinner/Spinner";
 
 const RoomDetail = () => {
   const { roomId } = useParams();
@@ -29,7 +30,9 @@ const RoomDetail = () => {
   }, [roomId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>
+      <Spinner/>
+    </div>;
   }
 
   if (error) {

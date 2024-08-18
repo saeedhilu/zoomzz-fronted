@@ -16,6 +16,9 @@ const BookingForm = () => {
     checkOutDate,
     maxOccupancy,
   } = bookingDetails;
+  console.log('====================================');
+  console.log('Bookign details is :',bookingDetails);
+  console.log('====================================');
 
   const {
     guests,

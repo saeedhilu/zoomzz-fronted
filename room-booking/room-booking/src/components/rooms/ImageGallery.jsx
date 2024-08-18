@@ -31,7 +31,7 @@ const ImageGallery = ({ mainImage, otherImages }) => {
               key={index}
               src={image}
               alt={`Other ${index + 1}`}
-              className={`w-1/5 h-24 object-cover cursor-pointer transition-opacity duration-100 ${showAll ? 'opacity-100' : 'opacity-90'}`}
+              className={`w-2/5 h-24 object-cover cursor-pointer transition-opacity duration-100 ${showAll ? 'opacity-100' : 'opacity-90'}`}
               onClick={() => handleImageClick(image)}
             />
           ))}
