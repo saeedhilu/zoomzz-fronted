@@ -437,7 +437,6 @@
 
 
 
-
 import { FcEditImage } from "react-icons/fc";
 import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -449,6 +448,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { getUserProfile, putUserProfile } from "../services/UserProfile";
 import { PhoneNumberChangeModal } from "../components/modals/PhoneNumberChange";
+import EmailChangeModal from "../components/modals/EmailChange";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import changeEmail from "../services/common/ChangeEmail";
@@ -475,6 +475,7 @@ const UserProfile = () => {
   const [otpSent, setOtpSent] = useState(false); // Track if OTP is sent
   const inputRef = useRef(null); // Initialize the ref
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false); // State for Email Modal
 
   const fetchUserProfile = async () => {
     try {
@@ -499,7 +500,6 @@ const UserProfile = () => {
   };
 
   const handleInputChange = (e) => {
-    
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -531,6 +531,7 @@ const UserProfile = () => {
       inputRef.current.focus(); // Ensure inputRef.current is not null
     }
   };
+
   const handleUsernameBlur = async () => {
     setEditMode(false);
     const formDataToSend = new FormData();
@@ -559,13 +560,12 @@ const UserProfile = () => {
     }
   };
 
-  const handleEmailChange = async () => {
+  const handleEmailChange = async (newEmail) => {
     try {
-      const response = await changeEmail(  formData.email); // Adjust the data format
-      
-        toast.success("OTP sent to your email!");
-        setOtpSent(true);
-      
+      const response = await changeEmail(newEmail); // Adjust the data format
+      toast.success("OTP sent to your email!");
+      setOtpSent(true);
+      setFormData({ ...formData, email: newEmail }); // Update email in formData
     } catch (error) {
       toast.error("Error sending OTP.");
       console.error("Error sending OTP", error);
@@ -574,11 +574,10 @@ const UserProfile = () => {
 
   const handleOtpVerification = async () => {
     try {
-      const response = await verifyEmailChange(formData.email,otp );
-        toast.success("Email updated successfully!");
-        fetchUserProfile(); // Refresh user data
-        setOtpSent(false); // Reset OTP sent state
-      
+      const response = await verifyEmailChange(formData.email, otp);
+      toast.success("Email updated successfully!");
+      fetchUserProfile(); // Refresh user data
+      setOtpSent(false); // Reset OTP sent state
     } catch (error) {
       toast.error("Invalid OTP or OTP expired.");
       console.error("Error verifying OTP", error);
@@ -629,7 +628,7 @@ const UserProfile = () => {
               className="absolute bottom-0 right-0 cursor-pointer"
             >
               <div className="bg-gray-300 rounded-xl mb-2 ">
-              <FcEditImage size={30} />
+                <FcEditImage size={30} />
               </div>
             </label>
           </>
@@ -690,63 +689,54 @@ const UserProfile = () => {
         )}
 
         <div className="mb-4">
-          <section>
-            
-          </section>
+          <section></section>
           <label className="block text-gray-600 font-semibold">Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="border rounded p-2 w-full"
-          />
-          {otpSent ? (
-            <>
-              <label className="block text-gray-600 mt-4">Enter OTP:</label>
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="border rounded p-2 w-full"
-              />
-              <button
-                onClick={handleOtpVerification}
-                className="bg-gray-500 text-white rounded p-2 mt-2"
-              >
-                Verify OTP
-              </button>
-            </>
-          ) : (
+          <div className="flex items-center">
+            <p>{user.email}</p>
             <button
-              onClick={handleEmailChange}
-              className="bg-gray-500 text-white rounded p-2 mt-2"
+              onClick={() => setIsEmailModalOpen(true)}
+              className="ml-2 text-gray-500"
             >
-              Change Email
+              <FontAwesomeIcon icon={faPencilAlt} />
             </button>
-          )}
+          </div>
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-600 font-semibold">Phone Number:</label>
+          <label className="block text-gray-600 font-semibold">Phone:</label>
           <p>{user.phoneNumber}</p>
           <button
             onClick={() => setIsPhoneModalOpen(true)}
-            className="bg-gray-500 text-white rounded p-2 mt-2"
+            className="ml-2 text-gray-500"
           >
-            Change Phone Number
+            <FontAwesomeIcon icon={faPencilAlt} />
           </button>
         </div>
 
-        <p className="text-gray-600">
-          Joined: {user.joinedDate && getYearFromDatetime(user.joinedDate)}
-        </p>
+        <div>
+          <label className="block text-gray-600 font-semibold">Joined in:</label>
+          <p>{getYearFromDatetime(user.joinedDate)}</p>
+        </div>
       </div>
 
+      {/* Conditionally render the modals */}
       {isPhoneModalOpen && (
         <PhoneNumberChangeModal
-          onRequestClose={() => setIsPhoneModalOpen(false)}
-          onPhoneNumberUpdated={handlePhoneNumberChange}
+          isOpen={isPhoneModalOpen}
+          onClose={() => setIsPhoneModalOpen(false)}
+          onPhoneNumberChange={handlePhoneNumberChange}
+        />
+      )}
+
+      {isEmailModalOpen && (
+        <EmailChangeModal
+          isOpen={isEmailModalOpen} // Pass the state for opening modal
+          onClose={() => setIsEmailModalOpen(false)} // Handle closing modal
+          onEmailChange={handleEmailChange} // Handle email change
+          otp={otp} // Pass OTP state
+          setOtp={setOtp} // Pass OTP state setter
+          otpSent={otpSent} // Pass OTP sent state
+          onOtpVerification={handleOtpVerification} // Handle OTP verification
         />
       )}
 
