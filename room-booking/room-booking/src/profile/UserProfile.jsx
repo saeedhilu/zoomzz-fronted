@@ -184,7 +184,7 @@
 // //             Phone: {user.phoneNumber}
 // //             <button
 // //               onClick={() => setIsPhoneModalOpen(true)}
-// //               className="ml-2 text-blue-500"
+// //               className="ml-2 text-gray-500"
 // //             >
 // //               Edit
 // //             </button>
@@ -380,7 +380,7 @@
 //             onBlur={handleUsernameBlur}
 //             disabled={!editMode}
 //             className={`mt-2 w-full p-2 border ${
-//               editMode ? "border-blue-500" : "border-gray-300"
+//               editMode ? "border-gray-500" : "border-gray-300"
 //             } rounded-md`}
 //           />
 //         </div>
@@ -396,7 +396,7 @@
 //             <p>{user.phoneNumber || "Not Provided"}</p>
 //             <button
 //               onClick={() => setIsPhoneModalOpen(true)}
-//               className="ml-2 text-blue-500 hover:text-blue-700"
+//               className="ml-2 text-gray-500 hover:text-gray-700"
 //             >
 //               <FontAwesomeIcon icon={faPencilAlt} />
 //             </button>
@@ -437,7 +437,6 @@
 
 
 
-
 import { FcEditImage } from "react-icons/fc";
 import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -449,6 +448,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { getUserProfile, putUserProfile } from "../services/UserProfile";
 import { PhoneNumberChangeModal } from "../components/modals/PhoneNumberChange";
+import  EmailChangeModal from "../components/modals/EmailChange"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import changeEmail from "../services/common/ChangeEmail";
@@ -471,10 +471,11 @@ const UserProfile = () => {
     image: null,
   });
 
-  const [otp, setOtp] = useState(""); // For OTP input
-  const [otpSent, setOtpSent] = useState(false); // Track if OTP is sent
-  const inputRef = useRef(null); // Initialize the ref
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const inputRef = useRef(null);
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false); // State for Email Modal
 
   const fetchUserProfile = async () => {
     try {
@@ -499,7 +500,6 @@ const UserProfile = () => {
   };
 
   const handleInputChange = (e) => {
-    
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -528,9 +528,10 @@ const UserProfile = () => {
   const handlePencilClick = () => {
     setEditMode(true);
     if (inputRef.current) {
-      inputRef.current.focus(); // Ensure inputRef.current is not null
+      inputRef.current.focus();
     }
   };
+
   const handleUsernameBlur = async () => {
     setEditMode(false);
     const formDataToSend = new FormData();
@@ -549,10 +550,8 @@ const UserProfile = () => {
         error.response.data &&
         error.response.data.username
       ) {
-        // Handle specific error for username
         toast.error(`${error.response.data.username[0]}(${formData.username})`);
       } else {
-        // Handle generic errors
         toast.error("Error updating username.");
       }
       console.error("Error updating username", error);
@@ -561,11 +560,9 @@ const UserProfile = () => {
 
   const handleEmailChange = async () => {
     try {
-      const response = await changeEmail(  formData.email); // Adjust the data format
-      
-        toast.success("OTP sent to your email!");
-        setOtpSent(true);
-      
+      const response = await changeEmail(formData.email);
+      toast.success("OTP sent to your email!");
+      setOtpSent(true);
     } catch (error) {
       toast.error("Error sending OTP.");
       console.error("Error sending OTP", error);
@@ -574,11 +571,10 @@ const UserProfile = () => {
 
   const handleOtpVerification = async () => {
     try {
-      const response = await verifyEmailChange(formData.email,otp );
-        toast.success("Email updated successfully!");
-        fetchUserProfile(); // Refresh user data
-        setOtpSent(false); // Reset OTP sent state
-      
+      const response = await verifyEmailChange(formData.email, otp);
+      toast.success("Email updated successfully!");
+      fetchUserProfile();
+      setOtpSent(false);
     } catch (error) {
       toast.error("Invalid OTP or OTP expired.");
       console.error("Error verifying OTP", error);
@@ -615,22 +611,20 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row p-4 shadow-xl bg-white rounded-lg max-w-4xl mx-auto my-8">
+    <div className="flex flex-col md:flex-row p-6 shadow-xl bg-white rounded-lg max-w-4xl mx-auto my-8">
       <div className="bg-gray-100 w-full md:w-1/3 p-6 flex flex-col items-center relative rounded-lg shadow-md">
         {user.profileImage ? (
           <>
             <img
               src={user.profileImage}
               alt="Profile"
-              className="rounded-full object-cover mb-4"
+              className="rounded-full object-cover mb-4 w-28 h-28"
             />
             <label
               htmlFor="imageInput"
-              className="absolute bottom-0 right-0 cursor-pointer"
+              className="absolute bottom-0 right-0 cursor-pointer p-2 bg-gray-300 rounded-full"
             >
-              <div className="bg-gray-300 rounded-xl mb-2 ">
               <FcEditImage size={30} />
-              </div>
             </label>
           </>
         ) : (
@@ -642,7 +636,7 @@ const UserProfile = () => {
               />
               <label
                 htmlFor="imageInput"
-                className="absolute bottom-0 right-0 mb-2 mr-2 cursor-pointer"
+                className="absolute bottom-0 right-0 mb-2 mr-2 cursor-pointer p-2 bg-gray-300 rounded-full"
               >
                 <FontAwesomeIcon icon={faPlus} className="text-gray-600" />
               </label>
@@ -667,8 +661,8 @@ const UserProfile = () => {
               value={formData.username}
               onChange={handleInputChange}
               onBlur={handleUsernameBlur}
-              ref={inputRef} // Assign ref to input
-              className={`text-xl font-bold text-gray-600 ${
+              ref={inputRef}
+              className={`text-xl font-bold text-gray-600 border p-2 rounded ${
                 !editMode ? "hidden" : ""
               }`}
             />
@@ -690,10 +684,7 @@ const UserProfile = () => {
         )}
 
         <div className="mb-4">
-          <section>
-            
-          </section>
-          <label className="block text-gray-600">Email:</label>
+          <label className="block text-gray-600 font-semibold">Email:</label>
           <input
             type="email"
             name="email"
@@ -712,7 +703,7 @@ const UserProfile = () => {
               />
               <button
                 onClick={handleOtpVerification}
-                className="bg-blue-500 text-white rounded p-2 mt-2"
+                className="bg-blue-500 text-white p-2 rounded mt-2"
               >
                 Verify OTP
               </button>
@@ -720,7 +711,7 @@ const UserProfile = () => {
           ) : (
             <button
               onClick={handleEmailChange}
-              className="bg-blue-500 text-white rounded p-2 mt-2"
+              className="bg-blue-500 text-white p-2 rounded mt-2"
             >
               Change Email
             </button>
@@ -728,25 +719,33 @@ const UserProfile = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-600">Phone Number:</label>
-          <p>{user.phoneNumber}</p>
+          <label className="block text-gray-600 font-semibold">Phone Number:</label>
+          <p className="border rounded p-2 w-full">{user.phoneNumber}</p>
           <button
             onClick={() => setIsPhoneModalOpen(true)}
-            className="bg-blue-500 text-white rounded p-2 mt-2"
+            className="bg-blue-500 text-white p-2 rounded mt-2"
           >
             Change Phone Number
           </button>
         </div>
 
-        <p className="text-gray-600">
-          Joined: {user.joinedDate && getYearFromDatetime(user.joinedDate)}
-        </p>
+        <div className="mb-4">
+          <label className="block text-gray-600 font-semibold">Joined:</label>
+          <p>{user.joinedDate ? getYearFromDatetime(user.joinedDate) : "N/A"}</p>
+        </div>
       </div>
 
       {isPhoneModalOpen && (
         <PhoneNumberChangeModal
           onRequestClose={() => setIsPhoneModalOpen(false)}
-          onPhoneNumberUpdated={handlePhoneNumberChange}
+          onSave={handlePhoneNumberChange}
+        />
+      )}
+
+      {isEmailModalOpen && (
+        <EmailChangeModal
+          onClose={() => setIsEmailModalOpen(false)}
+          onSave={handleEmailChange}
         />
       )}
 
