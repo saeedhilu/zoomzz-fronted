@@ -76,13 +76,13 @@ const Navbar = () => {
 
           {/* Dropdown menu with arrow indicator and transition */}
           <div
-            className={`absolute top-14 right-0 mt-2 w-48 rounded-lg bg-gray-100 shadow-lg py-1 transform transition-transform duration-300 ${
+            className={`absolute top-14 right-0 mt-2 w-48 rounded-lg bg-gray-100 shadow-lg py-1 transform transition-transform duration-300 z-50  ${
               showMenu
                 ? "scale-100 opacity-100"
                 : "scale-95 opacity-0 pointer-events-none"
             }`}
           >
-            <div className="relative">
+            <div className="relative z-50" >
               {/* Arrow Indicator */}
               <div
                 className={`absolute right-1 w-3 h-3 bg-gray-100 z-10 transform rotate-45 -mt-2 ${

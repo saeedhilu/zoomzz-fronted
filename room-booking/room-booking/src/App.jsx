@@ -8,7 +8,8 @@ import AdminLoginPage from "./pages/admin/Login";
 import AdminRoutes from "./components/routes/admin/AdminRoutes";
 import SignupPage from "./pages/vendor/Signup";
 import VendorRoutes from "./components/routes/vendor/VendorRoutes";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // Lazy load components
 const Home = lazy(() => import("./pages/Home"));
 const Signin = lazy(() => import("./pages/Signin"));
@@ -25,6 +26,8 @@ const VendorPage = lazy(() => import("./pages/HostPage"));
 function App() {
   return (
     <Suspense fallback={<Spinner />}>
+      
+      <ToastContainer />
       <Routes>
         {/* Unauthorized users redirecting Page */}
         <Route path="/unauthorized" element={<UnauthorizedPage />} />

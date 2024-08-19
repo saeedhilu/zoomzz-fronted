@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import ReservationStatusList from "../components/rooms/ReservationList";
+import Navbar from "../components/layout/Navbar";
 
 const ReservationStatusListPage = () => {
-  const [currentTab, setCurrentTab] = useState("completed");
+  const [currentTab, setCurrentTab] = useState("upcoming");
 
   return (
     <div className="container mx-auto p-10 rounded-xl  ">
+       <Navbar />
       <h1 className="text-3xl  font-bold ml-6 font-mono">Reservations</h1>
       <div className="p-4">
         <div className="flex space-x-4 h-16">
-          {["completed", "upcoming", "cancelled"].map((tab) => (
+          {[ "upcoming","completed", "cancelled"].map((tab) => (
             <button
               key={tab}
               className={`px-4 py-2 text-lg font-semibold ${

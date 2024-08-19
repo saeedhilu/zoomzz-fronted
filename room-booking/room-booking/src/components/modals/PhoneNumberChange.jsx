@@ -51,7 +51,7 @@ export const PhoneNumberChangeModal = ({ onRequestClose, onPhoneNumberUpdated })
       onPhoneNumberUpdated(phoneNumber); // Notify the parent component
       onRequestClose();
     } catch (err) {
-      setError("An error occurred while verifying OTP. Please try again.");
+      setError("An error occurred while verifying OTP. Please try again.",error);
     } finally {
       setLoading(false);
     }

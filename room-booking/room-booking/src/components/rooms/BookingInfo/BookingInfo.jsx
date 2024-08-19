@@ -71,7 +71,7 @@ const BookingInfo = ({ room }) => {
       : 0;
 
   return (
-    <div className="border border-gray-200 p-4 rounded-lg shadow-md z-0">
+    <div className="border border-gray-200 p-4 rounded-lg shadow-md ">
       <div className="flex">
         <img src={image} alt={name} className="w-1/3 object-cover h-28 rounded-md" />
         <div className="p-2">

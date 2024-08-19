@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import InputField from "../common/inputField";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import useGuestCount from "../../hooks/useGuestCount";
 import { renderStars } from "../../utils/ratingStar";
 import { createReservation } from "../../services/CreateBooking";
@@ -8,7 +9,8 @@ import { initiatePayment } from "../../services/IniatiatePayment";
 
 const BookingForm = () => {
   const location = useLocation();
-  const bookingDetails = location.state || {}; 
+  const navigate = useNavigate();
+  const bookingDetails = location.state || {};
   const {
     room = {},
     guests: initialGuests,
@@ -16,25 +18,9 @@ const BookingForm = () => {
     checkOutDate,
     maxOccupancy,
   } = bookingDetails;
-  console.log('====================================');
-  console.log('Bookign details is :',bookingDetails);
-  console.log('====================================');
 
-  const {
-    guests,
-    error: guestCountError,
-    handleGuestCount,
-  } = useGuestCount(initialGuests, maxOccupancy);
+  const { guests, error: guestCountError, handleGuestCount } = useGuestCount(initialGuests, maxOccupancy);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [checkinDate, setCheckInDate] = useState(checkInDate || "");
-  const [checkoutDate, setCheckoutDate] = useState(checkOutDate || "");
-  const [formError, setFormError] = useState("");
-
-  // State to manage script loading status
   const [scriptLoaded, setScriptLoaded] = useState(false);
 
   useEffect(() => {
@@ -46,10 +32,8 @@ const BookingForm = () => {
       document.body.appendChild(script);
     };
 
-    // Load Razorpay script when component mounts
     loadRazorpayScript();
 
-    // Clean up function to remove script when component unmounts
     return () => {
       const scriptElement = document.querySelector(
         'script[src="https://checkout.razorpay.com/v1/checkout.js"]'
@@ -68,47 +52,57 @@ const BookingForm = () => {
     return daysDifference * pricePerNight;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    email: Yup.string().email("Invalid email format").required("Email is required"),
+    contactNumber: Yup.string().required("Contact number is required"),
+    checkinDate: Yup.date()
+      .required("Check-in date is required")
+      .min(new Date(), "Check-in date must be in the future"),
+    checkoutDate: Yup.date()
+      .required("Check-out date is required")
+      .min(Yup.ref('checkinDate'), "Check-out date must be after check-in date"),
+    guests: Yup.number()
+      .required("Number of guests is required")
+      .min(1, "At least one guest is required")
+      .max(maxOccupancy, `Maximum occupancy is ${maxOccupancy}`),
+  });
+
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     if (!scriptLoaded) {
       console.error("Razorpay script not loaded.");
+      setSubmitting(false);
       return;
     }
 
     try {
       const reservationData = {
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        contact_number: contactNumber,
-        total_guest: guests,
-        check_in: checkinDate,
-        check_out: checkoutDate,
+        first_name: values.firstName,
+        last_name: values.lastName,
+        email: values.email,
+        contact_number: values.contactNumber,
+        total_guest: values.guests,
+        check_in: values.checkinDate,
+        check_out: values.checkoutDate,
       };
 
       // Create reservation
-      const reservationResponse = await createReservation(
-        room.id,
-        reservationData
-      );
+      const reservationResponse = await createReservation(room.id, reservationData);
 
       // Calculate total price
-      const totalPrice = calculateTotalPrice(
-        checkinDate,
-        checkoutDate,
-        room.price_per_night
-      );
+      const totalPrice = calculateTotalPrice(values.checkinDate, values.checkoutDate, room.price_per_night);
 
       // Prepare payment data for Razorpay
       const paymentData = {
         amount: totalPrice * 100, // Razorpay expects amount in smallest currency unit (paisa)
         currency: "INR",
-        receipt: reservationResponse.id.toString(), // Convert to string for Razorpay
+        receipt: reservationResponse.id, // Convert to string for Razorpay
         payment_capture: "1",
       };
 
       // Initiate payment
-      
       const paymentResponse = await initiatePayment(paymentData);
 
       // Configure options for Razorpay checkout
@@ -121,14 +115,13 @@ const BookingForm = () => {
         order_id: paymentResponse.order_id,
         handler: function (response) {
           // Handle successful payment
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
+          // alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+          navigate("/reservations-status"); // Navigate to history page on success
         },
         prefill: {
-          name: `${firstName} ${lastName}`,
-          email,
-          contact: contactNumber,
+          name: `${values.firstName} ${values.lastName}`,
+          email: values.email,
+          contact: values.contactNumber,
         },
         notes: {
           address: "ZOOMZZZ",
@@ -143,15 +136,11 @@ const BookingForm = () => {
       rzp1.open();
     } catch (error) {
       console.error("Booking Form Submission Error:", error);
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.non_field_errors
-      ) {
-        setFormError(error.response.data.non_field_errors.join(", "));
-      } else {
-        setFormError("An unexpected error occurred.");
-      }
+      setErrors({
+        form: error.response?.data?.non_field_errors?.join(", ") || "An unexpected error occurred.",
+      });
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -181,78 +170,116 @@ const BookingForm = () => {
         <p className="text-lg font-bold text-gray-600 mb-4">Discount: 10%</p>
         <p className="text-lg font-bold mb-4">
           Total Price: ₹
-          {calculateTotalPrice(checkinDate, checkoutDate, room.price_per_night)}
+          {calculateTotalPrice(checkInDate, checkOutDate, room.price_per_night)}
         </p>
         <p className="text-lg font-bold mb-4">
-          Selected Dates: {checkinDate} to {checkoutDate}
+          Selected Dates: {checkInDate} to {checkOutDate}
         </p>
       </div>
       <div className="lg:w-1/2">
         <h2 className="text-2xl font-semibold mb-4">Personal Details</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <InputField
-            label="First Name"
-            id="firstName"
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="Enter your first name"
-          />
-          <InputField
-            label="Last Name"
-            id="lastName"
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Enter your last name"
-          />
-          <InputField
-            label="Email"
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-          />
-          <InputField
-            label="Contact Number"
-            id="contactNumber"
-            type="text"
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
-            placeholder="Enter your contact number"
-          />
-          <InputField
-            label="Check-in Date"
-            id="checkinDate"
-            type="date"
-            value={checkinDate}
-            onChange={(e) => setCheckInDate(e.target.value)}
-          />
-          <InputField
-            label="Check-out Date"
-            id="checkoutDate"
-            type="date"
-            value={checkoutDate}
-            onChange={(e) => setCheckoutDate(e.target.value)}
-          />
-          <InputField
-            label="Guests"
-            id="guests"
-            type="number"
-            value={guests}
-            onChange={handleGuestCount}
-            placeholder="Number of guests"
-          />
-          {guestCountError && <p className="text-red-600">{guestCountError}</p>}
-          {formError && <p className="text-red-600">{formError}</p>}
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Book Now
-          </button>
-        </form>
+        <Formik
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            contactNumber: "",
+            checkinDate: checkInDate || "",
+            checkoutDate: checkOutDate || "",
+            guests: guests || "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form className="space-y-4">
+              <div>
+                <label htmlFor="firstName" className="block text-gray-700">First Name</label>
+                <Field
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  placeholder="Enter your first name"
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <ErrorMessage name="firstName" component="div" className="text-red-600" />
+              </div>
+              <div>
+                <label htmlFor="lastName" className="block text-gray-700">Last Name</label>
+                <Field
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  placeholder="Enter your last name"
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <ErrorMessage name="lastName" component="div" className="text-red-600" />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-gray-700">Email</label>
+                <Field
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <ErrorMessage name="email" component="div" className="text-red-600" />
+              </div>
+              <div>
+                <label htmlFor="contactNumber" className="block text-gray-700">Contact Number</label>
+                <Field
+                  id="contactNumber"
+                  name="contactNumber"
+                  type="text"
+                  placeholder="Enter your contact number"
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <ErrorMessage name="contactNumber" component="div" className="text-red-600" />
+              </div>
+              <div>
+                <label htmlFor="checkinDate" className="block text-gray-700">Check-in Date</label>
+                <Field
+                  id="checkinDate"
+                  name="checkinDate"
+                  type="date"
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <ErrorMessage name="checkinDate" component="div" className="text-red-600" />
+              </div>
+              <div>
+                <label htmlFor="checkoutDate" className="block text-gray-700">Check-out Date</label>
+                <Field
+                  id="checkoutDate"
+                  name="checkoutDate"
+                  type="date"
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <ErrorMessage name="checkoutDate" component="div" className="text-red-600" />
+              </div>
+              <div>
+                <label htmlFor="guests" className="block text-gray-700">Number of Guests</label>
+                <Field
+                  id="guests"
+                  name="guests"
+                  type="number"
+                  min="1"
+                  max={maxOccupancy}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                <ErrorMessage name="guests" component="div" className="text-red-600" />
+              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {isSubmitting ? "Processing..." : "Book Now"}
+              </button>
+              <ErrorMessage name="form" component="div" className="text-red-600 mt-4" />
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );

@@ -35,6 +35,9 @@ export const createRating = async (room_id, ratingData) => {
 // ----------------------------------------------------------
 
 export const updateRating = async (room_id, rating_id, ratingData) => {
+    console.log('====================================');
+    console.log('dta is :',room_id),rating_id,ratingData;
+    console.log('====================================');
     try {
         const response = await instance.put(`accounts/rooms/${room_id}/ratings/${rating_id}/`, {
             rating: ratingData.rating,

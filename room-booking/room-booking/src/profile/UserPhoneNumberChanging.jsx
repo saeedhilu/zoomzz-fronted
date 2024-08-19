@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import UpdatesendOtp from "../services/common/PhoneNumberChanging";
-import UpddateverifyOtp from "../services/common/PhoneNumberUpdateVerify";
+import VeriyUpdatePhoneNumber from "../services/common/VeriyPhoneNumberChange";
 
 const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -53,7 +53,7 @@ const PhoneNumberModal = ({ isOpen, onRequestClose, onPhoneNumberChange }) => {
 
   const handleVerifyOtp = async () => {
     try {
-      const response = await UpddateverifyOtp(phoneNumber, otp.join(""));
+      const response = await VeriyUpdatePhoneNumber(phoneNumber, otp.join(""));
       if (response) {
         onPhoneNumberChange(phoneNumber);
         onRequestClose();

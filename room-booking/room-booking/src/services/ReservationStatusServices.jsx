@@ -4,7 +4,7 @@ import instance from "../utils/Axiox";
 const fetchReservationStatus = async (endpoint) => {
     try {
         const response = await instance.get(endpoint);
-        console.log('data',response.data);
+        console.log('data from reservation status',response.data);
         return response.data;
     } catch (error) {
         throw error;
