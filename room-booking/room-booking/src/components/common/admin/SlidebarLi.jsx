@@ -33,7 +33,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
   };
 
   return (
-    <div className="border-r-2 shadow-lg h-[100vh] fixed shadow-blue-200 overflow-y-auto">
+    <div className="border-r-2 shadow-lg h-[100vh] fixed shadow-blue-200 overflow-y-auto z-50">
       <div className="lg:hidden fixed top-4 right-4 z-50">
         <button
           onClick={handleToggleSidebar}

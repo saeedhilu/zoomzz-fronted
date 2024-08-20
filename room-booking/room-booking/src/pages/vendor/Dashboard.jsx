@@ -1,4 +1,4 @@
-import RecentBookings from "../../components/layout/vendor/RecentBooking";
+
 import VendorStatics from "../../components/layout/vendor/Statics";
 import BookingChartControls from "../../components/layout/admin/TestChart";
 import VendorTopRooms from "../../components/layout/vendor/TopVendorRooms";
@@ -16,7 +16,6 @@ const Dashboard = () => {
         </section> */}
       </div>
 
-      <RecentBookings />
     </main>
   );
 };

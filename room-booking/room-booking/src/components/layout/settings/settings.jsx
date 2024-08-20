@@ -7,6 +7,7 @@ import ProfileSection from "../../settingsParts/ProfileSection";
 import ThemeSelection from "../../settingsParts/ThemeSelection";
 import LogoutButton from "../../settingsParts/LogoutButton";
 import '../../../style/Theme.css';
+import UserProfile from "../../../profile/UserProfile";
 
 const SharedSettingsPage = ({ role, imageUrl }) => {
   const { username, profileImage } = useSelector((state) => state.auth);
@@ -50,7 +51,8 @@ const SharedSettingsPage = ({ role, imageUrl }) => {
       </header>
 
       <section className="space-y-6">
-        <ProfileSection
+        <UserProfile
+          onClose={() => setIsModalOpen(false)}
           username={username}
           profileImage={profileImage}
           imageUrl={imageUrl}

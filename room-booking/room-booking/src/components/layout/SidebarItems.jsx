@@ -22,6 +22,10 @@ const vendorMenuItems = [
     icon: <FaUsers />,
   },
   {
+    label: "Bookings",
+    icon: <FaUsers />,
+  },
+  {
     label: "Rooms",
     icon: <FaBed />,
   },

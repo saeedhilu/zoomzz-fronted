@@ -89,8 +89,8 @@ const ReviewsPage = () => {
   ];
 
   return (
-    <main className="p-4">
-     <header className="border-b-2 border-gray-400  w-full h-16  pl-4">
+    <main className="lg:p-4 w-auto">
+     <header className="border-b-2 border-gray-400   h-16  pl-4">
         <h1 className="text-3xl font-bold">
           All Reviews   
         </h1>
@@ -119,7 +119,7 @@ const ReviewsPage = () => {
         dataSource={data}
         onChange={handleChange}
         loading={loading}
-        pagination={{ pageSize: 2 }}
+        pagination={{ pageSize: 4 }}
       />
       {error && <p className="text-red-500">{error}</p>}
     </main>

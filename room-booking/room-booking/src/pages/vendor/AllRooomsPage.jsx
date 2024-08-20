@@ -450,13 +450,13 @@ const AllRooms = () => {
         
       </div> */}
       <ToastContainer />
-      <header className="border-b-2 border-gray-400 pb-2 flex justify-between w-screen  ">
+      <header className="border-b-2 border-gray-400 pb-2 flex justify-between   ">
         <h1 className="text-3xl font-bold">
           All Rooms (<span>{rooms.length}</span>)
         </h1>
         <AddNewButton onClick={handleCreate} label="Add New +" />
       </header>
-      <section className="overflow-x-auto w-screen mt-4">
+      <section className="  mt-4">
         <div className="overflow-y-auto h-[calc(100vh-110px)]">
           <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md overflow-x-auto">
             <thead className="bg-gray-800 text-white sticky top-0 z-10">

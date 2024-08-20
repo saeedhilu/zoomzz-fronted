@@ -8,6 +8,7 @@ import ReviewsPage from "../../../pages/vendor/Reviews";
 import SettingsPages from "../../../pages/vendor/SettingsPage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RecentBooking from "../../../pages/vendor/Bookings";
 const VendorRoutes = () => {
   return (
     <>
@@ -16,9 +17,10 @@ const VendorRoutes = () => {
         <Route path="/" element={<VendorLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="guests" element={<AllUsers />} />
+          <Route path="bookings" element={<RecentBooking />} />
           <Route path="rooms" element={<AllRooms />} />
           <Route path="reviews" element={<ReviewsPage />} />
-          <Route path="settings" element={<SettingsPages />} />
+          <Route path="settings" element={<SettingsPages />} /> 
         </Route>
       </Routes>
     </>

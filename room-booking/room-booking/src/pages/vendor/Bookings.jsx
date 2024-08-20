@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import getSummaryStatics from "../../../services/vendor/VendorStatics";
+import getSummaryStatics from "../../services/vendor/VendorStatics";
 
 const RecentBookings = () => {
   const [recentBookings, setRecentBookings] = useState([]);
@@ -22,7 +22,7 @@ const RecentBookings = () => {
   }, []);
 
   return (
-    <main className="pt-2 mx-auto max-w-6xl">
+    <main className="">
       <header className="text-3xl font-bold mb-3 border-b-2 border-gray-400 pb-2">
         <h1 className="text-2xl font-bold mb-4">Recent Bookings</h1>
       </header>
