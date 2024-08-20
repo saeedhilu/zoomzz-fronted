@@ -1,13 +1,9 @@
 import React from "react";
-// Components
 import Header from "../components/layout/Header";
 import TopRatedRooms from "../components/rooms/TopRatedRooms";
 import Banner from "../components/layout/Banner";
 
 const HomePage = () => {
- 
-
-
   const handleOnclick = () => {
     alert("Hosting button is clicked");
   };

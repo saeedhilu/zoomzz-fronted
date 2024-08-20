@@ -46,7 +46,6 @@ const RoomSearch = () => {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="space-y-4">
-        {/* Search bar for mobile screens */}
         <div className="sm:hidden">
           <div className="bg-white shadow-md p-4 rounded-full flex items-center sm:space-x-4">
             <div className="flex-1 sm:w-auto">
@@ -108,7 +107,6 @@ const RoomSearch = () => {
           </div>
         </div>
 
-        {/* Search bar for larger screens */}
         <div className="hidden sm:block">
           <div className="bg-white shadow-md p-4 rounded-full flex items-center sm:space-x-4">
             <div className="flex-1 sm:w-auto">
@@ -167,7 +165,13 @@ const RoomSearch = () => {
             </div>
           </div>
         </div>
-        {loading && <Spinner className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2" />}
+        {loading &&
+        <div className='inset-0 fixed bg-white w-auto h-[100%] z-50'>
+            <Spinner className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+        </div>
+         
+         
+         }
       </div>
 
       {error && <p className="mt-2 text-sm text-red-500">{error}</p>}

@@ -39,9 +39,13 @@ const authSlice = createSlice({
     updatePhoneNumber: (state, action) => {
       state.phoneNumber = action.payload;
     },
+    updateToken: (state, action) => {
+      state.accessToken = action.payload.accessToken;
+    },
   },
+
 });
 
-export const { setUser, clearAuth,updatePhoneNumber } = authSlice.actions;
+export const { setUser, clearAuth,updatePhoneNumber,updateToken } = authSlice.actions;
 
 export default authSlice.reducer;

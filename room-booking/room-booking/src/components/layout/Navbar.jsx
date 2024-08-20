@@ -43,10 +43,13 @@ const Navbar = () => {
     navigate("/user-profile");
   };
 
+  const handlelogoName=()=>{
+    navigate("/")
+  }
   return (
     <div className="flex items-center justify-between py-6 px-4 sm:px-8 w-full z-50">
       <div>
-        <h1 className="text-3xl font-bold text-gray-500">{websiteName}</h1>
+        <h1 className="text-3xl font-bold text-gray-500" onClick={handlelogoName}>{websiteName}</h1>
       </div>
       <div className="flex items-center space-x-4">
         <button
@@ -74,7 +77,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Dropdown menu with arrow indicator and transition */}
           <div
             className={`absolute top-14 right-0 mt-2 w-48 rounded-lg bg-gray-100 shadow-lg py-1 transform transition-transform duration-300 z-50  ${
               showMenu
@@ -83,7 +85,6 @@ const Navbar = () => {
             }`}
           >
             <div className="relative z-50" >
-              {/* Arrow Indicator */}
               <div
                 className={`absolute right-1 w-3 h-3 bg-gray-100 z-10 transform rotate-45 -mt-2 ${
                   showMenu ? "opacity-100" : "opacity-0"
