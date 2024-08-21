@@ -13,7 +13,7 @@ const ReviewsPage = () => {
   const fetchReview = async () => {
     try {
       const response = await getRating();
-      console.log("Response from Rating page:", response);
+    
 
       // Transforming the data
       const transformedData = response.flatMap((room) =>
@@ -90,7 +90,7 @@ const ReviewsPage = () => {
 
   return (
     <main className="lg:p-4 w-auto">
-     <header className="border-b-2 border-gray-400   h-16  pl-4">
+     <header className="border-b-2 border-gray-400   h-16  lg:pl-4">
         <h1 className="text-3xl font-bold">
           All Reviews   
         </h1>
@@ -111,7 +111,7 @@ const ReviewsPage = () => {
             setSortedInfo({});
           }}
         >
-          Clear filters and sorters
+          Clear all
         </Button>
       </Space>
       <Table

@@ -2,10 +2,10 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { renderStars } from "../utils/ratingStar";
-import RoomSearch from "../components/layout/SearchBar";
-import RoomFilter from "../components/rooms/roomFilter/RoomFilterForm";
-import Navbar from "../components/layout/Navbar";
+import { renderStars } from "../../utils/ratingStar";
+import RoomSearch from "../../components/layout/SearchBar";
+import RoomFilter from"../../components/rooms/roomFilter/RoomFilterForm";
+import Navbar from "../../components/layout/Navbar";
 const RoomList = () => {
   const location = useLocation();
   const { rooms } = location.state || { rooms: [] };

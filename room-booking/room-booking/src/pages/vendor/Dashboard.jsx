@@ -1,22 +1,23 @@
-
 import VendorStatics from "../../components/layout/vendor/Statics";
-import BookingChartControls from "../../components/layout/admin/TestChart";
+import BookingChartWithControls from "../../components/layout/admin/TestChart";
 import VendorTopRooms from "../../components/layout/vendor/TopVendorRooms";
+import RecentBookings from "../../components/layout/vendor/RecentBooking";
 
 const Dashboard = () => {
   return (
-    <main>
+    <main className="p-6">
       <VendorStatics />
-
-      <BookingChartControls apiEndpoint="vendor/vendor-booking-sts/" />
-      <div className="p-6 grid  grid-cols-1 md:grid-cols-1 lg:grid-cols-1">
-        <VendorTopRooms />
-        {/* <section>
-          <h2 className="text-lg font-bold mb-4">Vendor Dashboard</h2>
-        </section> */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-1">
+        <div className="p-4 bg-white rounded shadow-lg">
+          <BookingChartWithControls apiEndpoint="vendor/vendor-booking-sts/" />
+        </div>
+        <div className="p-4 bg-white rounded shadow-lg">
+          <VendorTopRooms />
+        </div>
       </div>
-
+      <RecentBookings/>
     </main>
   );
 };
+
 export default Dashboard;

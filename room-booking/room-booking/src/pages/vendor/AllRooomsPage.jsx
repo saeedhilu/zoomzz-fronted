@@ -445,7 +445,7 @@ const AllRooms = () => {
   ];
 
   return (
-      <main className=" pt-2 mx-auto max-w-6xl">
+      <main className=" pl-6 max-w-6xl">
       {/* <div>
         
       </div> */}

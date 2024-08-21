@@ -21,7 +21,7 @@ const VendorTopRooms = () => {
 
   return (
     <section className="mt-8 w-full">
-      <h2 className="text-2xl font-bold mb-4">Top 5 Rooms</h2>
+      <h2 className="text-2xl font-bold mb-4">Top Rooms</h2>
       <div className="overflow-x-auto rounded-lg">
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead className="bg-gray-800 text-white sticky top-0 z-10">

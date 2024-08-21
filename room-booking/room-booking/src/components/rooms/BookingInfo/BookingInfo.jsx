@@ -7,6 +7,8 @@ import { faCalendarAlt, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons
 import { renderStars } from "../../../utils/ratingStar";
 import useGuestCount from "../../../hooks/useGuestCount";
 import "../../../style/flatpickr-custom.css";
+import { useSelector } from 'react-redux';
+import { showToast } from "../../../utils/toastUtils";
 
 const BookingInfo = ({ room }) => {
   const {
@@ -23,6 +25,7 @@ const BookingInfo = ({ room }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const { guests, error: guestError, handleGuestCount } = useGuestCount(1, maxOccupancy);
   const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -60,7 +63,13 @@ const BookingInfo = ({ room }) => {
       totalPrice,
       maxOccupancy,
     };
-    navigate("/booking", { state: bookingDetails });
+    if (!isAuthenticated) {
+      showToast("Please sign up to access the booking page.", "info");
+      navigate("/signin");
+    }else{
+      navigate("/booking", { state: bookingDetails });
+    }
+  
   };
 
   

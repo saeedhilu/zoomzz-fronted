@@ -49,11 +49,11 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between py-6 px-4 sm:px-8 w-full z-50">
       <div>
-        <h1 className="text-3xl font-bold text-gray-500" onClick={handlelogoName}>{websiteName}</h1>
+        <h1 className="text-3xl font-bold text-gray-500 cursor-pointer" onClick={handlelogoName}>{websiteName}</h1>
       </div>
       <div className="flex items-center space-x-4">
         <button
-          className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 h-12 hover:bg-gray-600 rounded-3xl"
+          className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 h-12 hover:bg-gray-600 rounded-3xl cursor-pointer"
           onClick={handleHost}
         >
           Become A Host

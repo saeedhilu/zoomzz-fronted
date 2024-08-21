@@ -10,18 +10,23 @@ import SignupPage from "./pages/vendor/Signup";
 import VendorRoutes from "./components/routes/vendor/VendorRoutes";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserRoutes from "./components/routes/user/UserRoutes";
 // Lazy load components
-const Home = lazy(() => import("./pages/Home"));
-const Signin = lazy(() => import("./pages/Signin"));
-const RoomListPage = lazy(() => import("./pages/RoomListPage"));
+
+
+
+
+const Home = lazy(() => import("./pages/user/Home"));
+const Signin = lazy(() => import("./pages/user/Signin"));
+const RoomListPage = lazy(() => import("./pages/user/RoomListPage"));
 const ReservationStatusListPage = lazy(() =>
-  import("./pages/ReservationsStatusPage")
+  import("./pages/user/ReservationStatusPage/ReservationsStatusPage")
 );
-const RoomDetail = lazy(() => import("./pages/RoomDetails"));
-const Booking = lazy(() => import("./pages/Booking"));
-const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
-const WishlistPage = lazy(() => import("./pages/WishlistPage"));
-const VendorPage = lazy(() => import("./pages/HostPage"));
+const RoomDetail = lazy(() => import("./pages/user/RoomDetails"));
+const Booking = lazy(() => import("./pages/user/Booking"));
+const UserProfilePage = lazy(() => import("./pages/user/ProfilePage"));
+const WishlistPage = lazy(() => import("./pages/user/WishlistPage"));
+const VendorPage = lazy(() => import("./pages/user/HostPage"));
 
 function App() {
   return (
@@ -75,7 +80,15 @@ function App() {
         
         */}
         {/* Regular routes */}
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/*"
+          element={
+           
+              <UserRoutes />
+           
+          }
+        />
+        {/* <Route path="/" element={<Home />} />
         <Route path="/signin" element={<ProtectedRoute element={Signin} />} />
         <Route path="/room-list" element={<RoomListPage />} />
         <Route
@@ -86,7 +99,7 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/user-wishlist" element={<WishlistPage />} />
-        <Route path="/host-page" element={<VendorPage />} />
+        <Route path="/host-page" element={<VendorPage />} /> */}
       </Routes>
     </Suspense>
   );

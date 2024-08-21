@@ -1,47 +1,31 @@
-// // src/components/ProtectedRoute.js
-// import React from 'react';
-// import { useSelector } from 'react-redux';
-// import { Navigate } from 'react-router-dom';
-
-// const ProtectedRoute = ({ element: Component, ...rest }) => {
-//   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-//   console.log('st',isAuthenticated);
-
-//   return isAuthenticated ? <Navigate to="/" /> : <Component {...rest} />;
-// };
-
-// export default ProtectedRoute;
-
-// src/components/ProtectedRoute.js
-
-// src/components/ProtectedRoute.js
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ProtectedRoute = ({ element: Component, ...rest }) => {
-  const { isAuthenticated, isVendor, isSuperAdmin } = useSelector((state) => state.auth);
+  const { isAuthenticated, isVendor, isSuperAdmin } = useSelector(
+    (state) => state.auth
+  );
   const navigate = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (isAuthenticated) {
       if (isVendor) {
-        navigate('/vendor/dashboard');
+        navigate("/vendor/dashboard");
       } else if (isSuperAdmin) {
-        navigate('/super-admin-dashboard');
+        navigate("/super-admin-dashboard");
       } else {
-        navigate('/');
+        navigate(location.state?.from || "/");
       }
     }
-  }, [isAuthenticated, isVendor, isSuperAdmin, navigate]);
+  }, [isAuthenticated, isVendor, isSuperAdmin, navigate, location.state?.from]);
 
-  // If not authenticated, render the component to proceed to the login page or other protected routes
   if (!isAuthenticated) {
     return <Component {...rest} />;
   }
 
-  return null; // Returning null while redirection is in process
+  return null;
 };
 
 export default ProtectedRoute;
-

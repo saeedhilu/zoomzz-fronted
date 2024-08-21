@@ -4,9 +4,7 @@ import { Link, useLocation,useNavigate } from "react-router-dom";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const Sidebar = ({ title, menuItems, profile, role }) => {
-  console.log('image is :',profile.profileImage);
   
-  console.log('for side bar', profile);
 
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -16,7 +14,6 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
     setIsOpen(!isOpen);
   };
 
-  // Helper function to get the first letter of the username
   const getInitials = (username) => {
     return username
       .split(' ')
@@ -33,7 +30,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
   };
 
   return (
-    <div className="border-r-2 shadow-lg h-[100vh] fixed shadow-blue-200 overflow-y-auto z-50">
+    <div className="border-r-2 shadow-lg h-[100vh] fixed shadow-white overflow-y-auto z-50">
       <div className="lg:hidden fixed top-4 right-4 z-50">
         <button
           onClick={handleToggleSidebar}
@@ -44,7 +41,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
       </div>
 
       <aside
-        className={`fixed top-0 left-0 w-64 h-screen bg-white border-r-2 border-gray-200 shadow-xl transition-transform transform z-40 ${
+        className={`overflow-y-auto fixed top-0 left-0 w-64 h-screen bg-white border-r-2 border-gray-200 shadow-xl transition-transform transform z-40  ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 lg:relative lg:w-64 lg:h-screen lg:border-none lg:shadow-none lg:flex lg:flex-col lg:items-start`}
       >

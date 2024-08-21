@@ -61,20 +61,21 @@ const VendorLayout = () => {
   
 
   return (
-    <div className="flex">
-      <Sidebar
-        title="Vendor Panel"
-        menuItems={vendorMenuItems}
-        profile={profile}
-        onLogout={handleLogout}
-        role="vendor"
+    <div className="grid grid-cols-5 h-screen">
+      <div className="col-span-1">
+        <Sidebar
+          title="Vendor Panel"
+          menuItems={vendorMenuItems}
+          profile={profile}
+          onLogout={handleLogout}
+          role="vendor"
+        />
+      </div>
       
-      />
-      <div className="flex-1 lg:ml-64">
+      <div className="col-span-full lg:col-span-4 p-4">
         <Outlet />
       </div>
     </div>
   );
 };
-
 export default VendorLayout;

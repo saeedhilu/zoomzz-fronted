@@ -2,8 +2,8 @@ import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import {  setUser } from '../../../redux/slices/authSlice';
-import instance from '../../../utils/Axiox';
+import {  setUser } from '../../redux/slices/authSlice';
+import instance from '../../utils/Axiox';
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -17,18 +17,24 @@ const GoogleSignIn = () => {
       const response = await instance.post('accounts/google/auth/', {
         access_token: accessToken,
       });
-      console.log('response from google signin',response);
-     
+      console.log('response from google signin',response.data.user);
+     const {email,username,access_token,first_name,is_vendor,last_name,phone_number,refresh_token,image} = response.data.user
 
-      dispatch(setUser({
-        accessToken:response.data.access_token ,
-        refreshToken:response.data.refresh_token,
-        username : response.data.username || null,
-      }));  
+      dispatch(
+        setUser({
+          username: username || '', 
+          firstName: first_name || '', 
+          lastName: last_name || '',
+          email: email || '',
+          phoneNumber: phone_number, 
+          accessToken: access_token,
+          refreshToken: refresh_token, 
+          isVendor: is_vendor || false,
+          profileImage: image || '', 
+        })
+      );
 
-      
-
-      navigate('/');
+      // navigate('/');
     } catch (error) {
       console.error('Error sending access token to backend:', error);
     }

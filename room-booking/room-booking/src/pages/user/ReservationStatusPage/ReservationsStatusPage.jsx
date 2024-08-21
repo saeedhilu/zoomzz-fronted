@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ReservationStatusList from "../components/rooms/ReservationList";
-import Navbar from "../components/layout/Navbar";
+import ReservationStatusList from '../../../components/rooms/ReservationList'
+import Navbar from "../../../components/layout/Navbar";
 
 const ReservationStatusListPage = () => {
   const [currentTab, setCurrentTab] = useState("upcoming");

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import { FaGoogle } from "react-icons/fa";
-import GoogleSignIn from "./GoogleSignIn";
+import GoogleSignIn from "../../../pages/user/GoogleSignIn";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/slices/authSlice";
@@ -106,24 +106,21 @@ const PhoneNumberSignIn = () => {
     setError("");
     try {
       const response = await verifyOtp(phoneNumber, otp.join(""));
-      console.log('====================================');
-      console.log('resposen for login user :',response);
-      console.log('====================================');
-      const user = response.user; // Assuming the response structure includes user data
+      const user = response.user; 
       const { access_token, refresh_token, profile_image } = response;
   
       dispatch(
         setUser({
-          username: user.username || '', // Default to empty string if username is not provided
-          firstName: user.first_name || '', // Add default values for all fields if necessary
+          username: user.username || '', 
+          firstName: user.first_name || '', 
           lastName: user.last_name || '',
           email: user.email || '',
-          phoneNumber: user.phone_number, // Use the phone number from the input
+          phoneNumber: user.phone_number, 
           accessToken: access_token,
           refreshToken: refresh_token,
-          isSuperAdmin: user.is_super_admin || false, // Use user-specific data
-          isVendor: user.is_vendor || false, // Ensure fallback if data is missing
-          profileImage: user.image || '', // Default to empty string if no profile image
+          isSuperAdmin: user.is_super_admin || false, 
+          isVendor: user.is_vendor || false,
+          profileImage: user.image || '', 
         })
       );
   

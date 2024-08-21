@@ -22,7 +22,7 @@ const AllUsers = () => {
 
 
   return (
-    <main className="pl-6 mx-auto max-w-6xl ">
+    <main className="pl-6  max-w-6xl ">
       <header>
         <h1 className="text-3xl font-bold flex border-b-2 border-gray-400 pb-2">
           All Users (<p>{users.length}</p>)

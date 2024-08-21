@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import getSummaryStatics from "../services/admin/SummaryStatics";
+import getSummaryStatics from "../../services/admin/SummaryStatics";
 
 const BecomeMemberPage = () => {
   const [statistics, setStatistics] = useState({
