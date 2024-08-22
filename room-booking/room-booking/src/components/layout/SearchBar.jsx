@@ -35,9 +35,11 @@ const RoomSearch = () => {
 
     try {
       const data = await searchRooms(searchParams);
+      console.log('data from serach:',data);
+      
       navigate('/room-list', { state: { rooms: data } });
     } catch (error) {
-      setError('No rooms found.'); // Handle specific error messages based on response
+      setError('No rooms found.');
     } finally {
       setLoading(false);
     }

@@ -18,6 +18,7 @@ const RoomDetail = () => {
     const fetchRoomDetails = async () => {
       try {
         const data = await getRoomDetails(roomId);
+        
         setRoom(data);
         setLoading(false);
       } catch (error) {
