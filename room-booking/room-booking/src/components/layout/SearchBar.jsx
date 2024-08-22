@@ -39,7 +39,8 @@ const RoomSearch = () => {
       
       navigate('/room-list', { state: { rooms: data } });
     } catch (error) {
-      setError('No rooms found.');
+      
+      setError(error.response.data.detail);
     } finally {
       setLoading(false);
     }
