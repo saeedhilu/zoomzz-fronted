@@ -471,7 +471,7 @@ const UserProfile = () => {
     image: null,
   });
 
-  const [otp, setOtp] = useState(""); // For OTP input
+  const [otp, setOtp] = useState(""); 
   const [otpSent, setOtpSent] = useState(false); // Track if OTP is sent
   const inputRef = useRef(null); // Initialize the ref
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
@@ -528,15 +528,19 @@ const UserProfile = () => {
   const handlePencilClick = () => {
     setEditMode(true);
     if (inputRef.current) {
-      inputRef.current.focus(); // Ensure inputRef.current is not null
+      inputRef.current.focus(); 
     }
   };
 
   const handleUsernameBlur = async () => {
     setEditMode(false);
     const formDataToSend = new FormData();
+    if (user.username === formData.username){
+      toast.error(`Username  ${formData.username} unchanged. No update needed. `);
+      return
+     
+    }  
     formDataToSend.append("username", formData.username);
-
     try {
       const response = await putUserProfile(formDataToSend);
       setUser((prevUser) => ({
@@ -723,7 +727,7 @@ const UserProfile = () => {
       {isPhoneModalOpen && (
         <PhoneNumberChangeModal
           isOpen={isPhoneModalOpen}
-          onClose={() => setIsPhoneModalOpen(false)}
+          onRequestClose={() => setIsPhoneModalOpen(false)}
           onPhoneNumberChange={handlePhoneNumberChange}
         />
       )}

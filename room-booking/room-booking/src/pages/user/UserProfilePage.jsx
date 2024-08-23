@@ -7,8 +7,8 @@ import Navbar from "../components/layout/Navbar";
 const UserProfilePage=()=>{
     return(
         <div>
-            <Navbar/>
-            <UserProfile />
+            {/* <Navbar/> */}
+            {/* <UserProfile /> */}
         </div>
     )
 }
