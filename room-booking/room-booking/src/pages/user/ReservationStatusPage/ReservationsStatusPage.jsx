@@ -6,8 +6,8 @@ const ReservationStatusListPage = () => {
   const [currentTab, setCurrentTab] = useState("upcoming");
 
   return (
-    <div className="container mx-auto p-10 rounded-xl  ">
-       <Navbar />
+    <div className="container mx-auto p-10 rounded-xl   ">
+       
       <h1 className="text-3xl  font-bold ml-6 font-mono">Reservations</h1>
       <div className="p-4">
         <div className="flex space-x-4 h-16">

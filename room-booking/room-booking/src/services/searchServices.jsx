@@ -19,5 +19,5 @@ export const searchRooms = async (serachParams) =>{
     }finally{
         console.log('finally block executed.....');
     }
-};
+};  
 export default searchRooms; 

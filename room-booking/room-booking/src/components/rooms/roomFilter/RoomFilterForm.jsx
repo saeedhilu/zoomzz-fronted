@@ -702,15 +702,31 @@ const RoomFilter = () => {
 
   return (
     <div className="relative">
-      <button
-        onClick={() => setShowFilter((prevShowFilter) => !prevShowFilter)}
-        className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded mt-2 mb-4"
-      >
-        <FontAwesomeIcon icon={faFilter} />
-        <span className="ml-2">
-          {showFilter ? "Hide Filters" : "Show Filters"}
-        </span>
-      </button>
+      <div className="flex justify-between items-center mb-4">
+        <button
+          onClick={() => setShowFilter((prevShowFilter) => !prevShowFilter)}
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+        >
+          <FontAwesomeIcon icon={faFilter} />
+          <span className="ml-2">
+            {showFilter ? "Hide Filters" : "Show Filters"}
+          </span>
+        </button>
+        <div className="flex items-center">
+          <label className="mr-2 hidden md:block">Order By:</label>
+          <FontAwesomeIcon icon={faSort} />
+          <select
+            name="ordering"
+            value={filters.ordering}
+            onChange={handleOrderChange}
+            className="border border-gray-300 rounded px-2 py-1 ml-2"
+          >
+            <option value="">Select ordering </option>
+            <option value="price">Price: Low to High</option>
+            <option value="-price">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
       <div
         className={`fixed top-0 left-0 w-72 bg-white p-4 border border-gray-300 rounded h-full transform transition-transform overflow-y-auto ${
           showFilter
@@ -837,22 +853,6 @@ const RoomFilter = () => {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-      <div className="absolute right-0 top-2">
-        <div className="mb-2">
-          <label className="mr-2">Order By:</label>
-          <FontAwesomeIcon icon={faSort} />
-          <select
-            name="ordering"
-            value={filters.ordering}
-            onChange={handleOrderChange}
-            className="border border-gray-300 rounded px-2 py-1 ml-2"
-          >
-            <option value="">Select ordering </option>
-            <option value="price">Price: Low to High</option>
-            <option value="-price">Price: High to Low</option>
-          </select>
         </div>
       </div>
     </div>

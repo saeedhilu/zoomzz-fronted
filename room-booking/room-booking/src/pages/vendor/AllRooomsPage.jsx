@@ -50,6 +50,7 @@ const AllRooms = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const localHost = "http://127.0.0.1:8000/";
 
+console.log('room from statte',rooms);
 
   const fetchData = async () => {
     try {
@@ -81,6 +82,19 @@ const AllRooms = () => {
       console.error("Error fetching data:", error);
     }
   };
+  console.log('====================================');
+  console.log('rooms is :',rooms);
+  console.log('====================================');
+
+
+
+
+
+  rooms.map((m) => {
+    console.log('For devyggubgs',m.name);
+    return null; 
+  });
+  
 
   useEffect(() => {
     fetchData();
@@ -445,7 +459,7 @@ const AllRooms = () => {
   ];
 
   return (
-      <main className=" pl-6 max-w-6xl">
+      <main className="  ">
       {/* <div>
         
       </div> */}
@@ -487,6 +501,7 @@ const AllRooms = () => {
                 </tr>
               ) : (
                 rooms.map((r) => (
+                  
                   <tr key={r.id} className="border-b">
                     <td className="py-2 px-4 underline text-blue-500 cursor-pointer"  onClick={() => handleEdit(r)}>{r.id}</td>
                     <td className="py-2 px-4 ">
@@ -502,7 +517,21 @@ const AllRooms = () => {
                       />
                     </td>
                     <td className="py-2 px-4 truncate">{r.name}</td>
-                    <td className="py-2 px-4">{r.category}</td>
+                    <td className="py-2 px-4">{r.category && r.category.length > 0 ? (
+                        
+                        r.category.map((category) => (
+                          
+                          <div
+                          
+                            key={category.id}
+                            className="flex items-center mb-1 truncate"
+                          >
+                            <span>{category.name}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-red-600 ">No category</p>
+                      )}</td>
                     <td className="py-2 px-4">{r.description}</td>
                     <td className="py-2 px-4">{r.price_per_night}</td>
                     <td className="py-2 px-4 ">{r.max_occupancy}</td>
@@ -520,13 +549,17 @@ const AllRooms = () => {
                     </td>
                     <td className="py-2 px-4">
                       {/* Display amenities */}
+                      {console.log('amenitites are ::::::',r.amenities)}
                       {r.amenities && r.amenities.length > 0 ? (
+                        
                         r.amenities.map((amenity) => (
+                          
                           <div
+                          
                             key={amenity.id}
                             className="flex items-center mb-1 truncate"
                           >
-                            <span>{amenity}</span>
+                            <span>{amenity.name}</span>
                           </div>
                         ))
                       ) : (

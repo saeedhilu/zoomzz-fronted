@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../../auth/protectedrouted/ProtectedRoute";
 import Navbar from "../../layout/Navbar";
 import UserLayout from "../../layout/UserLayout";
+import NotFoundPage from "../../../pages/PageNoutFound/PageNotFound";
 
 // Lazy load user components
 const Home = lazy(() => import("../../../pages/user/Home"));
@@ -35,7 +36,7 @@ const UserRoutes = () => {
         <Route path="/host-page" element={<VendorPage />} />
       </Route>
       <Route path="/signin" element={<ProtectedRoute element={Signin} />} />
-
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 };
