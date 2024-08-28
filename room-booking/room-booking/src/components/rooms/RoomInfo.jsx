@@ -6,32 +6,40 @@ import InfoCard from "./InfoCard/InfoCard";
 import RoomCategory from "./RoomCategory";
 import wishlistService from "../../services/WhishlistServices";
 import { showToast } from "../../utils/toastUtils";
+import LoginPromptModal from "../modals/LoginRequiredModal";
 
 const RoomInfo = ({ room }) => {
   const [inWishlist, setInWishlist] = useState(false);
-  const user = useSelector((state) => state.auth.user);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const user = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     checkWishlist();
-  }, []);
+  }, [user]);
 
   const checkWishlist = async () => {
-    try {
-      const wishlistItems = await wishlistService.getWishlist();
-      const isInWishlist = wishlistItems.some(
-        (item) => item.room.id === room.id
-      );
-      setInWishlist(isInWishlist);
-    } catch (error) {
-      console.error("Error checking wishlist:", error);
+    if (user) {
+      try {
+        const wishlistItems = await wishlistService.getWishlist();
+        const isInWishlist = wishlistItems.some(
+          (item) => item.room.id === room.id
+        );
+        setInWishlist(isInWishlist);
+      } catch (error) {
+        console.error("Error checking wishlist:", error);
+      }
     }
   };
 
   const addToWishlist = async () => {
+    if (!user) {
+      setShowLoginPrompt(true);
+      return;
+    }
     try {
       await wishlistService.addToWishlist(room.id);
       showToast('Room added to wishlist!', 'success');
-      setInWishlist(true); 
+      setInWishlist(true);
     } catch (error) {
       console.error("Error adding to wishlist:", error);
     }
@@ -40,14 +48,19 @@ const RoomInfo = ({ room }) => {
   const removeFromWishlist = async (wishlistItemId) => {
     try {
       await wishlistService.removeFromWishlist(wishlistItemId);
-      showToast("Room removed from wishlist!", 'success'); 
-      setInWishlist(false); 
+      showToast("Room removed from wishlist!", 'success');
+      setInWishlist(false);
     } catch (error) {
       console.error("Error removing from wishlist:", error);
-    } 
+    }
   };
 
   const handleWishlistToggle = async () => {
+    if (!user) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
     if (inWishlist) {
       const wishlistItem = await findWishlistItem();
       if (wishlistItem) {
@@ -156,6 +169,8 @@ const RoomInfo = ({ room }) => {
           />
         </div>
       </div>
+
+      {showLoginPrompt && <LoginPromptModal onClose={() => setShowLoginPrompt(false)} />}
     </div>
   );
 };
