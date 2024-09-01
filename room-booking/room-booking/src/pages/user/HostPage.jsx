@@ -69,22 +69,23 @@ const BecomeMemberPage = () => {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Our Platform in Numbers</h2>
-          <div className="flex justify-around mb-8">
-            <div className="text-center shadow-lg p-10 rounded-lg">
-              <h3 className="text-4xl font-bold text-gray-600">Total Users</h3>
-              <p className="text-gray-700 text-2xl font-bold">{statistics.total_users}</p>
-            </div>
-            <div className="text-center shadow-lg p-10 rounded-lg">
-              <h3 className="text-4xl font-bold text-gray-600">Total Rooms</h3>
-              <p className="text-gray-700 text-2xl font-bold">{statistics.total_rooms}</p>
-            </div>
-            <div className="text-center shadow-lg p-10 rounded-lg">
-              <h3 className="text-4xl font-bold text-gray-600">Total Bookings</h3>
-              <p className="text-gray-700 text-2xl font-bold">{statistics.total_bookings}</p>
-            </div>
-          </div>
-        </section>
+  <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Our Platform in Numbers</h2>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <div className="text-center shadow-lg p-10 rounded-lg bg-white">
+      <h3 className="text-4xl font-bold text-gray-600">Total Users</h3>
+      <p className="text-gray-700 text-2xl font-bold">{statistics.total_users}</p>
+    </div>
+    <div className="text-center shadow-lg p-10 rounded-lg bg-white">
+      <h3 className="text-4xl font-bold text-gray-600">Total Rooms</h3>
+      <p className="text-gray-700 text-2xl font-bold">{statistics.total_rooms}</p>
+    </div>
+    <div className="text-center shadow-lg p-10 rounded-lg bg-white">
+      <h3 className="text-4xl font-bold text-gray-600">Total Bookings</h3>
+      <p className="text-gray-700 text-2xl font-bold">{statistics.total_bookings}</p>
+    </div>
+  </div>
+</section>
+
 
         <section className="mb-8">
           <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">What Our Members Say</h2>

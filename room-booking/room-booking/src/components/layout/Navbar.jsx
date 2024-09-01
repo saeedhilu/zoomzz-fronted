@@ -52,12 +52,14 @@ const Navbar = () => {
         <h1 className="text-3xl font-bold text-gray-500 cursor-pointer" onClick={handlelogoName}>{websiteName}</h1>
       </div>
       <div className="flex items-center space-x-4">
-        <button
-          className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 h-12 hover:bg-gray-600 rounded-3xl cursor-pointer"
-          onClick={handleHost}
-        >
-          Become A Host
-        </button>
+      <button
+  className="hidden md:inline-block px-4 py-2 text-sm font-semibold text-white bg-gray-500 h-12 hover:bg-gray-600 rounded-3xl cursor-pointer"
+  onClick={handleHost}
+>
+  Become A Host
+</button>
+
+          
         <div className="flex bg-gray-500 rounded-3xl relative">
           <section
             className="text-2xl text-white p-3 cursor-pointer"
