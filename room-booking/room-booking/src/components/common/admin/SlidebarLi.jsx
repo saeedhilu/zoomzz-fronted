@@ -8,7 +8,7 @@ const Sidebar = ({ title, menuItems, profile, role }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const baseURL = "http://localhost:8000/";
+  const baseURL = "https://api.zoomzzz.live/";
   const navigate = useNavigate()
   const handleToggleSidebar = () => {
     setIsOpen(!isOpen);

@@ -13,7 +13,7 @@ const SharedSettingsPage = ({ role, imageUrl }) => {
   const { username, profileImage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const baseURL = "http://localhost:8000/";
+  const baseURL = "https://api.zoomzzz.live/";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');

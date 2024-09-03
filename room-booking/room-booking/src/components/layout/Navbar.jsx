@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../../utils/toastUtils";
 const Navbar = () => {
   const websiteName = "ZOOMZZZ";
-  const baseURL = "http://localhost:8000/images/";
+  const baseURL = "https://api.zoomzzz.live/";
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const profileImage = useSelector((state) => state.auth.profileImage);

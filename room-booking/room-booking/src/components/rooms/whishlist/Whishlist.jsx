@@ -14,7 +14,7 @@ const Wishlist = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [newRoomId, setNewRoomId] = useState('');
-  const baseImageUrl = 'http://localhost:8000';
+  const baseImageUrl = 'https://api.zoomzzz.live/';
 
   const emptyWishlistImage = "https://evyapari.com/static/media/empty_wishlist.4b6281beecbb34e00bf3.png"
   useEffect(() => {

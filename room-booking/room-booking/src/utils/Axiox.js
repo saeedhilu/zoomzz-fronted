@@ -6,8 +6,8 @@
   import { useNavigate } from 'react-router-dom';
 
   const instance = axios.create({
-     baseURL: 'http://localhost:8000/',
-   
+     baseURL: 'https://api.zoomzzz.live/',
+
     headers: { 'Content-Type': 'application/json' },
   });
 
@@ -37,7 +37,7 @@
     }
     
     try {
-      const response = await axios.post('http://localhost:8000/accounts/api/token/refresh/', {
+      const response = await axios.post('https://api.zoomzzz.live/accounts/api/token/refresh/', {
         refresh,
       });
       const newToken = response.data.access;
