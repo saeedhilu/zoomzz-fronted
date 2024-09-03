@@ -86,7 +86,7 @@ const RoomList = () => {
     }));
     setRooms([]); // Clear rooms
     setPage(1); // Reset page to 1
-    setHasMore(true); // Reset hasMore
+    setHasMore(true); 
   };
 
   return (
@@ -100,7 +100,7 @@ const RoomList = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {rooms.length > 0 ? (
             rooms.map((room, idx) => (
-              <Link key={idx} to={`/room-details/${room.id}`}>
+             
                 <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm cursor-pointer">
                   <Carousel
                     showThumbs={false}
@@ -124,6 +124,7 @@ const RoomList = () => {
                       )
                     )}
                   </Carousel>
+                  <Link key={idx} to={`/room-details/${room.id}`}>
                   <div className="p-4">
                     <h3 className="text-xl font-semibold mb-2">{room.name}</h3>
                     <div className="flex items-center text-gray-600 mb-2">
@@ -188,11 +189,12 @@ const RoomList = () => {
                       </div>
                     </div>
                   </div>
+                  </Link>
                 </div>
-              </Link>
+              
             ))
           ) : (
-            <p>No rooms found.</p>
+            <p></p>
           )}
         </div>
 
