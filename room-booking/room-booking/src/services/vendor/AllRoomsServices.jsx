@@ -2,8 +2,14 @@
 import instance from "../../utils/Axiox";
 
 const getRooms = async () => {
+  console.log('====================================');
+  console.log('hello');
+  console.log('====================================');
   try {
     const response = await instance.get("rooms/vendor/rooms/");
+    console.log('====================================');
+    console.log('data is :',response);
+    console.log('====================================');
     return response.data;
   } catch (error) {
     console.error("Error fetching categories:", error);

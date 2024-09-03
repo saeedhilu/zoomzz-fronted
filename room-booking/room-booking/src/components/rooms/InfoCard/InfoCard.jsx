@@ -9,7 +9,7 @@ const InfoCard = ({ description, icon }) => {
 
   const IconComponent = iconMap[icon];
   return (
-    <div className="bg-slate-100 p-4 shadow-lg rounded-sm flex items-center flex-col justify-between" >
+    <div className="bg-slate-100 p-4 shadow-lg rounded-sm flex items-center flex-col justify-between text-center" >
       {IconComponent && <IconComponent className="text-2xl text-gray-600 mr-2" />} 
       <p className="font-semibold">{description}</p>
     </div>

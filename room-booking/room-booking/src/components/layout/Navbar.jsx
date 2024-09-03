@@ -5,7 +5,7 @@ import { TiThMenu } from "react-icons/ti";
 import { clearAuth } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../../utils/toastUtils";
 const Navbar = () => {
   const websiteName = "ZOOMZZZ";
@@ -21,7 +21,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(clearAuth());
-    showToast('You have successfully logged out!', 'success');
+    showToast("You have successfully logged out!", "success");
   };
 
   const handleSignIn = () => {
@@ -43,23 +43,27 @@ const Navbar = () => {
     navigate("/user-profile");
   };
 
-  const handlelogoName=()=>{
-    navigate("/")
-  }
+  const handlelogoName = () => {
+    navigate("/");
+  };
   return (
     <div className="flex items-center justify-between py-6 px-4 sm:px-8 w-full z-50">
       <div>
-        <h1 className="text-3xl font-bold text-gray-500 cursor-pointer" onClick={handlelogoName}>{websiteName}</h1>
+        <h1
+          className="text-3xl font-bold text-gray-500 cursor-pointer"
+          onClick={handlelogoName}
+        >
+          {websiteName}
+        </h1>
       </div>
       <div className="flex items-center space-x-4">
-      <button
-  className="hidden md:inline-block px-4 py-2 text-sm font-semibold text-white bg-gray-500 h-12 hover:bg-gray-600 rounded-3xl cursor-pointer"
-  onClick={handleHost}
->
-  Become A Host
-</button>
+        <button
+          className="hidden md:inline-block px-4 py-2 text-sm font-semibold text-white bg-gray-500 h-12 hover:bg-gray-600 rounded-3xl cursor-pointer"
+          onClick={handleHost}
+        >
+          Be A Host
+        </button>
 
-          
         <div className="flex bg-gray-500 rounded-3xl relative">
           <section
             className="text-2xl text-white p-3 cursor-pointer"
@@ -86,7 +90,7 @@ const Navbar = () => {
                 : "scale-95 opacity-0 pointer-events-none"
             }`}
           >
-            <div className="relative z-50" >
+            <div className="relative z-50">
               <div
                 className={`absolute right-1 w-3 h-3 bg-gray-100 z-10 transform rotate-45 -mt-2 ${
                   showMenu ? "opacity-100" : "opacity-0"
@@ -133,18 +137,17 @@ const Navbar = () => {
           </div>
         </div>
         <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
-     
     </div>
   );
 };

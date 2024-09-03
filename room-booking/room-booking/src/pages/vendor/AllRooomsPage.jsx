@@ -48,9 +48,15 @@ const AllRooms = () => {
   const [roomTypes, setRoomTypes] = useState([]);
   const [imageShow, setImageShow] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
-  const localHost = "http://127.0.0.1:8000/";
+  const localHost = "https://api.zoomzzz.live/";
 
 console.log('room from statte',rooms);
+console.log('room from statte',amenities);
+console.log('room from statte',categories);
+console.log('room from statte',cities);
+console.log('room from statte',bedTypes);
+console.log('room from statte',roomTypes);
+
 
   const fetchData = async () => {
     try {
@@ -84,6 +90,11 @@ console.log('room from statte',rooms);
   };
   console.log('====================================');
   console.log('rooms is :',rooms);
+  console.log('bedtyope is :',bedTypes);
+  console.log('roomtyhpe is :',roomTypes);
+  console.log('catogaeries is :',categories);
+  console.log('cities is :',cities);
+  console.log('ciountries is :',countries);
   console.log('====================================');
 
 
@@ -191,21 +202,11 @@ console.log('room from statte',rooms);
       formDataObj.append("image3", formData.image3);
       formDataObj.append("image4", formData.image4);
       formDataObj.append("image5", formData.image5);
-      if (formData.amenities.length > 1) {
-        for (let i = 1; i < formData.amenities.length; i++) {
-          console.log("====================================");
-          console.log("form data amenity :", formData.amenities[i]);
-          console.log("====================================");
-          console.log(
-            "====================================",
-            formData.amenities.length
-          );
-          formDataObj.append("amenities", formData.amenities[i]);
-        }
-      } else {
-        console.log("issie");
-        formDataObj.append("amenities", formData.amenities);
-      }
+       if (formData.amenities && formData.amenities.length > 0) {
+      formData.amenities.forEach((amenity) => {
+        formDataObj.append("amenities", amenity);
+      });
+    }
       
       }else {
 
@@ -517,21 +518,8 @@ console.log('room from statte',rooms);
                       />
                     </td>
                     <td className="py-2 px-4 truncate">{r.name}</td>
-                    <td className="py-2 px-4">{r.category && r.category.length > 0 ? (
-                        
-                        r.category.map((category) => (
-                          
-                          <div
-                          
-                            key={category.id}
-                            className="flex items-center mb-1 truncate"
-                          >
-                            <span>{category.name}</span>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-red-600 ">No category</p>
-                      )}</td>
+                    <td className="py-2 px-4">{r.category}</td>
+                  
                     <td className="py-2 px-4">{r.description}</td>
                     <td className="py-2 px-4">{r.price_per_night}</td>
                     <td className="py-2 px-4 ">{r.max_occupancy}</td>
@@ -559,7 +547,7 @@ console.log('room from statte',rooms);
                             key={amenity.id}
                             className="flex items-center mb-1 truncate"
                           >
-                            <span>{amenity.name}</span>
+                            <span>{amenity}</span>
                           </div>
                         ))
                       ) : (
@@ -597,7 +585,7 @@ console.log('room from statte',rooms);
           onSubmit={handleSubmit}
           initialData={selectedRoom || {}}
           isCreating={isCreating}
-          title={isCreating ? "Create New Category" : "Edit Category"}
+          title={isCreating ? "Create New Room" : "Edit Room"}
           fields={modalFields}
         />
       )}

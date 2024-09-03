@@ -39,7 +39,7 @@ const TopRatedRooms = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
           {topRatedRooms?.map((room) => (
             <Link key={room.id} to={`/room-details/${room.id}`}>
               <div key={room.id} className="bg-white shadow-md rounded-md p-4">

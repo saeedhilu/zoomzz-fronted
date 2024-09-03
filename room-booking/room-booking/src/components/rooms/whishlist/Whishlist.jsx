@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import wishlistService from '../../../services/WhishlistServices';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faMoneyBillAlt, faBed, faHeart } from '@fortawesome/free-solid-svg-icons';
+import Spinner from '../../Spinner/Spinner';
 
 
 
@@ -57,7 +58,7 @@ const Wishlist = () => {
       <h1 className="text-2xl font-bold mb-4">My Wishlist</h1>
       <div className='bg-gray-600 w-36 h-1'></div>
 
-      {loading && <p className="text-gray-600">Loading...</p>}
+      {loading && <p className="text-gray-600"><Spinner/></p>}
       {error && <p className="text-red-600">{error}</p>}
       
       {wishlistItems.length === 0 ? (

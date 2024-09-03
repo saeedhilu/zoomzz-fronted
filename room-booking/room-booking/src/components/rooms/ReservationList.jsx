@@ -3,7 +3,6 @@ import {
   getConfirmedRooms,
   getPendingRooms,
   getCanceledRooms,
-  // Add this import
 } from "../../services/ReservationStatusServices";
 import Spinner from "../Spinner/Spinner";
 import { RatingFormModal } from "../modals/RatingModal";
@@ -20,10 +19,6 @@ const ReservationStatusList = ({ currentTab }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedReservationId, setSelectedReservationId] = useState(null);
   const [ratingData, setRatingData] = useState(null);
-  const [pendingRooms, setPendingRoom] = useState([]);
-  console.log("pendign ", pendingRooms);
-
-  console.log("resservation si s:", selectedReservationId);
 
   const fetchReservationStatus = async () => {
     try {
@@ -34,11 +29,9 @@ const ReservationStatusList = ({ currentTab }) => {
       switch (currentTab) {
         case "completed":
           response = await getConfirmedRooms();
-
           break;
         case "upcoming":
           response = await getPendingRooms();
-          setPendingRoom(response);
           break;
         case "cancelled":
           response = await getCanceledRooms();
@@ -64,7 +57,7 @@ const ReservationStatusList = ({ currentTab }) => {
       (reservation) => reservation.room_id === reservationId
     );
     setSelectedReservationId(reservationId);
-    setRatingData(selectedReservation?.user_rating || null); // Set existing rating data or null
+    setRatingData(selectedReservation?.user_rating || null);
     setShowModal(true);
   };
 
@@ -73,7 +66,7 @@ const ReservationStatusList = ({ currentTab }) => {
       (reservation) => reservation.room_id === reservationId
     );
     setSelectedReservationId(reservationId);
-    setRatingData(selectedReservation?.user_rating || null); // Set existing rating data or null
+    setRatingData(selectedReservation?.user_rating || null);
     setShowModal(true);
   };
 
@@ -85,12 +78,10 @@ const ReservationStatusList = ({ currentTab }) => {
 
   const handleSubmitReview = ({ reservationId, rating, comment }) => {
     handleCloseModal();
-    fetchReservationStatus(); // Refresh data after update
+    fetchReservationStatus();
   };
 
   const handleCancelReservation = async (reservationId) => {
-    console.log(" reservatino from cancellation :", reservationId);
-
     try {
       await cancelReservation(reservationId);
       toast.success("Reservation canceled successfully!");
@@ -125,40 +116,41 @@ const ReservationStatusList = ({ currentTab }) => {
   }
 
   return (
-    <div className="space-y-4">
-      
+    <div className="space-y-4 w-full">
       {reservationStatus.map((reservation) => (
         <div
           key={reservation.room_id}
-          className="bg-white p-4 rounded-md shadow flex items-center justify-between"
+          className="bg-white p-4 rounded-md shadow flex flex-col md:flex-row items-center justify-between overflow-x-auto space-y-4 md:space-y-0"
         >
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4 w-full md:w-auto">
             <img
-              className="w-20 h-20 bg-gray-200 rounded-sm mr-4"
+              className="w-16 h-16 md:w-20 md:h-20 bg-gray-200 rounded-sm"
               src={reservation.room_image}
               alt={`${reservation.room_name}`}
             />
-            <div className="font-semibold">
-              <h3 className="text-lg font-semibold">{reservation.room_name}</h3>
+            <div className="font-semibold text-center md:text-left">
+              <h3 className="text-base md:text-lg font-semibold">
+                {reservation.room_name}
+              </h3>
               <div className="flex items-center">
                 <FaCalendarAlt className="mr-1" />
-                <p>Check-in {reservation.check_in}</p>
+                <p className="text-sm md:text-base">Check-in {reservation.check_in}</p>
               </div>
               <div className="flex items-center">
                 <FaCalendarAlt className="mr-1" />
-                <p>Check-out: {reservation.check_out}</p>
+                <p className="text-sm md:text-base">Check-out: {reservation.check_out}</p>
               </div>
               <div className="flex items-center">
                 <FaUserFriends className="mr-1" />
-                <p>Guests: {reservation.total_guest}</p>
+                <p className="text-sm md:text-base">Guests: {reservation.total_guest}</p>
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-2 w-full md:w-auto">
             {currentTab === "completed" &&
               (reservation.user_rating ? (
                 <button
-                  className="px-4 py-2 flex items-center text-black font-semibold rounded-3xl bg-gray-500 cursor-pointer"
+                  className="px-4 py-2 w-full md:w-auto text-sm md:text-base flex items-center text-black font-semibold rounded-3xl bg-gray-500 cursor-pointer"
                   onClick={() => handleUpdateReview(reservation.room_id)}
                 >
                   <IoIosStar fill="yellow" className="mr-1" />
@@ -166,7 +158,7 @@ const ReservationStatusList = ({ currentTab }) => {
                 </button>
               ) : (
                 <button
-                  className="px-4 py-2 flex items-center text-black font-semibold rounded-3xl bg-gray-500"
+                  className="px-4 py-2 w-full md:w-auto text-sm md:text-base flex items-center text-black font-semibold rounded-3xl bg-gray-500"
                   onClick={() => handleAddReview(reservation.room_id)}
                 >
                   <FaRegStar className="mr-1" />
@@ -175,7 +167,7 @@ const ReservationStatusList = ({ currentTab }) => {
               ))}
             {(currentTab === "upcoming" || currentTab === "cancelled") && (
               <button
-                className="px-4 py-2 rounded-3xl bg-red-500 text-white"
+                className="px-4 py-2 w-full md:w-auto rounded-3xl bg-red-500 text-white text-sm md:text-base"
                 onClick={() => handleCancelReservation(reservation.id)}
               >
                 Cancel Reservation

@@ -9,8 +9,8 @@ const ReservationStatusListPage = () => {
     <div className="container mx-auto p-10 rounded-xl   ">
        
       <h1 className="text-3xl  font-bold ml-6 font-mono">Reservations</h1>
-      <div className="p-4">
-        <div className="flex space-x-4 h-16">
+      <div className="p-4 ">
+        <div className="flex space-x-4 h-16 overflow-x-auto">
           {[ "upcoming","completed", "cancelled"].map((tab) => (
             <button
               key={tab}
